@@ -5,11 +5,6 @@ import scienceplots
 plt.style.use(['no-latex'])
 from visualization import visualize_results 
 
-from cookiecutter.main import cookiecutter
-
-# Create project from the cookiecutter-pypackage/ template
-cookiecutter('gh:audreyfeldroy//cookiecutter-pypackage.git')
-
 # Example usage
 offset = np.arange(10, 500, 15)
 m = len(offset)
