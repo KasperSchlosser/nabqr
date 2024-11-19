@@ -151,7 +151,7 @@ python-dateutil==2.9.0.post0
 python-slugify==8.0.4
 pytorch-lightning==2.2.4
 pytz==2024.1
-PyYAML==5.4.1
+PyYAML>=5.4.1
 pyzmq==26.0.0
 pyzstd==0.15.10
 readme_renderer==44.0
