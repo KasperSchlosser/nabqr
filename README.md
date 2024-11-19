@@ -8,6 +8,16 @@ NABQR is a method for sequential error-corrections tailored for wind power forec
 - **Free software**: MIT license  
 - **Documentation**: [NABQR Documentation](https://nabqr.readthedocs.io)
 
+## Getting Started
+See test_file.py for an example of how to use the package.
+
+### Main functions
+```python
+from nabqr.src.functions import pipeline
+````
+
+
+
 ## Features
 
 - TODO
