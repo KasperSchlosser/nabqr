@@ -99,8 +99,6 @@ msgpack==1.0.8
 multidict==6.0.5
 multitasking==0.0.11
 multivolumefile==0.2.3
-# Editable install with no version control (nabqr==0.0.3)
--e /Users/bassc/Dropbox/DTU_ResearchAssistant/Paper1_Package/src/nabqr/src
 namex==0.0.8
 ndindex==1.8
 nest-asyncio==1.6.0
