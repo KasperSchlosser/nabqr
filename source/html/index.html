@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nabqr documentation &mdash; nabqr-RTD 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            nabqr-RTD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">nabqr documentation</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li><a class="reference internal" href="#main-functions">Main functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">nabqr-RTD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">nabqr documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!-- .. nabqr-RTD documentation master file, created by
+   sphinx-quickstart on Wed Nov 20 09:07:39 2024.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive. -->
+<section id="nabqr-documentation">
+<h1>nabqr documentation<a class="headerlink" href="#nabqr-documentation" title="Link to this heading"></a></h1>
+<p>NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.</p>
+<ul class="simple">
+<li><p><strong>Free software</strong>: MIT license</p></li>
+<li><p><strong>Documentation</strong>: <a class="reference external" href="https://nabqr.readthedocs.io">NABQR Documentation</a></p></li>
+</ul>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<p>See <code class="docutils literal notranslate"><span class="pre">test_file.py</span></code> for an example of how to use the package.</p>
+<section id="main-functions">
+<h3>Main functions<a class="headerlink" href="#main-functions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nabqr.src.functions</span> <span class="kn">import</span> <span class="n">pipeline</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipeline</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> 
+             <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;TEST&quot;</span><span class="p">,</span>
+             <span class="n">training_size</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span> 
+             <span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+             <span class="n">timesteps_for_lstm</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">48</span><span class="p">],</span>
+             <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>The pipeline trains a LSTM network to correct the provided ensembles.
+It then runs the TAQR algorithm on the corrected ensembles to predict the observations, y, on the test set.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><strong>X</strong>: <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_features)</span></code></p>
+<ul>
+<li><p>The ensemble data to be corrected.</p></li>
+</ul>
+</li>
+<li><p><strong>y</strong>: <code class="docutils literal notranslate"><span class="pre">pd.Series</span></code> or <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_samples,)</span></code></p>
+<ul>
+<li><p>The observations to be predicted.</p></li>
+</ul>
+</li>
+<li><p><strong>name</strong>: <code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+<ul>
+<li><p>The name of the dataset.</p></li>
+</ul>
+</li>
+<li><p><strong>training_size</strong>: <code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+<ul>
+<li><p>The proportion of the data to be used for training.</p></li>
+</ul>
+</li>
+<li><p><strong>epochs</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<ul>
+<li><p>The number of epochs to train the LSTM.</p></li>
+</ul>
+</li>
+<li><p><strong>timesteps_for_lstm</strong>: <code class="docutils literal notranslate"><span class="pre">list</span></code></p>
+<ul>
+<li><p>The timesteps to use for the LSTM.</p></li>
+</ul>
+</li>
+</ul>
+<p>The pipeline trains a LSTM network to correct the provided ensembles</p>
+</section>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>TODO</p></li>
+<li><ul>
+<li><p>Project description</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Installation instructions</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Package requirements</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Documentation</p></li>
+</ul>
+</li>
+</ul>
+<!-- .. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+-->
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Bastian S. Jørgensen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

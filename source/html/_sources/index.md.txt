@@ -1,7 +1,10 @@
-# NABQR
+<!-- .. nabqr-RTD documentation master file, created by
+   sphinx-quickstart on Wed Nov 20 09:07:39 2024.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive. -->
 
-[![PyPI Version](https://img.shields.io/pypi/v/nabqr.svg)](https://pypi.python.org/pypi/nabqr)
-[![Documentation Status](https://readthedocs.org/projects/nabqr/badge/?version=latest)](https://nabqr.readthedocs.io/en/latest/?version=latest)
+nabqr documentation
+=======================
 
 NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
 
@@ -56,7 +59,7 @@ The pipeline trains a LSTM network to correct the provided ensembles
 - - Package requirements
 - - Documentation
 
-
-## Credits
-
-This package was partially created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [`audreyr/cookiecutter-pypackage`](https://github.com/audreyr/cookiecutter-pypackage) project template.
+<!-- .. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+-->
