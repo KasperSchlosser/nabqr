@@ -11,3 +11,5 @@ tensorflow==2.16.1
 tensorflow_probability==0.24.0
 torch==2.4.1
 typer==0.13.1
+sphinx_rtd_theme==3.0.2
+myst_parser==4.0.0
