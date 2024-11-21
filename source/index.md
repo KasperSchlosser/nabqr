@@ -7,9 +7,32 @@
    
    -->
 
-=======================
+
 nabqr documentation
 =======================
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [User Guide](#user-guide)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+- [Changelog](#changelog)
+
+---
+
+## Introduction
+
+This section provides an overview of the project. Discuss the goals, purpose, and high-level summary here.
+
+---
+
+## Getting Started
+
+### Installation
+
+
 
 NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
 
@@ -32,7 +55,6 @@ The method is based on the paper: *Sequential methods for Error Corrections in W
 See `test_file.py` for an example of how to use the package.
 
 ## Main functions
---------------------------------
 ### Pipeline
 ```python
 from nabqr.src.functions import pipeline
@@ -101,7 +123,7 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 - - Project description
 - - Installation instructions
 
-=======================
+
 Test file (including simulation of multivarate AR data)
 =======================
 ```python
