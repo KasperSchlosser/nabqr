@@ -517,6 +517,26 @@ def one_step_quantile_prediction(X_input, Y_input, n_init, n_full, quantile = 0.
 
 def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
 
+    '''
+    Run TAQR on corrected_ensembles, X, based on the actual values, y and the given quantiles.
+
+    Parameters:
+    corrected_ensembles: np.array, shape (n_timesteps, n_ensembles)
+        The corrected ensembles to run TAQR on.
+    actuals: np.array, shape (n_timesteps,)
+        The actual values to run TAQR on.
+    quantiles: list
+        The quantiles to run TAQR for.
+    n_init: int
+        The number of initial timesteps to use for warm start.
+    n_full: int
+        The total number of timesteps to run TAQR for.
+    n_in_X: int
+        The number of timesteps to include in the design matrix.
+    '''
+
+
+
     # Clean for NaNs
     actuals.iloc[np.isnan(actuals)] = 0
 
