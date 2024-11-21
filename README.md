@@ -3,7 +3,22 @@
 [![PyPI Version](https://img.shields.io/pypi/v/nabqr.svg)](https://pypi.python.org/pypi/nabqr)
 [![Documentation Status](https://readthedocs.org/projects/nabqr/badge/?version=latest)](https://nabqr.readthedocs.io/en/latest/?version=latest)
 
+- **Free software**: MIT license  
+- **Documentation**: [NABQR Documentation](https://nabqr.readthedocs.io)
+
 NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
+
+The method is based on the paper: *Sequential methods for Error Corrections in Wind Power Forecasts*, with the following abstract:
+< Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
+Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
+This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions. 
+We introduce Neural Adaptive Basis for (Time-Adaptive) Quantile Regression (NABQR), a novel approach that combines neural networks with Time-Adaptive Quantile Regression (TAQR) to enhance the accuracy of wind power production forecasts. 
+First, NABQR corrects power production ensembles using neural networks.
+Our study identifies Long Short-Term Memory networks as the most effective architecture for this purpose.
+Second, TAQR is applied to the corrected ensembles to obtain optimal median predictions along with quantile descriptions of the forecast density. 
+The method achieves substantial improvements upwards of 40\% in mean absolute terms. Additionally, we explore the potential of this methodology for applications in energy trading.
+The method is available as an open-source Python package to support further research and applications in renewable energy forecasting. >
+
 
 - **Free software**: MIT license  
 - **Documentation**: [NABQR Documentation](https://nabqr.readthedocs.io)
@@ -11,7 +26,7 @@ NABQR is a method for sequential error-corrections tailored for wind power forec
 ## Getting Started
 See `test_file.py` for an example of how to use the package.
 
-### Main functions
+## Main functions
 ```python
 from nabqr.src.functions import pipeline
 ```
@@ -22,7 +37,7 @@ pipeline(X, y,
              training_size = 0.8, 
              epochs = 100,
              timesteps_for_lstm = [0,1,2,6,12,24,48],
-             **kwargs):
+             **kwargs)
 ```
 
 The pipeline trains a LSTM network to correct the provided ensembles.
@@ -30,9 +45,9 @@ It then runs the TAQR algorithm on the corrected ensembles to predict the observ
 
 **Parameters:**
 
-- **X**: `pd.DataFrame` or `np.array`, shape `(n_samples, n_features)`
+- **X**: `pd.DataFrame` or `np.array`, shape `(n_timesteps, n_ensembles)`
   - The ensemble data to be corrected.
-- **y**: `pd.Series` or `np.array`, shape `(n_samples,)`
+- **y**: `pd.Series` or `np.array`, shape `(n_timesteps,)`
   - The observations to be predicted.
 - **name**: `str`
   - The name of the dataset.
@@ -44,19 +59,40 @@ It then runs the TAQR algorithm on the corrected ensembles to predict the observ
   - The timesteps to use for the LSTM.
 
 
-The pipeline trains a LSTM network to correct the provided ensembles
+The pipeline trains a LSTM network to correct the provided ensembles and then runs the TAQR algorithm on the corrected ensembles to predict the observations, y, on the test set.
+
+### Time-Adaptive Quantile Regression
+nabqr also include a time-adaptive quantile regression model, which can be used independently of the pipeline.
+```python
+from nabqr.src.functions import run_taqr
+```
+```python
+run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X)
+```
+
+Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the given quantiles.
+
+**Parameters:**
+
+- **corrected_ensembles**: `np.array`, shape `(n_timesteps, n_ensembles)`
+  - The corrected ensembles to run TAQR on.
+- **actuals**: `np.array`, shape `(n_timesteps,)`
+  - The actual values to run TAQR on.
+- **quantiles**: `list`
+  - The quantiles to run TAQR for.
+- **n_init**: `int`
+  - The number of initial timesteps to use for warm start.
+- **n_full**: `int`
+  - The total number of timesteps to run TAQR for.
+- **n_in_X**: `int`
+  - The number of timesteps to include in the design matrix.
 
 
-
-## Features
+## Notes
 
 - TODO
 - - Project description
 - - Installation instructions
-- - Package requirements
-- - Documentation
-
-
 ## Credits
 
 This package was partially created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [`audreyr/cookiecutter-pypackage`](https://github.com/audreyr/cookiecutter-pypackage) project template.
