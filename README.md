@@ -27,7 +27,7 @@ The method is based on the paper: *Sequential methods for Error Corrections in W
 See `test_file.py` for an example of how to use the package.
 
 ## Main functions
---------------------------------
+
 ### Pipeline
 ```python
 from nabqr.src.functions import pipeline
@@ -96,9 +96,9 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 - - Project description
 - - Installation instructions
 
-=======================
-Test file (including simulation of multivarate AR data)
-=======================
+
+## Test file (including simulation of multivarate AR data)
+
 ```python
 from nabqr.src.functions import pipeline
 import numpy as np
