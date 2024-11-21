@@ -13,15 +13,15 @@ nabqr documentation
 NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
 
 The method is based on the paper: *Sequential methods for Error Corrections in Wind Power Forecasts*, with the following abstract:
-< Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
-Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
-This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions. 
-We introduce Neural Adaptive Basis for (Time-Adaptive) Quantile Regression (NABQR), a novel approach that combines neural networks with Time-Adaptive Quantile Regression (TAQR) to enhance the accuracy of wind power production forecasts. 
-First, NABQR corrects power production ensembles using neural networks.
-Our study identifies Long Short-Term Memory networks as the most effective architecture for this purpose.
-Second, TAQR is applied to the corrected ensembles to obtain optimal median predictions along with quantile descriptions of the forecast density. 
-The method achieves substantial improvements upwards of 40\% in mean absolute terms. Additionally, we explore the potential of this methodology for applications in energy trading.
-The method is available as an open-source Python package to support further research and applications in renewable energy forecasting. >
+> Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
+> Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
+> This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions. 
+> We introduce Neural Adaptive Basis for (Time-Adaptive) Quantile Regression (NABQR), a novel approach that combines neural networks with Time-Adaptive Quantile Regression (TAQR) to enhance the accuracy of wind power production forecasts. 
+> First, NABQR corrects power production ensembles using neural networks.
+> Our study identifies Long Short-Term Memory networks as the most effective architecture for this purpose.
+> Second, TAQR is applied to the corrected ensembles to obtain optimal median predictions along with quantile descriptions of the forecast density. 
+> The method achieves substantial improvements upwards of 40% in mean absolute terms. Additionally, we explore the potential of this methodology for applications in energy trading.
+> The method is available as an open-source Python package to support further research and applications in renewable energy forecasting.
 
 
 - **Free software**: MIT license  
@@ -103,7 +103,3 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 Example file
 =======================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-   example_file
