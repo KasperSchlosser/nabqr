@@ -1,7 +1,11 @@
 <!-- .. nabqr-RTD documentation master file, created by
    sphinx-quickstart on Wed Nov 20 09:07:39 2024.
    You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive. -->
+   contain the root `toctree` directive. 
+   
+   THIS FILE IS OUR MAIN DOCUMENTATION FILE FOR READ THE DOCS.
+   
+   -->
 
 nabqr documentation
 =======================
@@ -27,6 +31,7 @@ The method is available as an open-source Python package to support further rese
 See `test_file.py` for an example of how to use the package.
 
 ## Main functions
+### Pipeline
 ```python
 from nabqr.src.functions import pipeline
 ```
@@ -94,7 +99,11 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 - - Project description
 - - Installation instructions
 
-<!-- .. toctree::
+=======================
+Example file
+=======================
+
+.. toctree::
    :maxdepth: 2
    :caption: Contents:
--->
+   example_file
