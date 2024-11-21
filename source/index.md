@@ -16,8 +16,6 @@ nabqr documentation
 - [Getting Started](#getting-started)
 - [Main functions](#main-functions)
 - [Test file](#test-file)
-- [Notes](#notes)
-- [Credits](#credits)
 ---
 
 ## Introduction
@@ -129,13 +127,13 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 - **n_in_X**: `int`
   - The number of timesteps to include in the design matrix.
 
-
+<!-- ## Notes
 ## Notes
 
 - TODO
 - - Project description
 - - Installation instructions
-
+-->
 
 ## Test file 
 Here we introduce the function `simulate_correlated_ar1_process`, which can be used to simulate multivariate AR data. The entire file can be run by `from nabqr import nabqr`.
