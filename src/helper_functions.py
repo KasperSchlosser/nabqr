@@ -2,6 +2,16 @@ import numpy as np
 import pandas as pd
 
 def set_n_smallest_to_zero(arr, n):
+    """
+    Sets the n smallest elements in an array to zero.
+    
+    Parameters:
+    arr (array-like): Input array of numbers
+    n (int): Number of smallest elements to set to zero
+    
+    Returns:
+    numpy.ndarray: Modified array with n smallest elements set to zero
+    """
     if n <= 0:
         return arr
     
@@ -10,7 +20,6 @@ def set_n_smallest_to_zero(arr, n):
     
     # Find the nth smallest element
     nth_smallest = sorted(arr)[n-1]
-    print(nth_smallest)
     
     # Set elements smaller than or equal to nth_smallest to zero
     modified_arr = [0 if x <= nth_smallest else x for x in arr]
@@ -18,6 +27,16 @@ def set_n_smallest_to_zero(arr, n):
     return modified_arr
 
 def set_n_closest_to_zero(arr, n):
+    """
+    Sets the n elements closest to zero in an array to zero.
+    
+    Parameters:
+    arr (array-like): Input array of numbers
+    n (int): Number of elements closest to zero to set to zero
+    
+    Returns:
+    numpy.ndarray: Modified array with n elements closest to zero set to zero
+    """
     if n <= 0:
         return arr
     
@@ -39,26 +58,38 @@ def set_n_closest_to_zero(arr, n):
 def quantile_score(p, z, q):
     """
     Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.
+    Implementation based on Fauer et al. (2021): "Flexible and consistent quantile estimation for
+    intensity–duration–frequency curves"
 
     Parameters:
-    p (float): The probability level.
-    z (np.array): The observed values.
-    q (np.array): The predicted quantiles.
+    p (float): The probability level (between 0 and 1)
+    z (numpy.ndarray): The observed values
+    q (numpy.ndarray): The predicted quantiles
 
     Returns:
-    float: The Quantile Score (QS).
-
-    From "Flexible and consistent quantile estimation for
-            intensity–duration–frequency curves"
-            by
-            Felix S. Fauer, Jana Ulrich, Oscar E. Jurado, and Henning W. Rust, 2021
-    We implemented this directly into the network...
+    float: The Quantile Score (QS)
     """
     u = z - q
     rho = np.where(u > 0, p * u, (p - 1) * u)
     return np.sum(rho)  
 
 def simulate_correlated_ar1_process(n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"):
+    """
+    Simulate a correlated AR(1) process with multiple dimensions.
+    
+    Parameters:
+    n (int): Number of time steps to simulate
+    phi (float): AR(1) coefficient (persistence parameter)
+    sigma (float): Standard deviation of the noise
+    m (int): Number of dimensions/variables
+    corr_matrix (numpy.ndarray, optional): Correlation matrix between dimensions. Defaults to identity matrix
+    offset (numpy.ndarray, optional): Offset vector for each dimension. Defaults to zero vector
+    smooth (int or str, optional): Number of initial time steps to discard for smoothing. Defaults to "no"
+    
+    Returns:
+    tuple: (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process 
+           and actuals is the median of ensembles with added noise
+    """
     if offset is None:
         offset = np.zeros(m)
     elif len(offset) != m:
@@ -94,16 +125,5 @@ def simulate_correlated_ar1_process(n, phi, sigma, m, corr_matrix=None, offset=N
             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
             ensembles[t] = phi * ensembles[t-1] + noise
         return ensembles + offset, np.median(ensembles+ offset, axis=1) + np.random.normal(0, sigma/2, n)
-
-# Example usage
-# offset = np.arange(10, 110, 10)
-# corr_matrix = 0.8 * np.ones((10, 10)) + 0.2 * np.eye(10)  # Example correlation structure
-# simulated_data, actuals = simulate_correlated_ar1_process(2500, 0.995, 5, 10, corr_matrix, offset, smooth=5)
-
-# import matplotlib.pyplot as plt
-# plt.figure()
-# plt.plot(simulated_data, color = "grey", alpha = 0.2)
-# plt.plot(actuals, color = "black")
-# plt.show()
 
  

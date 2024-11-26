@@ -8,7 +8,7 @@ with open("README.md", "r") as f:
 setup(
     name='nabqr',
     packages=[],
-    version='0.0.3',
+    version='0.0.6',
     description='NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark',
     author='Bastian S. Jørgensen',
     license='MIT',

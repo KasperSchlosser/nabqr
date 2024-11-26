@@ -7,6 +7,22 @@ from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.cm import ScalarMappable
 
 def visualize_results(y_hat, q_hat, ylabel):
+    """
+    Creates a visualization of prediction intervals with actual values.
+    
+    Parameters:
+    y_hat (numpy.ndarray): Actual observed values
+    q_hat (numpy.ndarray): Predicted quantiles for different probability levels
+    ylabel (str): Label for the y-axis
+    
+    Returns:
+    None: Saves the plot as 'TEST_NABQR_taqr_pi_plot.pdf' and displays it
+    
+    Notes:
+    - Creates a filled plot showing prediction intervals using a blue gradient
+    - Overlays actual values as a black line
+    - Automatically adjusts x-axis date formatting
+    """
     y_hat = pd.Series(y_hat.flatten())
     taqr_results_corrected_plot = pd.DataFrame(np.array(q_hat).T, index=y_hat.index)
     m = taqr_results_corrected_plot.shape[1]  # ensemble size
@@ -24,20 +40,27 @@ def visualize_results(y_hat, q_hat, ylabel):
     plt.figure(figsize=(6, 4))
     for i in range(m-1):
         color = sm.to_rgba(i)
-        plt.fill_between(taqr_results_corrected_plot.index, taqr_results_corrected_plot.iloc[:, i], taqr_results_corrected_plot.iloc[:, i+1], color=color, alpha=1)
+        plt.fill_between(taqr_results_corrected_plot.index, taqr_results_corrected_plot.iloc[:, i], 
+                        taqr_results_corrected_plot.iloc[:, i+1], color=color, alpha=1)
     plt.plot(y_hat.index, y_hat, color="white", linewidth=3)  # White outline
     plt.plot(y_hat, color="black", label="Actuals", linewidth=1)  # Actual line
     plt.xlim(y_hat.index[0], y_hat.index[-1])
+    
+    # Create legend elements
     line = Line2D([0], [0], color="black", lw=2, label="Actuals")
     contour = Line2D([0], [0], color=sm.to_rgba(m//2), lw=5, alpha=0.9, label="Prediction Interval")
     plt.legend(handles=[line, contour])
+    
     plt.xlabel("Time")
     plt.ylabel(ylabel)
+    
+    # Configure date formatting on x-axis
     locator = mdates.AutoDateLocator(minticks=6, maxticks=8)
     formatter = mdates.ConciseDateFormatter(locator)
     ax = plt.gca()
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(formatter)
+    
     plt.tight_layout()
     plt.savefig("TEST_NABQR_taqr_pi_plot.pdf")
     plt.show()
