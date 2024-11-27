@@ -1,6 +1,6 @@
-from src.functions import pipeline
+from nabqr.nabqr.functions import pipeline
 import numpy as np
-from src.helper_functions import simulate_correlated_ar1_process
+from nabqr.nabqr.helper_functions import simulate_correlated_ar1_process
 
 # Example usage
 offset = np.arange(10, 500, 15)

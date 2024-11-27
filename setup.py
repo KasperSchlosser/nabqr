@@ -5,19 +5,23 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
+with open("requirements.txt", "r") as f:
+    install_requires = f.read().splitlines()
+
 setup(
     name='nabqr',
     packages=[],
-    version='0.0.6',
+    version='0.0.11',
     description='NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark',
     author='Bastian S. Jørgensen',
     license='MIT',
     author_email='bassc@dtu.dk',
     url='https://github.com/bast0320/nabqr',
     keywords=['nabqr', 'energy', 'quantile', 'forecasting', ],
-    package_dir={'': 'src'},
+    package_dir={'': 'nabqr'},
     py_modules=['nabqr', 'visualization', 'functions', 'helper_functions', 'functions_for_TAQR'],
     python_requires='>=3.10',
+    install_requires=install_requires,
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[

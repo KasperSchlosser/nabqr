@@ -51,11 +51,11 @@ Then see the [Test file](#test-file) section for an example of how to use the pa
 ## Main functions
 ### Pipeline
 ```python
-from nabqr.src.functions import pipeline
+import nabqr as nq
 ```
 
 ```python
-pipeline(X, y, 
+nq.pipeline(X, y, 
              name = "TEST",
              training_size = 0.8, 
              epochs = 100,
@@ -104,10 +104,10 @@ The pipeline trains a LSTM network to correct the provided ensembles and then ru
 ### Time-Adaptive Quantile Regression
 nabqr also include a time-adaptive quantile regression model, which can be used independently of the pipeline.
 ```python
-from nabqr.src.functions import run_taqr
+import nabqr as nq
 ```
 ```python
-run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X)
+nq.run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X)
 ```
 
 Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the given quantiles.
@@ -128,16 +128,12 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
   - The number of timesteps to include in the design matrix.
 
 
-## Notes
-
-- TODO
-- - Project description
-- - Installation instructions
-
-
 ## Test file 
-Here we introduce the function `simulate_correlated_ar1_process`, which can be used to simulate multivariate AR data. The entire file can be run by `from nabqr import nabqr`.
-
+Here we introduce the function `simulate_correlated_ar1_process`, which can be used to simulate multivariate AR data. The entire file can be run by 
+```python
+import nabqr as nq
+nq.run_nabqr_pipeline()
+```
 
 ```python
 from functions import *
