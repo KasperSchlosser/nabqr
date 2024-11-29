@@ -174,6 +174,11 @@ m: 33
 len(quantiles_taqr): 7
 ```
 
+## Requirements
+
+- Python 3.10 or later
+- icecream, matplotlib, numpy, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras
+- R with the following packages: quantreg, readr
 
 ## Credits
 
