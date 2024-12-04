@@ -21,9 +21,9 @@ nabqr documentation
 
 ## Introduction
 
-NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
+NABQR is a method for sequential error-corrections tailored for probabilisticwind power forecast in Denmark.
 
-The method is based on the paper: *Sequential methods for Error Corrections in Wind Power Forecasts*, with the following abstract:
+The method is based on the paper: *Sequential methods for Error Corrections in Probabilistic Wind Power Forecasts*, with the following abstract:
 > Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
 > Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
 > This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions. 

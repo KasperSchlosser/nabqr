@@ -14,10 +14,13 @@ from sklearn.linear_model import QuantileRegressor
 from helper_functions import *
 import pandas as pd
 
-def opdatering_final(X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, i, bins, n_in_bin):
+
+def opdatering_final(
+    X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, i, bins, n_in_bin
+):
     """
     Updates the design matrix and related parameters for the adaptive quantile regression.
-    
+
     Parameters:
     X (numpy.ndarray): Full data matrix
     Xny (numpy.ndarray): Current design matrix
@@ -36,7 +39,7 @@ def opdatering_final(X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, 
     i (int): Current iteration
     bins (numpy.ndarray): Bin boundaries
     n_in_bin (int): Maximum number of observations per bin
-    
+
     Returns:
     tuple: Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)
     """
@@ -44,15 +47,15 @@ def opdatering_final(X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, 
     Xny[Xny == -np.inf] = 1
 
     Xny = np.vstack((Xny, X[n + i - 2, :]))
-    Index = np.arange(Xny[:-1,Iy].shape[0])
+    Index = np.arange(Xny[:-1, Iy].shape[0])
     j = 1
-    
+
     while Xny[-1, Iex] > bins[j]:
         j += 1
     j -= 1
-    
+
     In = Index[(Xny[:-1, Iex] > bins[j]) & (Xny[:-1, Iex] <= bins[j + 1])]
-    
+
     if In.size > 0:
         Leav = np.min(In)
     else:
@@ -64,7 +67,9 @@ def opdatering_final(X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, 
         cB = (P < 0) + P * tau
         invXh = np.linalg.inv(Xny[Ih, IX])
         g = -(P * (Xny[Ihc, IX] @ invXh[:, Inmin])).T @ cB
-        h = np.vstack((invXh[:, Inmin], -P * (Xny[Ihc, IX] @ invXh[:, Inmin]))) @ np.sign(g)
+        h = np.vstack(
+            (invXh[:, Inmin], -P * (Xny[Ihc, IX] @ invXh[:, Inmin]))
+        ) @ np.sign(g)
         sigma = np.zeros(n - K)
         hm = h[K:]
         xBm = xB[K:]
@@ -120,6 +125,7 @@ def opdatering_final(X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, 
 
     return Ih, Ihc, xB, Xny, Rny, P, n, i
 
+
 def rq_initialiser_final(X, r, beta, n):
     """
     This function initializes the parameters needed for the simplex algorithm based on initial solution.
@@ -127,13 +133,13 @@ def rq_initialiser_final(X, r, beta, n):
     Otherwise, the if statement will find the index set Ih s.t. X(Ih)*beta=y(Ih) and X(Ih)^(-1)*y(Ih)=beta,
     the important note being that X(Ih) has an inverse.
     This is done by using the LU transform of a non-quadratic matrix.
-    
+
     Parameters:
     X (numpy.ndarray): Design matrix
     r (numpy.ndarray): Initial residuals
     beta (numpy.ndarray): Initial coefficients
     n (int): Number of observations
-    
+
     Returns:
     tuple: (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector
     """
@@ -152,20 +158,23 @@ def rq_initialiser_final(X, r, beta, n):
 
     index_to_index = r.flatten() == 0
     if len(index_to_index) < len(Index):
-        index_to_index = np.append(index_to_index, np.zeros(len(Index) - len(index_to_index), dtype=bool))
+        index_to_index = np.append(
+            index_to_index, np.zeros(len(Index) - len(index_to_index), dtype=bool)
+        )
 
     Ih = Index[index_to_index]
-    Ihc = np.setdiff1d(Index[:len(r)], Ih)
+    Ihc = np.setdiff1d(Index[: len(r)], Ih)
     P = np.sign(r[Ihc])
     r[np.abs(r) < 1e-15] = 0
     xB = np.hstack((beta, np.abs(r[Ihc])))
 
     return xB, Ih, Ihc, P
 
+
 def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
     """
     Performs one step of the simplex algorithm for quantile regression.
-    
+
     Parameters:
     Ih (numpy.ndarray): Index set for basic variables
     Ihc (numpy.ndarray): Index set for non-basic variables
@@ -176,16 +185,16 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
     IH (numpy.ndarray): History of index sets
     P (numpy.ndarray): Sign vector
     tau (float): Quantile level
-    
+
     Returns:
     tuple: Algorithm parameters for the next iteration
     """
     invXh = la.inv(Xny[Ih, :])
     cB = (P < 0) + P * tau
-    cC = np.vstack((np.ones(K) * tau, np.ones(K) * (1 - tau))).reshape(-1,1)
+    cC = np.vstack((np.ones(K) * tau, np.ones(K) * (1 - tau))).reshape(-1, 1)
     IB2 = -np.dot(P.reshape(-1, 1) * (np.ones((1, K)) * Xny[Ihc, :]), invXh)
     g = IB2.T @ cB
-    d = cC - np.vstack((g, -g)).reshape(-1,1)
+    d = cC - np.vstack((g, -g)).reshape(-1, 1)
     d[np.abs(d) < 1e-15] = 0
     d = d.flatten()
 
@@ -193,15 +202,15 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
     s = s[md < 0]
     md = md[md < 0]
     c = np.ones(len(s))
-    c[s > (K-1)] = -1
+    c[s > (K - 1)] = -1
     C = np.diag(c)
-    s[s > (K-1)] -= K
-    h = np.vstack([invXh[:,s], IB2[:,s]]) @ C
+    s[s > (K - 1)] -= K
+    h = np.vstack([invXh[:, s], IB2[:, s]]) @ C
     alpha = np.zeros(len(s))
     q = np.zeros(len(s), dtype=int)
     xm = xB[K:]
     xm[xm < 0] = 0
-    hm = h[K:,:]
+    hm = h[K:, :]
     cq = np.zeros(len(s))
     tol1 = 1e-12
 
@@ -228,10 +237,13 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
             IhMid = np.sort(IhMid)
 
             if IH.shape[1] <= 1:
-                IH = IH.T.reshape(-1,1)
-            IhMid = IhMid.reshape(1,-1)
+                IH = IH.T.reshape(-1, 1)
+            IhMid = IhMid.reshape(1, -1)
 
-            if np.min(np.sum(np.abs(IH-IhMid.T * np.ones((1,IH.shape[1]))), axis=0)) == 0:
+            if (
+                np.min(np.sum(np.abs(IH - IhMid.T * np.ones((1, IH.shape[1]))), axis=0))
+                == 0
+            ):
                 CON = np.inf
             else:
                 CON = np.linalg.cond(Xny[(IhMid.flatten()), :])
@@ -246,6 +258,7 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
         md = md[IMgain[j - 1 + shifter]]
 
     return CON, s, q, gain, md, alpha, h, IH, cq
+
 
 def rq_purify_final(xB, Ih, Ihc, P, K, Xny, yny):
     """
@@ -268,7 +281,7 @@ def rq_purify_final(xB, Ih, Ihc, P, K, Xny, yny):
     K (int): Number of explanatory variables
     Xny (numpy.ndarray): Design matrix
     yny (numpy.ndarray): Response vector
-    
+
     Returns:
     tuple: (xB, P) Updated basic solution and sign vector
     """
@@ -278,6 +291,7 @@ def rq_purify_final(xB, Ih, Ihc, P, K, Xny, yny):
     P[P == 0] = 1
     xB[K:] = np.abs(xB[K:])
     return xB, P
+
 
 def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
     """
@@ -391,7 +405,7 @@ def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
     while i + n < LX:
         k += 1
         t = time.time()
-        
+
         Re[k] = np.sum(P < 0) / n
         mx = np.min(xB[K:])
 
@@ -417,9 +431,9 @@ def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
         while gain <= 0 and md < 0 and j < 24 and CON < 1e6:
             GAIN = np.append(GAIN, gain)
             j += 1
-      
+
             z = xB - alpha * h
-            
+
             IhM = Ih[s]
             IhcM = Ihc[q]
             Ih[s] = IhcM
@@ -444,15 +458,24 @@ def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
         N_num_of_simplex_steps.append(j)
         N_size_of_the_design_matrix_at_time_k.append(n)
         T[k] = time.time() - t
-    
+
     N = np.hstack([N_num_of_simplex_steps, N_size_of_the_design_matrix_at_time_k])
     return N, BETA, GAIN[1:], Ld, Rny, Mx, Re, CON1[1:], T
 
-def one_step_quantile_prediction(X_input, Y_input, n_init, n_full, quantile=0.5, already_correct_size=False, n_in_X=5000):
+
+def one_step_quantile_prediction(
+    X_input,
+    Y_input,
+    n_init,
+    n_full,
+    quantile=0.5,
+    already_correct_size=False,
+    n_in_X=5000,
+):
     """
     As input, this function should take the entire training set, and based on the last n_init observations,
     calculate residuals and coefficients for the quantile regression.
-    
+
     Parameters:
     X_input (numpy.ndarray): Input features matrix
     Y_input (numpy.ndarray): Target values array
@@ -461,7 +484,7 @@ def one_step_quantile_prediction(X_input, Y_input, n_init, n_full, quantile=0.5,
     quantile (float): Quantile level to predict
     already_correct_size (bool): Whether inputs are already correctly sized
     n_in_X (int): Number of observations to use in X
-    
+
     Returns:
     tuple: (y_pred, y_actual, BETA) Predictions, actual values, and coefficients
     """
@@ -491,37 +514,38 @@ def one_step_quantile_prediction(X_input, Y_input, n_init, n_full, quantile=0.5,
         return float(s)
 
     residuals = np.genfromtxt(
-        'rq_fit_residuals.csv', 
-        delimiter=',', 
-        skip_header=1, 
+        "rq_fit_residuals.csv",
+        delimiter=",",
+        skip_header=1,
         usecols=(1,),
-        converters={0: ignore_first_column}
+        converters={0: ignore_first_column},
     )
 
     beta_init = np.genfromtxt(
-        'rq_fit_coefficients.csv', 
-        delimiter=',', 
-        skip_header=1, 
+        "rq_fit_coefficients.csv",
+        delimiter=",",
+        skip_header=1,
         usecols=(1,),
-        converters={0: ignore_first_column}
+        converters={0: ignore_first_column},
     )
 
-    beta_init = np.append(beta_init, np.ones(p-len(beta_init)))
+    beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
     r_init = set_n_closest_to_zero(arr=residuals, n=len(beta_init))
 
-    X_full = np.column_stack((X, Y, np.random.choice([1,1], size=n_full)))
+    X_full = np.column_stack((X, Y, np.random.choice([1, 1], size=n_full)))
     IX = np.arange(p)
     Iy = p
     Iex = p + 1
     bins = np.array([-np.inf, np.inf])
     tau = quantile
-    n_in_bin = int(1.0*full_length)
+    n_in_bin = int(1.0 * full_length)
 
     n_input = n_in_X
-    N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T = rq_simplex_final(X_full, IX, Iy, Iex, r_init, beta_init, n_input, tau, bins, n_in_bin)
+    N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T = rq_simplex_final(
+        X_full, IX, Iy, Iex, r_init, beta_init, n_input, tau, bins, n_in_bin
+    )
 
-    y_pred = np.sum((X_input[(n_input+2):(n_full), :] * BETA[1:,:]), axis=1)
-    y_actual = Y_input[(n_input):(n_full-2)]
+    y_pred = np.sum((X_input[(n_input + 2) : (n_full), :] * BETA[1:, :]), axis=1)
+    y_actual = Y_input[(n_input) : (n_full - 2)]
 
     return y_pred, y_actual, BETA
-
