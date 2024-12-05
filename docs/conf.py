@@ -37,12 +37,14 @@ extensions = [
     'myst_parser',
     'autodocsumm', 
     'sphinx.ext.coverage',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autosummary'
 ]
 
 # add in this line for the autosummary functionality
 auto_doc_default_options = {'autosummary': True}
 
+autosummary_generate = True  # Enable autosummary generation
 
 
 # Add any paths that contain templates here, relative to this directory.
