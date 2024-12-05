@@ -20,10 +20,10 @@ NABQR.functions module
    :undoc-members:
    :show-inheritance:
 
-NABQR.functions\_for\_TAQR module
+functions\_for\_TAQR module
 ---------------------------------
 
-.. automodule:: NABQR.functions_for_TAQR
+.. automodule:: functions_for_TAQR
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ NABQR.functions\_for\_TAQR module
 NABQR.helper\_functions module
 ------------------------------
 
-.. automodule:: NABQR.helper_functions
+.. automodule:: _build/html/_modules/helper_functions
    :members:
    :undoc-members:
    :show-inheritance:
