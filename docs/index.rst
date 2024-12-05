@@ -1,9 +1,12 @@
 Welcome to NABQR's documentation!
 ======================================
+.. automodule:: NABQR
+   :autosummary:
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
+
 
    readme
    installation
@@ -12,6 +15,9 @@ Welcome to NABQR's documentation!
    contributing
    authors
    history
+
+
+
 
 Indices and tables
 ==================
