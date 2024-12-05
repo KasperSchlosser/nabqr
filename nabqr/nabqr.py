@@ -1,18 +1,12 @@
-"""
-Neural Additive Bayesian Quantile Regression (NABQR) Implementation
-
-This module provides the main interface for running NABQR models. It combines
-ensemble generation, model training, and visualization capabilities.
-"""
-
-from functions import *
-from helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
+from .functions import *
+from .helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
 import matplotlib.pyplot as plt
 import scienceplots
 
 plt.style.use(["no-latex"])
-from visualization import visualize_results
+from .visualization import visualize_results
 import datetime as dt
+
 
 
 def run_nabqr_pipeline(

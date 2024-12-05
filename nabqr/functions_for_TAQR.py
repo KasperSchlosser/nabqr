@@ -1,17 +1,17 @@
-"""
-Time-Adaptive Quantile Regression (TAQR) Implementation
 
-This module provides the core implementation of the TAQR algorithm based on
-Møller's thesis "Modeling of Uncertainty in Wind Energy Forecast" (2006).
-It implements an adaptive simplex algorithm for quantile regression problems.
-"""
+# Time-Adaptive Quantile Regression (TAQR) Implementation
+
+# This module provides the core implementation of the TAQR algorithm based on
+# Møller's thesis "Modeling of Uncertainty in Wind Energy Forecast" (2006).
+# It implements an adaptive simplex algorithm for quantile regression problems.
+
 
 import numpy as np
 import scipy.linalg
 import time
 from scipy import linalg as la
 from sklearn.linear_model import QuantileRegressor
-from helper_functions import *
+from .helper_functions import *
 import pandas as pd
 
 

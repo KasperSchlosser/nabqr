@@ -1,6 +1,8 @@
 NABQR package
 =============
 
+Submodules
+----------
 
 NABQR.functions module
 ----------------------
@@ -10,10 +12,10 @@ NABQR.functions module
    :undoc-members:
    :show-inheritance:
 
-functions\_for\_TAQR module
+NABQR.functions\_for\_TAQR module
 ---------------------------------
 
-.. automodule:: functions_for_TAQR
+.. automodule:: NABQR.functions_for_TAQR
    :members:
    :undoc-members:
    :show-inheritance:
@@ -45,7 +47,7 @@ NABQR.visualization module
 Module contents
 ---------------
 
-.. automodule:: nabqr
+.. automodule:: NABQR
    :members:
    :undoc-members:
    :show-inheritance:

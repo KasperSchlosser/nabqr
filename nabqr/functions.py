@@ -1,12 +1,12 @@
-"""
-Neural Additive Bayesian Quantile Regression (NABQR) Core Functions
+# """
+# Neural Additive Bayesian Quantile Regression (NABQR) Core Functions
 
-This module provides the core functionality for NABQR, including:
-- Scoring metrics (Variogram, CRPS, QSS)
-- Dataset creation and preprocessing
-- Model definitions and training
-- TAQR (Time-Adaptive Quantile Regression) implementation
-"""
+# This module provides the core functionality for NABQR, including:
+# - Scoring metrics (Variogram, CRPS, QSS)
+# - Dataset creation and preprocessing
+# - Model definitions and training
+# - TAQR (Time-Adaptive Quantile Regression) implementation
+# """
 
 import numpy as np
 import pandas as pd
@@ -15,8 +15,8 @@ import properscoring as ps
 import tensorflow as tf
 import tensorflow_probability as tfp
 import datetime as dt
-from helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
-from functions_for_TAQR import *
+from .helper_functions import set_n_closest_to_zero
+from .functions_for_TAQR import *
 
 
 def variogram_score_single_observation(x, y, p=0.5):

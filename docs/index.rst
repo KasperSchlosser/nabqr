@@ -1,7 +1,6 @@
 Welcome to NABQR's documentation!
 ======================================
-.. automodule:: NABQR
-   :autosummary:
+
 
 .. toctree::
    :maxdepth: 3

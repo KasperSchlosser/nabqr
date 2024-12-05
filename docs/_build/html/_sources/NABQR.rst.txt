@@ -4,14 +4,6 @@ NABQR package
 Submodules
 ----------
 
-NABQR.cli module
-----------------
-
-.. automodule:: NABQR.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 NABQR.functions module
 ----------------------
 
