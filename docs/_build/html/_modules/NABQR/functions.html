@@ -75,15 +75,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for NABQR.functions</h1><div class="highlight"><pre>
-<span></span><span class="c1"># &quot;&quot;&quot;</span>
-<span class="c1"># Neural Additive Bayesian Quantile Regression (NABQR) Core Functions</span>
+<span></span><span class="sd">&quot;&quot;&quot;Neural Additive Bayesian Quantile Regression (NABQR) Core Functions</span>
 
-<span class="c1"># This module provides the core functionality for NABQR, including:</span>
-<span class="c1"># - Scoring metrics (Variogram, CRPS, QSS)</span>
-<span class="c1"># - Dataset creation and preprocessing</span>
-<span class="c1"># - Model definitions and training</span>
-<span class="c1"># - TAQR (Time-Adaptive Quantile Regression) implementation</span>
-<span class="c1"># &quot;&quot;&quot;</span>
+<span class="sd">This module provides the core functionality for NABQR.</span>
+
+<span class="sd">This module includes:</span>
+<span class="sd">- Scoring metrics (Variogram, CRPS, QSS)</span>
+<span class="sd">- Dataset creation and preprocessing</span>
+<span class="sd">- Model definitions and training</span>
+<span class="sd">- TAQR (Time-Adaptive Quantile Regression) implementation</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -99,17 +100,23 @@
 <div class="viewcode-block" id="variogram_score_single_observation">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.variogram_score_single_observation">[docs]</a>
 <span class="k">def</span> <span class="nf">variogram_score_single_observation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Variogram score for a given observation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Variogram score for a given observation.</span>
+
 <span class="sd">    Translated from the R code in Energy and AI paper.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    x (numpy.ndarray): Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon</span>
-<span class="sd">    y (numpy.ndarray): Actual observations (k,)</span>
-<span class="sd">    p (float): Power parameter for the variogram score</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Actual observations (k,)</span>
+<span class="sd">    p : float, optional</span>
+<span class="sd">        Power parameter for the variogram score, by default 0.5</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    float: Variogram score for the observation</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Variogram score for the observation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -126,18 +133,25 @@
 <div class="viewcode-block" id="variogram_score_R_multivariate">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.variogram_score_R_multivariate">[docs]</a>
 <span class="k">def</span> <span class="nf">variogram_score_R_multivariate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mi">36</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Variogram score for all observations for the time horizon t1 to t2.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Variogram score for all observations for the time horizon t1 to t2.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    x (numpy.ndarray): Ensemble forecast (m x k)</span>
-<span class="sd">    y (numpy.ndarray): Actual observations (k,)</span>
-<span class="sd">    p (float): Power parameter</span>
-<span class="sd">    t1 (int): Start hour (inclusive)</span>
-<span class="sd">    t2 (int): End hour (exclusive)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Ensemble forecast (m x k)</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Actual observations (k,)</span>
+<span class="sd">    p : float, optional</span>
+<span class="sd">        Power parameter, by default 0.5</span>
+<span class="sd">    t1 : int, optional</span>
+<span class="sd">        Start hour (inclusive), by default 12</span>
+<span class="sd">    t2 : int, optional</span>
+<span class="sd">        End hour (exclusive), by default 36</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (score, score_list) Overall score and list of individual scores</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (score, score_list) Overall score and list of individual scores</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -163,15 +177,19 @@
 <div class="viewcode-block" id="calculate_crps">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.calculate_crps">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_crps</span><span class="p">(</span><span class="n">actuals</span><span class="p">,</span> <span class="n">corrected_ensembles</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Continuous Ranked Probability Score (CRPS).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Continuous Ranked Probability Score (CRPS).</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    actuals (numpy.ndarray): Actual observations</span>
-<span class="sd">    corrected_ensembles (numpy.ndarray): Ensemble forecasts</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    actuals : numpy.ndarray</span>
+<span class="sd">        Actual observations</span>
+<span class="sd">    corrected_ensembles : numpy.ndarray</span>
+<span class="sd">        Ensemble forecasts</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    float: Mean CRPS score</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Mean CRPS score</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">crps</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">crps_ensemble</span><span class="p">(</span><span class="n">actuals</span><span class="p">,</span> <span class="n">corrected_ensembles</span><span class="p">)</span>
@@ -185,16 +203,21 @@
 <div class="viewcode-block" id="calculate_qss">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.calculate_qss">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_qss</span><span class="p">(</span><span class="n">actuals</span><span class="p">,</span> <span class="n">taqr_results</span><span class="p">,</span> <span class="n">quantiles</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Quantile Skill Score (QSS).</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    actuals (numpy.ndarray): Actual observations</span>
-<span class="sd">    taqr_results (numpy.ndarray): Predicted quantiles</span>
-<span class="sd">    quantiles (list): List of quantile levels</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    actuals : numpy.ndarray</span>
+<span class="sd">        Actual observations</span>
+<span class="sd">    taqr_results : numpy.ndarray</span>
+<span class="sd">        TAQR ensemble forecasts</span>
+<span class="sd">    quantiles : array-like</span>
+<span class="sd">        Quantile levels to evaluate</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    float: Mean QSS score</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Quantile Skill Score</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">qss_scores</span> <span class="o">=</span> <span class="n">multi_quantile_skill_score</span><span class="p">(</span><span class="n">actuals</span><span class="p">,</span> <span class="n">taqr_results</span><span class="p">,</span> <span class="n">quantiles</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">qss_scores</span><span class="p">)</span></div>
@@ -204,16 +227,21 @@
 <div class="viewcode-block" id="multi_quantile_skill_score">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.multi_quantile_skill_score">[docs]</a>
 <span class="k">def</span> <span class="nf">multi_quantile_skill_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">quantiles</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    y_true (numpy.ndarray): True observed values</span>
-<span class="sd">    y_pred (numpy.ndarray): Predicted quantile values</span>
-<span class="sd">    quantiles (list): Quantile levels between 0 and 1</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : numpy.ndarray</span>
+<span class="sd">        True observed values</span>
+<span class="sd">    y_pred : numpy.ndarray</span>
+<span class="sd">        Predicted quantile values</span>
+<span class="sd">    quantiles : list</span>
+<span class="sd">        Quantile levels between 0 and 1</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    numpy.ndarray: QSS for each quantile forecast</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        QSS for each quantile forecast</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
 
@@ -239,13 +267,16 @@
 <div class="viewcode-block" id="run_r_script">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.run_r_script">[docs]</a>
 <span class="k">def</span> <span class="nf">run_r_script</span><span class="p">(</span><span class="n">X_filename</span><span class="p">,</span> <span class="n">Y_filename</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Run R script for quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run R script for quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X_filename (str): Path to X data CSV file</span>
-<span class="sd">    Y_filename (str): Path to Y data CSV file</span>
-<span class="sd">    tau (float): Quantile level</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X_filename : str</span>
+<span class="sd">        Path to X data CSV file</span>
+<span class="sd">    Y_filename : str</span>
+<span class="sd">        Path to Y data CSV file</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Quantile level</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">subprocess</span>
 
@@ -282,7 +313,18 @@
 <div class="viewcode-block" id="remove_zero_columns">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.remove_zero_columns">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_zero_columns</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove columns that contain only zeros from a DataFrame.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove columns that contain only zeros from a DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Input DataFrame</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        DataFrame with zero columns removed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">df</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span></div>
 
 
@@ -290,7 +332,18 @@
 <div class="viewcode-block" id="remove_zero_columns_numpy">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.remove_zero_columns_numpy">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_zero_columns_numpy</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove columns that contain only zeros or constant values from a numpy array.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove columns that contain only zeros or constant values from a numpy array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : numpy.ndarray</span>
+<span class="sd">        Input array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array with zero/constant columns removed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">arr</span><span class="p">[:,</span> <span class="p">(</span><span class="n">arr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span></div>
 
 
@@ -298,16 +351,21 @@
 <div class="viewcode-block" id="create_dataset_for_lstm">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.create_dataset_for_lstm">[docs]</a>
 <span class="k">def</span> <span class="nf">create_dataset_for_lstm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a dataset suitable for LSTM training with multiple time steps.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dataset suitable for LSTM training with multiple time steps.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X (numpy.ndarray): Input features</span>
-<span class="sd">    Y (numpy.ndarray): Target values</span>
-<span class="sd">    time_steps (list): List of time steps to include</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray</span>
+<span class="sd">        Input features</span>
+<span class="sd">    Y : numpy.ndarray</span>
+<span class="sd">        Target values</span>
+<span class="sd">    time_steps : list</span>
+<span class="sd">        List of time steps to include</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (X_lstm, Y_lstm) LSTM-ready datasets</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (X_lstm, Y_lstm) LSTM-ready datasets</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
@@ -329,13 +387,16 @@
 <div class="viewcode-block" id="QuantileRegressionLSTM">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.QuantileRegressionLSTM">[docs]</a>
 <span class="k">class</span> <span class="nc">QuantileRegressionLSTM</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    LSTM-based model for quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;LSTM-based model for quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    n_quantiles (int): Number of quantiles to predict</span>
-<span class="sd">    units (int): Number of LSTM units</span>
-<span class="sd">    n_timesteps (int): Number of time steps in input</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_quantiles : int</span>
+<span class="sd">        Number of quantiles to predict</span>
+<span class="sd">    units : int</span>
+<span class="sd">        Number of LSTM units</span>
+<span class="sd">    n_timesteps : int</span>
+<span class="sd">        Number of time steps in input</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_quantiles</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">n_timesteps</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -351,6 +412,20 @@
 <div class="viewcode-block" id="QuantileRegressionLSTM.call">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.QuantileRegressionLSTM.call">[docs]</a>
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass of the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        inputs : tensorflow.Tensor</span>
+<span class="sd">            Input tensor</span>
+<span class="sd">        training : bool, optional</span>
+<span class="sd">            Whether in training mode, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tensorflow.Tensor</span>
+<span class="sd">            Model output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -360,6 +435,13 @@
 <div class="viewcode-block" id="QuantileRegressionLSTM.get_config">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.QuantileRegressionLSTM.get_config">[docs]</a>
     <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get model configuration.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Model configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">QuantileRegressionLSTM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
@@ -375,6 +457,18 @@
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.QuantileRegressionLSTM.from_config">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create model from configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config : dict</span>
+<span class="sd">            Model configuration</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QuantileRegressionLSTM</span>
+<span class="sd">            Model instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span></div>
 </div>
 
@@ -383,16 +477,21 @@
 <div class="viewcode-block" id="quantile_loss_3">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.quantile_loss_3">[docs]</a>
 <span class="k">def</span> <span class="nf">quantile_loss_3</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate quantile loss for a single quantile.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate quantile loss for a single quantile.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    q (float): Quantile level</span>
-<span class="sd">    y_true (tensor): True values</span>
-<span class="sd">    y_pred (tensor): Predicted values</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : float</span>
+<span class="sd">        Quantile level</span>
+<span class="sd">    y_true : tensorflow.Tensor</span>
+<span class="sd">        True values</span>
+<span class="sd">    y_pred : tensorflow.Tensor</span>
+<span class="sd">        Predicted values</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tensor: Quantile loss</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tensorflow.Tensor</span>
+<span class="sd">        Quantile loss value</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -405,22 +504,39 @@
 <div class="viewcode-block" id="quantile_loss_func">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.quantile_loss_func">[docs]</a>
 <span class="k">def</span> <span class="nf">quantile_loss_func</span><span class="p">(</span><span class="n">quantiles</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a loss function for multiple quantiles.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a loss function for multiple quantiles.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    quantiles (list): List of quantile levels</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quantiles : list</span>
+<span class="sd">        List of quantile levels</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    function: Loss function for multiple quantiles</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function</span>
+<span class="sd">        Loss function for multiple quantiles</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the loss for given true and predicted values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y_true : tensorflow.Tensor</span>
+<span class="sd">            True values</span>
+<span class="sd">        y_pred : tensorflow.Tensor</span>
+<span class="sd">            Predicted values</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tensorflow.Tensor</span>
+<span class="sd">            Combined loss value for all quantiles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">quantiles</span><span class="p">):</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="n">quantile_loss_3</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
             <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">losses</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">loss</span></div>
 
@@ -429,18 +545,25 @@
 <div class="viewcode-block" id="map_range">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.map_range">[docs]</a>
 <span class="k">def</span> <span class="nf">map_range</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">input_start</span><span class="p">,</span> <span class="n">input_end</span><span class="p">,</span> <span class="n">output_start</span><span class="p">,</span> <span class="n">output_end</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Map values from one range to another.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map values from one range to another.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    values (list): Values to map</span>
-<span class="sd">    input_start (float): Start of input range</span>
-<span class="sd">    input_end (float): End of input range</span>
-<span class="sd">    output_start (float): Start of output range</span>
-<span class="sd">    output_end (float): End of output range</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : list</span>
+<span class="sd">        Values to map</span>
+<span class="sd">    input_start : float</span>
+<span class="sd">        Start of input range</span>
+<span class="sd">    input_end : float</span>
+<span class="sd">        End of input range</span>
+<span class="sd">    output_start : float</span>
+<span class="sd">        Start of output range</span>
+<span class="sd">    output_end : float</span>
+<span class="sd">        End of output range</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    numpy.ndarray: Mapped values</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Mapped values</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mapped_values</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
@@ -455,11 +578,12 @@
 <div class="viewcode-block" id="legend_without_duplicate_labels">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.legend_without_duplicate_labels">[docs]</a>
 <span class="k">def</span> <span class="nf">legend_without_duplicate_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a legend without duplicate labels.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a legend without duplicate labels.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    ax (matplotlib.axes.Axes): Axes object to create legend for</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib.axes.Axes</span>
+<span class="sd">        Axes object to create legend for</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
     <span class="n">unique</span> <span class="o">=</span> <span class="p">[</span>
@@ -475,14 +599,17 @@
 <div class="viewcode-block" id="remove_straight_line_outliers">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.remove_straight_line_outliers">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_straight_line_outliers</span><span class="p">(</span><span class="n">ensembles</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Removes ensemble members that are perfectly straight lines (constant slope).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove ensemble members that are perfectly straight lines (constant slope).</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        ensembles (numpy.ndarray): 2D array where rows are time steps and columns are ensemble members.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ensembles : numpy.ndarray</span>
+<span class="sd">        2D array where rows are time steps and columns are ensemble members</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: Filtered ensemble data without straight-line outliers.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Filtered ensemble data without straight-line outliers</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Calculate differences along the time axis</span>
     <span class="n">differences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ensembles</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -509,23 +636,35 @@
     <span class="n">n_timesteps</span><span class="p">,</span>
     <span class="n">data_name</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Train an LSTM model for quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Train an LSTM model for quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    quantiles (list): List of quantile levels to predict</span>
-<span class="sd">    epochs (int): Number of training epochs</span>
-<span class="sd">    lr (float): Learning rate for optimizer</span>
-<span class="sd">    batch_size (int): Batch size for training</span>
-<span class="sd">    x (tensor): Training input data</span>
-<span class="sd">    y (tensor): Training target data</span>
-<span class="sd">    x_val (tensor): Validation input data</span>
-<span class="sd">    y_val (tensor): Validation target data</span>
-<span class="sd">    n_timesteps (int): Number of time steps in input sequence</span>
-<span class="sd">    data_name (str): Name identifier for saving model artifacts</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quantiles : list</span>
+<span class="sd">        List of quantile levels to predict</span>
+<span class="sd">    epochs : int</span>
+<span class="sd">        Number of training epochs</span>
+<span class="sd">    lr : float</span>
+<span class="sd">        Learning rate for optimizer</span>
+<span class="sd">    batch_size : int</span>
+<span class="sd">        Batch size for training</span>
+<span class="sd">    x : tensor</span>
+<span class="sd">        Training input data</span>
+<span class="sd">    y : tensor</span>
+<span class="sd">        Training target data</span>
+<span class="sd">    x_val : tensor</span>
+<span class="sd">        Validation input data</span>
+<span class="sd">    y_val : tensor</span>
+<span class="sd">        Validation target data</span>
+<span class="sd">    n_timesteps : int</span>
+<span class="sd">        Number of time steps in input sequence</span>
+<span class="sd">    data_name : str</span>
+<span class="sd">        Name identifier for saving model artifacts</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tf.keras.Model: Trained LSTM model</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.keras.Model</span>
+<span class="sd">        Trained LSTM model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">QuantileRegressionLSTM</span><span class="p">(</span>
         <span class="n">n_quantiles</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">quantiles</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">n_timesteps</span><span class="o">=</span><span class="n">n_timesteps</span>
@@ -610,23 +749,32 @@
     <span class="n">already_correct_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">n_in_X</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Perform one-step quantile prediction using TAQR.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform one-step quantile prediction using TAQR.</span>
 
 <span class="sd">    This function takes the entire training set and, based on the last n_init observations,</span>
 <span class="sd">    calculates residuals and coefficients for the quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X_input (numpy.ndarray/pd.DataFrame): Input features</span>
-<span class="sd">    Y_input (numpy.ndarray/pd.Series): Target values</span>
-<span class="sd">    n_init (int): Number of initial observations for warm start</span>
-<span class="sd">    n_full (int): Total number of observations to process</span>
-<span class="sd">    quantile (float): Quantile level for prediction (default: 0.5)</span>
-<span class="sd">    already_correct_size (bool): Whether input data is already correctly sized</span>
-<span class="sd">    n_in_X (int): Number of observations to include in design matrix</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X_input : numpy.ndarray or pd.DataFrame</span>
+<span class="sd">        Input features</span>
+<span class="sd">    Y_input : numpy.ndarray or pd.Series</span>
+<span class="sd">        Target values</span>
+<span class="sd">    n_init : int</span>
+<span class="sd">        Number of initial observations for warm start</span>
+<span class="sd">    n_full : int</span>
+<span class="sd">        Total number of observations to process</span>
+<span class="sd">    quantile : float, optional</span>
+<span class="sd">        Quantile level for prediction, by default 0.5</span>
+<span class="sd">    already_correct_size : bool, optional</span>
+<span class="sd">        Whether input data is already correctly sized, by default False</span>
+<span class="sd">    n_in_X : int, optional</span>
+<span class="sd">        Number of observations to include in design matrix, by default 5000</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (predictions, actual values, coefficients)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (predictions, actual values, coefficients)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">n_init</span> <span class="o">&lt;=</span> <span class="n">n_full</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;n_init must be less than n_full&quot;</span>
 
@@ -713,19 +861,27 @@
 <div class="viewcode-block" id="run_taqr">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions.run_taqr">[docs]</a>
 <span class="k">def</span> <span class="nf">run_taqr</span><span class="p">(</span><span class="n">corrected_ensembles</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">quantiles</span><span class="p">,</span> <span class="n">n_init</span><span class="p">,</span> <span class="n">n_full</span><span class="p">,</span> <span class="n">n_in_X</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Run TAQR on corrected ensembles.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run TAQR on corrected ensembles.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    corrected_ensembles (numpy.ndarray): Shape (n_timesteps, n_ensembles)</span>
-<span class="sd">    actuals (numpy.ndarray): Shape (n_timesteps,)</span>
-<span class="sd">    quantiles (list): Quantiles to predict</span>
-<span class="sd">    n_init (int): Number of initial timesteps for warm start</span>
-<span class="sd">    n_full (int): Total number of timesteps</span>
-<span class="sd">    n_in_X (int): Number of timesteps in design matrix</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    corrected_ensembles : numpy.ndarray</span>
+<span class="sd">        Shape (n_timesteps, n_ensembles)</span>
+<span class="sd">    actuals : numpy.ndarray</span>
+<span class="sd">        Shape (n_timesteps,)</span>
+<span class="sd">    quantiles : list</span>
+<span class="sd">        Quantiles to predict</span>
+<span class="sd">    n_init : int</span>
+<span class="sd">        Number of initial timesteps for warm start</span>
+<span class="sd">    n_full : int</span>
+<span class="sd">        Total number of timesteps</span>
+<span class="sd">    n_in_X : int</span>
+<span class="sd">        Number of timesteps in design matrix</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    list: TAQR results for each quantile</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        TAQR results for each quantile</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">actuals</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">actuals</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="c1"># remove nans from actuals</span>
@@ -763,25 +919,34 @@
     <span class="n">timesteps_for_lstm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">48</span><span class="p">],</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Main pipeline for NABQR model training and evaluation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main pipeline for NABQR model training and evaluation.</span>
 
 <span class="sd">    The pipeline:</span>
 <span class="sd">    1. Trains an LSTM network to correct the provided ensembles</span>
 <span class="sd">    2. Runs TAQR algorithm on corrected ensembles to predict observations</span>
 <span class="sd">    3. Saves results and model artifacts</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X (pd.DataFrame/numpy.ndarray): Shape (n_samples, n_features) - Ensemble data</span>
-<span class="sd">    y (pd.Series/numpy.ndarray): Shape (n_samples,) - Observations</span>
-<span class="sd">    name (str): Dataset identifier</span>
-<span class="sd">    training_size (float): Proportion of data for training</span>
-<span class="sd">    epochs (int): Number of LSTM training epochs</span>
-<span class="sd">    timesteps_for_lstm (list): Time steps for LSTM input</span>
-<span class="sd">    **kwargs: Additional parameters (e.g., quantiles_taqr)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : pd.DataFrame or numpy.ndarray</span>
+<span class="sd">        Shape (n_samples, n_features) - Ensemble data</span>
+<span class="sd">    y : pd.Series or numpy.ndarray</span>
+<span class="sd">        Shape (n_samples,) - Observations</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Dataset identifier, by default &quot;TEST&quot;</span>
+<span class="sd">    training_size : float, optional</span>
+<span class="sd">        Fraction of data to use for training, by default 0.8</span>
+<span class="sd">    epochs : int, optional</span>
+<span class="sd">        Number of training epochs, by default 100</span>
+<span class="sd">    timesteps_for_lstm : list, optional</span>
+<span class="sd">        Time steps to use for LSTM input, by default [0, 1, 2, 6, 12, 24, 48]</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional keyword arguments</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    None: Results are saved to files</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Results are saved to files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Data preparation</span>
     <span class="n">actuals</span> <span class="o">=</span> <span class="n">y</span>

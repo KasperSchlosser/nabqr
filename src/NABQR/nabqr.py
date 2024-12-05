@@ -23,25 +23,39 @@ def run_nabqr_pipeline(
     timesteps=[0, 1, 2, 6, 12, 24],
     quantiles=[0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99],
 ):
-    """
-    Runs the complete NABQR pipeline including data simulation, model training, and visualization.
+    """Run the complete NABQR pipeline including data simulation, model training, and visualization.
 
-    Parameters:
-    n_samples (int): Number of time steps to simulate
-    phi (float): AR(1) coefficient for simulation
-    sigma (float): Standard deviation of noise for simulation
-    offset_start (int): Start value for offset range
-    offset_end (int): End value for offset range
-    offset_step (int): Step size for offset range
-    correlation (float): Base correlation between dimensions
-    data_source (str): Identifier for the data source
-    training_size (float): Proportion of data to use for training
-    epochs (int): Number of epochs for model training
-    timesteps (list): List of timesteps to use for LSTM
-    quantiles (list): List of quantiles to predict
+    Parameters
+    ----------
+    n_samples : int, optional
+        Number of time steps to simulate, by default 5000
+    phi : float, optional
+        AR(1) coefficient for simulation, by default 0.995
+    sigma : float, optional
+        Standard deviation of noise for simulation, by default 8
+    offset_start : int, optional
+        Start value for offset range, by default 10
+    offset_end : int, optional
+        End value for offset range, by default 500
+    offset_step : int, optional
+        Step size for offset range, by default 15
+    correlation : float, optional
+        Base correlation between dimensions, by default 0.8
+    data_source : str, optional
+        Identifier for the data source, by default "NABQR-TEST"
+    training_size : float, optional
+        Proportion of data to use for training, by default 0.7
+    epochs : int, optional
+        Number of epochs for model training, by default 100
+    timesteps : list, optional
+        List of timesteps to use for LSTM, by default [0, 1, 2, 6, 12, 24]
+    quantiles : list, optional
+        List of quantiles to predict, by default [0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99]
 
-    Returns:
-    None: Saves results to files and displays visualization
+    Returns
+    -------
+    None
+        Saves results to files and displays visualization
     """
     # Generate offset and correlation matrix
     offset = np.arange(offset_start, offset_end, offset_step)

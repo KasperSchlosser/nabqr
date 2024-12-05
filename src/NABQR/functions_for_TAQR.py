@@ -1,10 +1,9 @@
+"""Time-Adaptive Quantile Regression (TAQR) Implementation
 
-# Time-Adaptive Quantile Regression (TAQR) Implementation
-
-# This module provides the core implementation of the TAQR algorithm based on
-# Møller's thesis "Modeling of Uncertainty in Wind Energy Forecast" (2006).
-# It implements an adaptive simplex algorithm for quantile regression problems.
-
+This module provides the core implementation of the TAQR algorithm based on
+Møller's thesis "Modeling of Uncertainty in Wind Energy Forecast" (2006).
+It implements an adaptive simplex algorithm for quantile regression problems.
+"""
 
 import numpy as np
 import scipy.linalg
@@ -18,30 +17,49 @@ import pandas as pd
 def opdatering_final(
     X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, i, bins, n_in_bin
 ):
-    """
-    Updates the design matrix and related parameters for the adaptive quantile regression.
+    """Updates the design matrix and related parameters for the adaptive quantile regression.
 
-    Parameters:
-    X (numpy.ndarray): Full data matrix
-    Xny (numpy.ndarray): Current design matrix
-    IX (numpy.ndarray): Index set for design matrix columns
-    Iy (int): Index for response variable
-    Iex (int): Index for grouping variable
-    Ih (numpy.ndarray): Index set for basic variables
-    Ihc (numpy.ndarray): Index set for non-basic variables
-    beta (numpy.ndarray): Current coefficient estimates
-    Rny (numpy.ndarray): Residuals array
-    K (int): Number of explanatory variables
-    n (int): Current number of observations
-    xB (numpy.ndarray): Basic solution
-    P (numpy.ndarray): Sign vector
-    tau (float): Quantile level
-    i (int): Current iteration
-    bins (numpy.ndarray): Bin boundaries
-    n_in_bin (int): Maximum number of observations per bin
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Full data matrix
+    Xny : numpy.ndarray
+        Current design matrix
+    IX : numpy.ndarray
+        Index set for design matrix columns
+    Iy : int
+        Index for response variable
+    Iex : int
+        Index for grouping variable
+    Ih : numpy.ndarray
+        Index set for basic variables
+    Ihc : numpy.ndarray
+        Index set for non-basic variables
+    beta : numpy.ndarray
+        Current coefficient estimates
+    Rny : numpy.ndarray
+        Residuals array
+    K : int
+        Number of explanatory variables
+    n : int
+        Current number of observations
+    xB : numpy.ndarray
+        Basic solution
+    P : numpy.ndarray
+        Sign vector
+    tau : float
+        Quantile level
+    i : int
+        Current iteration
+    bins : numpy.ndarray
+        Bin boundaries
+    n_in_bin : int
+        Maximum number of observations per bin
 
-    Returns:
-    tuple: Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)
+    Returns
+    -------
+    tuple
+        Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)
     """
     Xny[Xny == np.inf] = 1
     Xny[Xny == -np.inf] = 1
@@ -127,21 +145,28 @@ def opdatering_final(
 
 
 def rq_initialiser_final(X, r, beta, n):
-    """
-    This function initializes the parameters needed for the simplex algorithm based on initial solution.
+    """Initialize parameters for the simplex algorithm based on initial solution.
+
     If the number of zero elements in r is equal to rank(X), then the work is essentially done.
     Otherwise, the if statement will find the index set Ih s.t. X(Ih)*beta=y(Ih) and X(Ih)^(-1)*y(Ih)=beta,
     the important note being that X(Ih) has an inverse.
     This is done by using the LU transform of a non-quadratic matrix.
 
-    Parameters:
-    X (numpy.ndarray): Design matrix
-    r (numpy.ndarray): Initial residuals
-    beta (numpy.ndarray): Initial coefficients
-    n (int): Number of observations
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Design matrix
+    r : numpy.ndarray
+        Initial residuals
+    beta : numpy.ndarray
+        Initial coefficients
+    n : int
+        Number of observations
 
-    Returns:
-    tuple: (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector
+    Returns
+    -------
+    tuple
+        (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector
     """
     Index = np.arange(n)
     if np.sum(r == 0) > len(beta):
@@ -172,22 +197,33 @@ def rq_initialiser_final(X, r, beta, n):
 
 
 def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
-    """
-    Performs one step of the simplex algorithm for quantile regression.
+    """Perform one step of the simplex algorithm for quantile regression.
 
-    Parameters:
-    Ih (numpy.ndarray): Index set for basic variables
-    Ihc (numpy.ndarray): Index set for non-basic variables
-    n (int): Number of observations
-    K (int): Number of explanatory variables
-    xB (numpy.ndarray): Basic solution
-    Xny (numpy.ndarray): Design matrix
-    IH (numpy.ndarray): History of index sets
-    P (numpy.ndarray): Sign vector
-    tau (float): Quantile level
+    Parameters
+    ----------
+    Ih : numpy.ndarray
+        Index set for basic variables
+    Ihc : numpy.ndarray
+        Index set for non-basic variables
+    n : int
+        Number of observations
+    K : int
+        Number of explanatory variables
+    xB : numpy.ndarray
+        Basic solution
+    Xny : numpy.ndarray
+        Design matrix
+    IH : numpy.ndarray
+        History of index sets
+    P : numpy.ndarray
+        Sign vector
+    tau : float
+        Quantile level
 
-    Returns:
-    tuple: Algorithm parameters for the next iteration
+    Returns
+    -------
+    tuple
+        Algorithm parameters for the next iteration
     """
     invXh = la.inv(Xny[Ih, :])
     cB = (P < 0) + P * tau
@@ -261,29 +297,35 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
 
 
 def rq_purify_final(xB, Ih, Ihc, P, K, Xny, yny):
-    """
-    This function takes care of infeasible points in a simplex formulation
-    of a quantile regression problem. The underlying assumption in this
-    function is that there are no restrictions in the problem.
+    """Handle infeasible points in a simplex formulation of a quantile regression problem.
 
-    The updating can therefore be done by recalculating all residuals and
-    coefficients.
-
+    The underlying assumption is that there are no restrictions in the problem.
+    The updating can therefore be done by recalculating all residuals and coefficients.
     The assumption is further that we are in a position s.t.
     Xny*Xny(Ih)^(-1)*yny(Ih)=yny+residuals
     K=rank(Xny)
 
-    Parameters:
-    xB (numpy.ndarray): Basic solution
-    Ih (numpy.ndarray): Index set for basic variables
-    Ihc (numpy.ndarray): Index set for non-basic variables
-    P (numpy.ndarray): Sign vector
-    K (int): Number of explanatory variables
-    Xny (numpy.ndarray): Design matrix
-    yny (numpy.ndarray): Response vector
+    Parameters
+    ----------
+    xB : numpy.ndarray
+        Basic solution
+    Ih : numpy.ndarray
+        Index set for basic variables
+    Ihc : numpy.ndarray
+        Index set for non-basic variables
+    P : numpy.ndarray
+        Sign vector
+    K : int
+        Number of explanatory variables
+    Xny : numpy.ndarray
+        Design matrix
+    yny : numpy.ndarray
+        Response vector
 
-    Returns:
-    tuple: (xB, P) Updated basic solution and sign vector
+    Returns
+    -------
+    tuple
+        (xB, P) Updated basic solution and sign vector
     """
     invXh = np.linalg.inv(Xny[Ih, :])
     xB = np.hstack((invXh @ yny[Ih], yny[Ihc] - Xny[Ihc, :] @ invXh @ yny[Ih]))
@@ -294,90 +336,60 @@ def rq_purify_final(xB, Ih, Ihc, P, K, Xny, yny):
 
 
 def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
-    """
-    rq_simplex_final calculates the solution to an adaptive simplex
-    algorithm for a quantile regression problem. The function uses
-    knowledge of the solution at time t to calculate the solution at
-    time t+1.
+    """Calculate solution to an adaptive simplex algorithm for quantile regression.
 
-    The basic idea is that the solution to the quantile regression
+    The function uses knowledge of the solution at time t to calculate the solution at
+    time t+1. The basic idea is that the solution to the quantile regression
     problem can be written as:
     y(t) = X(t)'*beta + r(t)
 
     where beta = X(h)^(-1)*y(h) for some index set h. Simplex algorithm
-    is now used to calculate the optimal h at time t+1 based on the solution
-    at time t. So basically, the function uses h(t) as a starting guess for
-    the simplex algorithm to iterate to h(t+1). This function is described
-    in the master thesis "Modelling of Uncertainty in Wind Energy Forecast"
-    by Jan K. Moeller, URL http://www.imm.dtu.dk/pubdb/p.php?4428.
+    is used to calculate the optimal h at time t+1 based on the solution
+    at time t.
 
-    Inputs to the function:
-    X        : The design matrix for the linear quantile regression problem,
-               or rather it contains the design matrix, see the three next
-               input variables.
-    IX       : An index set, it refers to the columns of X which is the
-               design matrix.
-    Iy       : One index refers to the matrix X, the column Iy of X contains
-               the response corresponding to the explanatory variables in the
-               design matrix.
-    Iex      : An index referring to a grouping variable, refers to a column of
-               X this may or may not be a part of the design matrix. This is
-               used in the updating algorithm.
-    r        : The residuals from a solution to the quantile regression
-               problem based on the first n (see below) elements of X. Such a
-               solution could be obtained by the "rq" method in "R". This is
-               only used to initialize the solution.
-    beta     : The solution corresponding to the residuals in the vector r
-               above.
-    n        : The number of elements in r, i.e., y(1:n) = X(1:n,IX)*beta + r(1:n).
-    tau      : The required probability, the solution in r and beta should be
-               based on this probability.
-    bins     : A vector defining a partition of an interval that covers all
-               elements in X(1:end,Iex). This is used for the updating
-               procedure of the design matrix. If bins = [-Inf,Inf], then the
-               updating procedure is on a gliding window.
-    n_in_bin : Number of elements in the bins defined above, this is one
-               number, so the number of elements will be the same in each of
-               the bins after some time.
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Design matrix for the linear quantile regression problem
+    IX : numpy.ndarray
+        Index set referring to columns of X which is the design matrix
+    Iy : int
+        Index referring to response column in X
+    Iex : int
+        Index referring to grouping variable column in X
+    r : numpy.ndarray
+        Residuals from initial solution
+    beta : numpy.ndarray
+        Initial solution coefficients
+    n : int
+        Number of elements in r
+    tau : float
+        Required probability
+    bins : numpy.ndarray
+        Vector defining partition intervals
+    n_in_bin : int
+        Number of elements per bin
 
-    Remarks:
-    This implementation requires that the number of elements in each bin of
-    the initial solution is less than or equal to n_in_bin.
+    Returns
+    -------
+    tuple
+        (N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T)
+        - N: Number of simplex steps
+        - BETA: Solution matrix
+        - GAIN: Loss function gain
+        - Ld: Number of descent directions
+        - Rny: One-step-ahead prediction residuals
+        - Mx: Minimum constraint solution
+        - Re: Training set reliability
+        - CON1: Condition numbers
+        - T: Computation times
 
-    Output:
-    N    : The number of simplex steps to get the solutions at time t+1
-           given the solution at time t. This is a vector.
-    BETA : A matrix with each column being the solution to the quantile
-           regression problem, corresponding to the matrix X(n+1:end,1:end).
-    GAIN : This is a parameter used only to analyze the method. It is the
-           gain in the loss function in each simplex step. If this is very
-           large at some points, it can be taken as a sign of the problem
-           being ill-posed.
-    Ld   : This is only used for analyzing the algorithm in its own right. It
-           gives the number of descent directions in each simplex step.
-    Rny  : This is the residual of the one-step-ahead prediction of the
-           method.
-    Mx   : This is only used for analyzing the algorithm in its own right. It
-           is the minimum of the constraint solution to the simplex
-           formulation. This should be larger than or equal to zero. If this
-           becomes large in absolute value, then it is an indication of the
-           algorithm having problems at this point.
-    Re   : The reliability on the training set for each point along the
-           solution. If everything is good, then this should follow Theorem
-           2.3 in the reference mentioned above. I.e., this is close to tau at
-           all points.
-    CON1 : The condition number of the matrices X(h(t)).
-    T    : The time used for each iteration.
-
-    References:
-    [1] J. K. Møller (2006), Modeling of Uncertainty in Wind Energy
-           Forecast. Master Thesis, Informatics and Mathematical Modelling,
-           Technical University of Denmark. Available at
-           http://www.imm.dtu.dk/pubdb/p.php?4428.
-
-    [2] H. B. Nielsen (1999), Algorithms for Linear Optimization, an
-           Introduction. Course note for the DTU course "Optimization and Data
-           Fitting 2". Available at http://www.imm.dtu.dk/courses/02611/
+    References
+    ----------
+    .. [1] J. K. Møller (2006), "Modeling of Uncertainty in Wind Energy
+           Forecast". Master Thesis, Technical University of Denmark.
+    .. [2] H. B. Nielsen (1999), "Algorithms for Linear Optimization, an
+           Introduction". DTU Course Notes.
     """
     GAIN = np.array([0])
     Rny = np.array([0])
@@ -472,21 +484,32 @@ def one_step_quantile_prediction(
     already_correct_size=False,
     n_in_X=5000,
 ):
-    """
-    As input, this function should take the entire training set, and based on the last n_init observations,
-    calculate residuals and coefficients for the quantile regression.
+    """Perform one-step quantile prediction using TAQR.
 
-    Parameters:
-    X_input (numpy.ndarray): Input features matrix
-    Y_input (numpy.ndarray): Target values array
-    n_init (int): Number of initial observations for training
-    n_full (int): Total number of observations to use
-    quantile (float): Quantile level to predict
-    already_correct_size (bool): Whether inputs are already correctly sized
-    n_in_X (int): Number of observations to use in X
+    Takes the entire training set and, based on the last n_init observations,
+    calculates residuals and coefficients for the quantile regression.
 
-    Returns:
-    tuple: (y_pred, y_actual, BETA) Predictions, actual values, and coefficients
+    Parameters
+    ----------
+    X_input : numpy.ndarray
+        Input features matrix
+    Y_input : numpy.ndarray
+        Target values array
+    n_init : int
+        Number of initial observations for training
+    n_full : int
+        Total number of observations to use
+    quantile : float, optional
+        Quantile level to predict, by default 0.5
+    already_correct_size : bool, optional
+        Whether inputs are already correctly sized, by default False
+    n_in_X : int, optional
+        Number of observations to use in X, by default 5000
+
+    Returns
+    -------
+    tuple
+        (y_pred, y_actual, BETA) Predictions, actual values, and coefficients
     """
     assert n_init <= n_full - 2, "n_init must be less than n_full"
 

@@ -102,25 +102,39 @@
     <span class="n">timesteps</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">],</span>
     <span class="n">quantiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">],</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runs the complete NABQR pipeline including data simulation, model training, and visualization.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the complete NABQR pipeline including data simulation, model training, and visualization.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    n_samples (int): Number of time steps to simulate</span>
-<span class="sd">    phi (float): AR(1) coefficient for simulation</span>
-<span class="sd">    sigma (float): Standard deviation of noise for simulation</span>
-<span class="sd">    offset_start (int): Start value for offset range</span>
-<span class="sd">    offset_end (int): End value for offset range</span>
-<span class="sd">    offset_step (int): Step size for offset range</span>
-<span class="sd">    correlation (float): Base correlation between dimensions</span>
-<span class="sd">    data_source (str): Identifier for the data source</span>
-<span class="sd">    training_size (float): Proportion of data to use for training</span>
-<span class="sd">    epochs (int): Number of epochs for model training</span>
-<span class="sd">    timesteps (list): List of timesteps to use for LSTM</span>
-<span class="sd">    quantiles (list): List of quantiles to predict</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_samples : int, optional</span>
+<span class="sd">        Number of time steps to simulate, by default 5000</span>
+<span class="sd">    phi : float, optional</span>
+<span class="sd">        AR(1) coefficient for simulation, by default 0.995</span>
+<span class="sd">    sigma : float, optional</span>
+<span class="sd">        Standard deviation of noise for simulation, by default 8</span>
+<span class="sd">    offset_start : int, optional</span>
+<span class="sd">        Start value for offset range, by default 10</span>
+<span class="sd">    offset_end : int, optional</span>
+<span class="sd">        End value for offset range, by default 500</span>
+<span class="sd">    offset_step : int, optional</span>
+<span class="sd">        Step size for offset range, by default 15</span>
+<span class="sd">    correlation : float, optional</span>
+<span class="sd">        Base correlation between dimensions, by default 0.8</span>
+<span class="sd">    data_source : str, optional</span>
+<span class="sd">        Identifier for the data source, by default &quot;NABQR-TEST&quot;</span>
+<span class="sd">    training_size : float, optional</span>
+<span class="sd">        Proportion of data to use for training, by default 0.7</span>
+<span class="sd">    epochs : int, optional</span>
+<span class="sd">        Number of epochs for model training, by default 100</span>
+<span class="sd">    timesteps : list, optional</span>
+<span class="sd">        List of timesteps to use for LSTM, by default [0, 1, 2, 6, 12, 24]</span>
+<span class="sd">    quantiles : list, optional</span>
+<span class="sd">        List of quantiles to predict, by default [0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99]</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    None: Saves results to files and displays visualization</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Saves results to files and displays visualization</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Generate offset and correlation matrix</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">offset_start</span><span class="p">,</span> <span class="n">offset_end</span><span class="p">,</span> <span class="n">offset_step</span><span class="p">)</span>

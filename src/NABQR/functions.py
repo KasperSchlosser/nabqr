@@ -1,12 +1,13 @@
-# """
-# Neural Additive Bayesian Quantile Regression (NABQR) Core Functions
+"""Neural Additive Bayesian Quantile Regression (NABQR) Core Functions
 
-# This module provides the core functionality for NABQR, including:
-# - Scoring metrics (Variogram, CRPS, QSS)
-# - Dataset creation and preprocessing
-# - Model definitions and training
-# - TAQR (Time-Adaptive Quantile Regression) implementation
-# """
+This module provides the core functionality for NABQR.
+
+This module includes:
+- Scoring metrics (Variogram, CRPS, QSS)
+- Dataset creation and preprocessing
+- Model definitions and training
+- TAQR (Time-Adaptive Quantile Regression) implementation
+"""
 
 import numpy as np
 import pandas as pd
@@ -20,17 +21,23 @@ from .functions_for_TAQR import *
 
 
 def variogram_score_single_observation(x, y, p=0.5):
-    """
-    Calculate the Variogram score for a given observation.
+    """Calculate the Variogram score for a given observation.
+
     Translated from the R code in Energy and AI paper.
 
-    Parameters:
-    x (numpy.ndarray): Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon
-    y (numpy.ndarray): Actual observations (k,)
-    p (float): Power parameter for the variogram score
+    Parameters
+    ----------
+    x : numpy.ndarray
+        Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon
+    y : numpy.ndarray
+        Actual observations (k,)
+    p : float, optional
+        Power parameter for the variogram score, by default 0.5
 
-    Returns:
-    float: Variogram score for the observation
+    Returns
+    -------
+    float
+        Variogram score for the observation
     """
     m, k = x.shape
     score = 0
@@ -44,18 +51,25 @@ def variogram_score_single_observation(x, y, p=0.5):
 
 
 def variogram_score_R_multivariate(x, y, p=0.5, t1=12, t2=36):
-    """
-    Calculate the Variogram score for all observations for the time horizon t1 to t2.
+    """Calculate the Variogram score for all observations for the time horizon t1 to t2.
 
-    Parameters:
-    x (numpy.ndarray): Ensemble forecast (m x k)
-    y (numpy.ndarray): Actual observations (k,)
-    p (float): Power parameter
-    t1 (int): Start hour (inclusive)
-    t2 (int): End hour (exclusive)
+    Parameters
+    ----------
+    x : numpy.ndarray
+        Ensemble forecast (m x k)
+    y : numpy.ndarray
+        Actual observations (k,)
+    p : float, optional
+        Power parameter, by default 0.5
+    t1 : int, optional
+        Start hour (inclusive), by default 12
+    t2 : int, optional
+        End hour (exclusive), by default 36
 
-    Returns:
-    tuple: (score, score_list) Overall score and list of individual scores
+    Returns
+    -------
+    tuple
+        (score, score_list) Overall score and list of individual scores
     """
     m, k = x.shape
     score = 0
@@ -78,15 +92,19 @@ def variogram_score_R_multivariate(x, y, p=0.5, t1=12, t2=36):
 
 
 def calculate_crps(actuals, corrected_ensembles):
-    """
-    Calculate the Continuous Ranked Probability Score (CRPS).
+    """Calculate the Continuous Ranked Probability Score (CRPS).
 
-    Parameters:
-    actuals (numpy.ndarray): Actual observations
-    corrected_ensembles (numpy.ndarray): Ensemble forecasts
+    Parameters
+    ----------
+    actuals : numpy.ndarray
+        Actual observations
+    corrected_ensembles : numpy.ndarray
+        Ensemble forecasts
 
-    Returns:
-    float: Mean CRPS score
+    Returns
+    -------
+    float
+        Mean CRPS score
     """
     try:
         crps = ps.crps_ensemble(actuals, corrected_ensembles)
@@ -97,32 +115,42 @@ def calculate_crps(actuals, corrected_ensembles):
 
 
 def calculate_qss(actuals, taqr_results, quantiles):
-    """
-    Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.
+    """Calculate the Quantile Skill Score (QSS).
 
-    Parameters:
-    actuals (numpy.ndarray): Actual observations
-    taqr_results (numpy.ndarray): Predicted quantiles
-    quantiles (list): List of quantile levels
+    Parameters
+    ----------
+    actuals : numpy.ndarray
+        Actual observations
+    taqr_results : numpy.ndarray
+        TAQR ensemble forecasts
+    quantiles : array-like
+        Quantile levels to evaluate
 
-    Returns:
-    float: Mean QSS score
+    Returns
+    -------
+    float
+        Quantile Skill Score
     """
     qss_scores = multi_quantile_skill_score(actuals, taqr_results, quantiles)
     return np.mean(qss_scores)
 
 
 def multi_quantile_skill_score(y_true, y_pred, quantiles):
-    """
-    Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.
+    """Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.
 
-    Parameters:
-    y_true (numpy.ndarray): True observed values
-    y_pred (numpy.ndarray): Predicted quantile values
-    quantiles (list): Quantile levels between 0 and 1
+    Parameters
+    ----------
+    y_true : numpy.ndarray
+        True observed values
+    y_pred : numpy.ndarray
+        Predicted quantile values
+    quantiles : list
+        Quantile levels between 0 and 1
 
-    Returns:
-    numpy.ndarray: QSS for each quantile forecast
+    Returns
+    -------
+    numpy.ndarray
+        QSS for each quantile forecast
     """
     y_pred = np.array(y_pred)
 
@@ -145,13 +173,16 @@ def multi_quantile_skill_score(y_true, y_pred, quantiles):
 
 
 def run_r_script(X_filename, Y_filename, tau):
-    """
-    Run R script for quantile regression.
+    """Run R script for quantile regression.
 
-    Parameters:
-    X_filename (str): Path to X data CSV file
-    Y_filename (str): Path to Y data CSV file
-    tau (float): Quantile level
+    Parameters
+    ----------
+    X_filename : str
+        Path to X data CSV file
+    Y_filename : str
+        Path to Y data CSV file
+    tau : float
+        Quantile level
     """
     import subprocess
 
@@ -185,26 +216,53 @@ def run_r_script(X_filename, Y_filename, tau):
 
 
 def remove_zero_columns(df):
-    """Remove columns that contain only zeros from a DataFrame."""
+    """Remove columns that contain only zeros from a DataFrame.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input DataFrame
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with zero columns removed
+    """
     return df.loc[:, (df != 0).any(axis=0)]
 
 
 def remove_zero_columns_numpy(arr):
-    """Remove columns that contain only zeros or constant values from a numpy array."""
+    """Remove columns that contain only zeros or constant values from a numpy array.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        Input array
+
+    Returns
+    -------
+    numpy.ndarray
+        Array with zero/constant columns removed
+    """
     return arr[:, (arr != 0).any(axis=0) & (arr != arr[0]).any(axis=0)]
 
 
 def create_dataset_for_lstm(X, Y, time_steps):
-    """
-    Create a dataset suitable for LSTM training with multiple time steps.
+    """Create a dataset suitable for LSTM training with multiple time steps.
 
-    Parameters:
-    X (numpy.ndarray): Input features
-    Y (numpy.ndarray): Target values
-    time_steps (list): List of time steps to include
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Input features
+    Y : numpy.ndarray
+        Target values
+    time_steps : list
+        List of time steps to include
 
-    Returns:
-    tuple: (X_lstm, Y_lstm) LSTM-ready datasets
+    Returns
+    -------
+    tuple
+        (X_lstm, Y_lstm) LSTM-ready datasets
     """
     X = np.array(X)
     Y = np.array(Y)
@@ -223,13 +281,16 @@ def create_dataset_for_lstm(X, Y, time_steps):
 
 
 class QuantileRegressionLSTM(tf.keras.Model):
-    """
-    LSTM-based model for quantile regression.
+    """LSTM-based model for quantile regression.
 
-    Parameters:
-    n_quantiles (int): Number of quantiles to predict
-    units (int): Number of LSTM units
-    n_timesteps (int): Number of time steps in input
+    Parameters
+    ----------
+    n_quantiles : int
+        Number of quantiles to predict
+    units : int
+        Number of LSTM units
+    n_timesteps : int
+        Number of time steps in input
     """
 
     def __init__(self, n_quantiles, units, n_timesteps, **kwargs):
@@ -243,12 +304,33 @@ class QuantileRegressionLSTM(tf.keras.Model):
         self.n_timesteps = n_timesteps
 
     def call(self, inputs, training=None):
+        """Forward pass of the model.
+
+        Parameters
+        ----------
+        inputs : tensorflow.Tensor
+            Input tensor
+        training : bool, optional
+            Whether in training mode, by default None
+
+        Returns
+        -------
+        tensorflow.Tensor
+            Model output
+        """
         x = self.lstm(inputs, training=training)
         x = self.dense(x)
         x = self.dense2(x)
         return x
 
     def get_config(self):
+        """Get model configuration.
+
+        Returns
+        -------
+        dict
+            Model configuration
+        """
         config = super(QuantileRegressionLSTM, self).get_config()
         config.update(
             {
@@ -261,20 +343,37 @@ class QuantileRegressionLSTM(tf.keras.Model):
 
     @classmethod
     def from_config(cls, config):
+        """Create model from configuration.
+
+        Parameters
+        ----------
+        config : dict
+            Model configuration
+
+        Returns
+        -------
+        QuantileRegressionLSTM
+            Model instance
+        """
         return cls(**config)
 
 
 def quantile_loss_3(q, y_true, y_pred):
-    """
-    Calculate quantile loss for a single quantile.
+    """Calculate quantile loss for a single quantile.
 
-    Parameters:
-    q (float): Quantile level
-    y_true (tensor): True values
-    y_pred (tensor): Predicted values
+    Parameters
+    ----------
+    q : float
+        Quantile level
+    y_true : tensorflow.Tensor
+        True values
+    y_pred : tensorflow.Tensor
+        Predicted values
 
-    Returns:
-    tensor: Quantile loss
+    Returns
+    -------
+    tensorflow.Tensor
+        Quantile loss value
     """
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
@@ -284,39 +383,63 @@ def quantile_loss_3(q, y_true, y_pred):
 
 
 def quantile_loss_func(quantiles):
-    """
-    Create a loss function for multiple quantiles.
+    """Create a loss function for multiple quantiles.
 
-    Parameters:
-    quantiles (list): List of quantile levels
+    Parameters
+    ----------
+    quantiles : list
+        List of quantile levels
 
-    Returns:
-    function: Loss function for multiple quantiles
+    Returns
+    -------
+    function
+        Loss function for multiple quantiles
     """
 
     def loss(y_true, y_pred):
+        """Calculate the loss for given true and predicted values.
+
+        Parameters
+        ----------
+        y_true : tensorflow.Tensor
+            True values
+        y_pred : tensorflow.Tensor
+            Predicted values
+
+        Returns
+        -------
+        tensorflow.Tensor
+            Combined loss value for all quantiles
+        """
         losses = []
         for i, q in enumerate(quantiles):
             loss = quantile_loss_3(q, y_true, y_pred[:, i])
             losses.append(loss)
-        return losses
+        return tf.reduce_mean(tf.stack(losses))
 
     return loss
 
 
 def map_range(values, input_start, input_end, output_start, output_end):
-    """
-    Map values from one range to another.
+    """Map values from one range to another.
 
-    Parameters:
-    values (list): Values to map
-    input_start (float): Start of input range
-    input_end (float): End of input range
-    output_start (float): Start of output range
-    output_end (float): End of output range
+    Parameters
+    ----------
+    values : list
+        Values to map
+    input_start : float
+        Start of input range
+    input_end : float
+        End of input range
+    output_start : float
+        Start of output range
+    output_end : float
+        End of output range
 
-    Returns:
-    numpy.ndarray: Mapped values
+    Returns
+    -------
+    numpy.ndarray
+        Mapped values
     """
     mapped_values = []
     for value in values:
@@ -328,11 +451,12 @@ def map_range(values, input_start, input_end, output_start, output_end):
 
 
 def legend_without_duplicate_labels(ax):
-    """
-    Create a legend without duplicate labels.
+    """Create a legend without duplicate labels.
 
-    Parameters:
-    ax (matplotlib.axes.Axes): Axes object to create legend for
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        Axes object to create legend for
     """
     handles, labels = ax.get_legend_handles_labels()
     unique = [
@@ -345,14 +469,17 @@ import numpy as np
 
 
 def remove_straight_line_outliers(ensembles):
-    """
-    Removes ensemble members that are perfectly straight lines (constant slope).
+    """Remove ensemble members that are perfectly straight lines (constant slope).
 
-    Parameters:
-        ensembles (numpy.ndarray): 2D array where rows are time steps and columns are ensemble members.
+    Parameters
+    ----------
+    ensembles : numpy.ndarray
+        2D array where rows are time steps and columns are ensemble members
 
-    Returns:
-        numpy.ndarray: Filtered ensemble data without straight-line outliers.
+    Returns
+    -------
+    numpy.ndarray
+        Filtered ensemble data without straight-line outliers
     """
     # Calculate differences along the time axis
     differences = np.diff(ensembles, axis=0)
@@ -376,23 +503,35 @@ def train_model_lstm(
     n_timesteps,
     data_name,
 ):
-    """
-    Train an LSTM model for quantile regression.
+    """Train an LSTM model for quantile regression.
 
-    Parameters:
-    quantiles (list): List of quantile levels to predict
-    epochs (int): Number of training epochs
-    lr (float): Learning rate for optimizer
-    batch_size (int): Batch size for training
-    x (tensor): Training input data
-    y (tensor): Training target data
-    x_val (tensor): Validation input data
-    y_val (tensor): Validation target data
-    n_timesteps (int): Number of time steps in input sequence
-    data_name (str): Name identifier for saving model artifacts
+    Parameters
+    ----------
+    quantiles : list
+        List of quantile levels to predict
+    epochs : int
+        Number of training epochs
+    lr : float
+        Learning rate for optimizer
+    batch_size : int
+        Batch size for training
+    x : tensor
+        Training input data
+    y : tensor
+        Training target data
+    x_val : tensor
+        Validation input data
+    y_val : tensor
+        Validation target data
+    n_timesteps : int
+        Number of time steps in input sequence
+    data_name : str
+        Name identifier for saving model artifacts
 
-    Returns:
-    tf.keras.Model: Trained LSTM model
+    Returns
+    -------
+    tf.keras.Model
+        Trained LSTM model
     """
     model = QuantileRegressionLSTM(
         n_quantiles=len(quantiles), units=256, n_timesteps=n_timesteps
@@ -474,23 +613,32 @@ def one_step_quantile_prediction(
     already_correct_size=False,
     n_in_X=5000,
 ):
-    """
-    Perform one-step quantile prediction using TAQR.
+    """Perform one-step quantile prediction using TAQR.
 
     This function takes the entire training set and, based on the last n_init observations,
     calculates residuals and coefficients for the quantile regression.
 
-    Parameters:
-    X_input (numpy.ndarray/pd.DataFrame): Input features
-    Y_input (numpy.ndarray/pd.Series): Target values
-    n_init (int): Number of initial observations for warm start
-    n_full (int): Total number of observations to process
-    quantile (float): Quantile level for prediction (default: 0.5)
-    already_correct_size (bool): Whether input data is already correctly sized
-    n_in_X (int): Number of observations to include in design matrix
+    Parameters
+    ----------
+    X_input : numpy.ndarray or pd.DataFrame
+        Input features
+    Y_input : numpy.ndarray or pd.Series
+        Target values
+    n_init : int
+        Number of initial observations for warm start
+    n_full : int
+        Total number of observations to process
+    quantile : float, optional
+        Quantile level for prediction, by default 0.5
+    already_correct_size : bool, optional
+        Whether input data is already correctly sized, by default False
+    n_in_X : int, optional
+        Number of observations to include in design matrix, by default 5000
 
-    Returns:
-    tuple: (predictions, actual values, coefficients)
+    Returns
+    -------
+    tuple
+        (predictions, actual values, coefficients)
     """
     assert n_init <= n_full - 2, "n_init must be less than n_full"
 
@@ -574,19 +722,27 @@ def one_step_quantile_prediction(
 
 
 def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
-    """
-    Run TAQR on corrected ensembles.
+    """Run TAQR on corrected ensembles.
 
-    Parameters:
-    corrected_ensembles (numpy.ndarray): Shape (n_timesteps, n_ensembles)
-    actuals (numpy.ndarray): Shape (n_timesteps,)
-    quantiles (list): Quantiles to predict
-    n_init (int): Number of initial timesteps for warm start
-    n_full (int): Total number of timesteps
-    n_in_X (int): Number of timesteps in design matrix
+    Parameters
+    ----------
+    corrected_ensembles : numpy.ndarray
+        Shape (n_timesteps, n_ensembles)
+    actuals : numpy.ndarray
+        Shape (n_timesteps,)
+    quantiles : list
+        Quantiles to predict
+    n_init : int
+        Number of initial timesteps for warm start
+    n_full : int
+        Total number of timesteps
+    n_in_X : int
+        Number of timesteps in design matrix
 
-    Returns:
-    list: TAQR results for each quantile
+    Returns
+    -------
+    list
+        TAQR results for each quantile
     """
     if type(actuals) == pd.Series or type(actuals) == pd.DataFrame:
         # remove nans from actuals
@@ -621,25 +777,34 @@ def pipeline(
     timesteps_for_lstm=[0, 1, 2, 6, 12, 24, 48],
     **kwargs,
 ):
-    """
-    Main pipeline for NABQR model training and evaluation.
+    """Main pipeline for NABQR model training and evaluation.
 
     The pipeline:
     1. Trains an LSTM network to correct the provided ensembles
     2. Runs TAQR algorithm on corrected ensembles to predict observations
     3. Saves results and model artifacts
 
-    Parameters:
-    X (pd.DataFrame/numpy.ndarray): Shape (n_samples, n_features) - Ensemble data
-    y (pd.Series/numpy.ndarray): Shape (n_samples,) - Observations
-    name (str): Dataset identifier
-    training_size (float): Proportion of data for training
-    epochs (int): Number of LSTM training epochs
-    timesteps_for_lstm (list): Time steps for LSTM input
-    **kwargs: Additional parameters (e.g., quantiles_taqr)
+    Parameters
+    ----------
+    X : pd.DataFrame or numpy.ndarray
+        Shape (n_samples, n_features) - Ensemble data
+    y : pd.Series or numpy.ndarray
+        Shape (n_samples,) - Observations
+    name : str, optional
+        Dataset identifier, by default "TEST"
+    training_size : float, optional
+        Fraction of data to use for training, by default 0.8
+    epochs : int, optional
+        Number of training epochs, by default 100
+    timesteps_for_lstm : list, optional
+        Time steps to use for LSTM input, by default [0, 1, 2, 6, 12, 24, 48]
+    **kwargs : dict
+        Additional keyword arguments
 
-    Returns:
-    None: Results are saved to files
+    Returns
+    -------
+    None
+        Results are saved to files
     """
     # Data preparation
     actuals = y

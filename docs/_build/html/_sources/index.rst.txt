@@ -1,11 +1,6 @@
 Welcome to NABQR's documentation!
 ======================================
 
-.. automodule:: NABQR
-   :autosummary:
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. toctree::
    :maxdepth: 3

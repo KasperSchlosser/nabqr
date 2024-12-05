@@ -75,13 +75,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for NABQR.functions_for_TAQR</h1><div class="highlight"><pre>
-<span></span>
-<span class="c1"># Time-Adaptive Quantile Regression (TAQR) Implementation</span>
+<span></span><span class="sd">&quot;&quot;&quot;Time-Adaptive Quantile Regression (TAQR) Implementation</span>
 
-<span class="c1"># This module provides the core implementation of the TAQR algorithm based on</span>
-<span class="c1"># Møller&#39;s thesis &quot;Modeling of Uncertainty in Wind Energy Forecast&quot; (2006).</span>
-<span class="c1"># It implements an adaptive simplex algorithm for quantile regression problems.</span>
-
+<span class="sd">This module provides the core implementation of the TAQR algorithm based on</span>
+<span class="sd">Møller&#39;s thesis &quot;Modeling of Uncertainty in Wind Energy Forecast&quot; (2006).</span>
+<span class="sd">It implements an adaptive simplex algorithm for quantile regression problems.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
@@ -97,30 +96,49 @@
 <span class="k">def</span> <span class="nf">opdatering_final</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">Xny</span><span class="p">,</span> <span class="n">IX</span><span class="p">,</span> <span class="n">Iy</span><span class="p">,</span> <span class="n">Iex</span><span class="p">,</span> <span class="n">Ih</span><span class="p">,</span> <span class="n">Ihc</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Rny</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">n_in_bin</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Updates the design matrix and related parameters for the adaptive quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates the design matrix and related parameters for the adaptive quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X (numpy.ndarray): Full data matrix</span>
-<span class="sd">    Xny (numpy.ndarray): Current design matrix</span>
-<span class="sd">    IX (numpy.ndarray): Index set for design matrix columns</span>
-<span class="sd">    Iy (int): Index for response variable</span>
-<span class="sd">    Iex (int): Index for grouping variable</span>
-<span class="sd">    Ih (numpy.ndarray): Index set for basic variables</span>
-<span class="sd">    Ihc (numpy.ndarray): Index set for non-basic variables</span>
-<span class="sd">    beta (numpy.ndarray): Current coefficient estimates</span>
-<span class="sd">    Rny (numpy.ndarray): Residuals array</span>
-<span class="sd">    K (int): Number of explanatory variables</span>
-<span class="sd">    n (int): Current number of observations</span>
-<span class="sd">    xB (numpy.ndarray): Basic solution</span>
-<span class="sd">    P (numpy.ndarray): Sign vector</span>
-<span class="sd">    tau (float): Quantile level</span>
-<span class="sd">    i (int): Current iteration</span>
-<span class="sd">    bins (numpy.ndarray): Bin boundaries</span>
-<span class="sd">    n_in_bin (int): Maximum number of observations per bin</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray</span>
+<span class="sd">        Full data matrix</span>
+<span class="sd">    Xny : numpy.ndarray</span>
+<span class="sd">        Current design matrix</span>
+<span class="sd">    IX : numpy.ndarray</span>
+<span class="sd">        Index set for design matrix columns</span>
+<span class="sd">    Iy : int</span>
+<span class="sd">        Index for response variable</span>
+<span class="sd">    Iex : int</span>
+<span class="sd">        Index for grouping variable</span>
+<span class="sd">    Ih : numpy.ndarray</span>
+<span class="sd">        Index set for basic variables</span>
+<span class="sd">    Ihc : numpy.ndarray</span>
+<span class="sd">        Index set for non-basic variables</span>
+<span class="sd">    beta : numpy.ndarray</span>
+<span class="sd">        Current coefficient estimates</span>
+<span class="sd">    Rny : numpy.ndarray</span>
+<span class="sd">        Residuals array</span>
+<span class="sd">    K : int</span>
+<span class="sd">        Number of explanatory variables</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Current number of observations</span>
+<span class="sd">    xB : numpy.ndarray</span>
+<span class="sd">        Basic solution</span>
+<span class="sd">    P : numpy.ndarray</span>
+<span class="sd">        Sign vector</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Quantile level</span>
+<span class="sd">    i : int</span>
+<span class="sd">        Current iteration</span>
+<span class="sd">    bins : numpy.ndarray</span>
+<span class="sd">        Bin boundaries</span>
+<span class="sd">    n_in_bin : int</span>
+<span class="sd">        Maximum number of observations per bin</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Xny</span><span class="p">[</span><span class="n">Xny</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">Xny</span><span class="p">[</span><span class="n">Xny</span> <span class="o">==</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -209,21 +227,28 @@
 <div class="viewcode-block" id="rq_initialiser_final">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions_for_TAQR.rq_initialiser_final">[docs]</a>
 <span class="k">def</span> <span class="nf">rq_initialiser_final</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function initializes the parameters needed for the simplex algorithm based on initial solution.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize parameters for the simplex algorithm based on initial solution.</span>
+
 <span class="sd">    If the number of zero elements in r is equal to rank(X), then the work is essentially done.</span>
 <span class="sd">    Otherwise, the if statement will find the index set Ih s.t. X(Ih)*beta=y(Ih) and X(Ih)^(-1)*y(Ih)=beta,</span>
 <span class="sd">    the important note being that X(Ih) has an inverse.</span>
 <span class="sd">    This is done by using the LU transform of a non-quadratic matrix.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X (numpy.ndarray): Design matrix</span>
-<span class="sd">    r (numpy.ndarray): Initial residuals</span>
-<span class="sd">    beta (numpy.ndarray): Initial coefficients</span>
-<span class="sd">    n (int): Number of observations</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray</span>
+<span class="sd">        Design matrix</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Initial residuals</span>
+<span class="sd">    beta : numpy.ndarray</span>
+<span class="sd">        Initial coefficients</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of observations</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">beta</span><span class="p">):</span>
@@ -257,22 +282,33 @@
 <div class="viewcode-block" id="rq_simplex_alg_final">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions_for_TAQR.rq_simplex_alg_final">[docs]</a>
 <span class="k">def</span> <span class="nf">rq_simplex_alg_final</span><span class="p">(</span><span class="n">Ih</span><span class="p">,</span> <span class="n">Ihc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">Xny</span><span class="p">,</span> <span class="n">IH</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Performs one step of the simplex algorithm for quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform one step of the simplex algorithm for quantile regression.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    Ih (numpy.ndarray): Index set for basic variables</span>
-<span class="sd">    Ihc (numpy.ndarray): Index set for non-basic variables</span>
-<span class="sd">    n (int): Number of observations</span>
-<span class="sd">    K (int): Number of explanatory variables</span>
-<span class="sd">    xB (numpy.ndarray): Basic solution</span>
-<span class="sd">    Xny (numpy.ndarray): Design matrix</span>
-<span class="sd">    IH (numpy.ndarray): History of index sets</span>
-<span class="sd">    P (numpy.ndarray): Sign vector</span>
-<span class="sd">    tau (float): Quantile level</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Ih : numpy.ndarray</span>
+<span class="sd">        Index set for basic variables</span>
+<span class="sd">    Ihc : numpy.ndarray</span>
+<span class="sd">        Index set for non-basic variables</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of observations</span>
+<span class="sd">    K : int</span>
+<span class="sd">        Number of explanatory variables</span>
+<span class="sd">    xB : numpy.ndarray</span>
+<span class="sd">        Basic solution</span>
+<span class="sd">    Xny : numpy.ndarray</span>
+<span class="sd">        Design matrix</span>
+<span class="sd">    IH : numpy.ndarray</span>
+<span class="sd">        History of index sets</span>
+<span class="sd">    P : numpy.ndarray</span>
+<span class="sd">        Sign vector</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Quantile level</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: Algorithm parameters for the next iteration</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Algorithm parameters for the next iteration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">invXh</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Xny</span><span class="p">[</span><span class="n">Ih</span><span class="p">,</span> <span class="p">:])</span>
     <span class="n">cB</span> <span class="o">=</span> <span class="p">(</span><span class="n">P</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">P</span> <span class="o">*</span> <span class="n">tau</span>
@@ -349,29 +385,35 @@
 <div class="viewcode-block" id="rq_purify_final">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions_for_TAQR.rq_purify_final">[docs]</a>
 <span class="k">def</span> <span class="nf">rq_purify_final</span><span class="p">(</span><span class="n">xB</span><span class="p">,</span> <span class="n">Ih</span><span class="p">,</span> <span class="n">Ihc</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">Xny</span><span class="p">,</span> <span class="n">yny</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function takes care of infeasible points in a simplex formulation</span>
-<span class="sd">    of a quantile regression problem. The underlying assumption in this</span>
-<span class="sd">    function is that there are no restrictions in the problem.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle infeasible points in a simplex formulation of a quantile regression problem.</span>
 
-<span class="sd">    The updating can therefore be done by recalculating all residuals and</span>
-<span class="sd">    coefficients.</span>
-
+<span class="sd">    The underlying assumption is that there are no restrictions in the problem.</span>
+<span class="sd">    The updating can therefore be done by recalculating all residuals and coefficients.</span>
 <span class="sd">    The assumption is further that we are in a position s.t.</span>
 <span class="sd">    Xny*Xny(Ih)^(-1)*yny(Ih)=yny+residuals</span>
 <span class="sd">    K=rank(Xny)</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    xB (numpy.ndarray): Basic solution</span>
-<span class="sd">    Ih (numpy.ndarray): Index set for basic variables</span>
-<span class="sd">    Ihc (numpy.ndarray): Index set for non-basic variables</span>
-<span class="sd">    P (numpy.ndarray): Sign vector</span>
-<span class="sd">    K (int): Number of explanatory variables</span>
-<span class="sd">    Xny (numpy.ndarray): Design matrix</span>
-<span class="sd">    yny (numpy.ndarray): Response vector</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xB : numpy.ndarray</span>
+<span class="sd">        Basic solution</span>
+<span class="sd">    Ih : numpy.ndarray</span>
+<span class="sd">        Index set for basic variables</span>
+<span class="sd">    Ihc : numpy.ndarray</span>
+<span class="sd">        Index set for non-basic variables</span>
+<span class="sd">    P : numpy.ndarray</span>
+<span class="sd">        Sign vector</span>
+<span class="sd">    K : int</span>
+<span class="sd">        Number of explanatory variables</span>
+<span class="sd">    Xny : numpy.ndarray</span>
+<span class="sd">        Design matrix</span>
+<span class="sd">    yny : numpy.ndarray</span>
+<span class="sd">        Response vector</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (xB, P) Updated basic solution and sign vector</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (xB, P) Updated basic solution and sign vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">invXh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Xny</span><span class="p">[</span><span class="n">Ih</span><span class="p">,</span> <span class="p">:])</span>
     <span class="n">xB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">invXh</span> <span class="o">@</span> <span class="n">yny</span><span class="p">[</span><span class="n">Ih</span><span class="p">],</span> <span class="n">yny</span><span class="p">[</span><span class="n">Ihc</span><span class="p">]</span> <span class="o">-</span> <span class="n">Xny</span><span class="p">[</span><span class="n">Ihc</span><span class="p">,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">invXh</span> <span class="o">@</span> <span class="n">yny</span><span class="p">[</span><span class="n">Ih</span><span class="p">]))</span>
@@ -385,90 +427,60 @@
 <div class="viewcode-block" id="rq_simplex_final">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.functions_for_TAQR.rq_simplex_final">[docs]</a>
 <span class="k">def</span> <span class="nf">rq_simplex_final</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">IX</span><span class="p">,</span> <span class="n">Iy</span><span class="p">,</span> <span class="n">Iex</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">n_in_bin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    rq_simplex_final calculates the solution to an adaptive simplex</span>
-<span class="sd">    algorithm for a quantile regression problem. The function uses</span>
-<span class="sd">    knowledge of the solution at time t to calculate the solution at</span>
-<span class="sd">    time t+1.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate solution to an adaptive simplex algorithm for quantile regression.</span>
 
-<span class="sd">    The basic idea is that the solution to the quantile regression</span>
+<span class="sd">    The function uses knowledge of the solution at time t to calculate the solution at</span>
+<span class="sd">    time t+1. The basic idea is that the solution to the quantile regression</span>
 <span class="sd">    problem can be written as:</span>
 <span class="sd">    y(t) = X(t)&#39;*beta + r(t)</span>
 
 <span class="sd">    where beta = X(h)^(-1)*y(h) for some index set h. Simplex algorithm</span>
-<span class="sd">    is now used to calculate the optimal h at time t+1 based on the solution</span>
-<span class="sd">    at time t. So basically, the function uses h(t) as a starting guess for</span>
-<span class="sd">    the simplex algorithm to iterate to h(t+1). This function is described</span>
-<span class="sd">    in the master thesis &quot;Modelling of Uncertainty in Wind Energy Forecast&quot;</span>
-<span class="sd">    by Jan K. Moeller, URL http://www.imm.dtu.dk/pubdb/p.php?4428.</span>
+<span class="sd">    is used to calculate the optimal h at time t+1 based on the solution</span>
+<span class="sd">    at time t.</span>
 
-<span class="sd">    Inputs to the function:</span>
-<span class="sd">    X        : The design matrix for the linear quantile regression problem,</span>
-<span class="sd">               or rather it contains the design matrix, see the three next</span>
-<span class="sd">               input variables.</span>
-<span class="sd">    IX       : An index set, it refers to the columns of X which is the</span>
-<span class="sd">               design matrix.</span>
-<span class="sd">    Iy       : One index refers to the matrix X, the column Iy of X contains</span>
-<span class="sd">               the response corresponding to the explanatory variables in the</span>
-<span class="sd">               design matrix.</span>
-<span class="sd">    Iex      : An index referring to a grouping variable, refers to a column of</span>
-<span class="sd">               X this may or may not be a part of the design matrix. This is</span>
-<span class="sd">               used in the updating algorithm.</span>
-<span class="sd">    r        : The residuals from a solution to the quantile regression</span>
-<span class="sd">               problem based on the first n (see below) elements of X. Such a</span>
-<span class="sd">               solution could be obtained by the &quot;rq&quot; method in &quot;R&quot;. This is</span>
-<span class="sd">               only used to initialize the solution.</span>
-<span class="sd">    beta     : The solution corresponding to the residuals in the vector r</span>
-<span class="sd">               above.</span>
-<span class="sd">    n        : The number of elements in r, i.e., y(1:n) = X(1:n,IX)*beta + r(1:n).</span>
-<span class="sd">    tau      : The required probability, the solution in r and beta should be</span>
-<span class="sd">               based on this probability.</span>
-<span class="sd">    bins     : A vector defining a partition of an interval that covers all</span>
-<span class="sd">               elements in X(1:end,Iex). This is used for the updating</span>
-<span class="sd">               procedure of the design matrix. If bins = [-Inf,Inf], then the</span>
-<span class="sd">               updating procedure is on a gliding window.</span>
-<span class="sd">    n_in_bin : Number of elements in the bins defined above, this is one</span>
-<span class="sd">               number, so the number of elements will be the same in each of</span>
-<span class="sd">               the bins after some time.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray</span>
+<span class="sd">        Design matrix for the linear quantile regression problem</span>
+<span class="sd">    IX : numpy.ndarray</span>
+<span class="sd">        Index set referring to columns of X which is the design matrix</span>
+<span class="sd">    Iy : int</span>
+<span class="sd">        Index referring to response column in X</span>
+<span class="sd">    Iex : int</span>
+<span class="sd">        Index referring to grouping variable column in X</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Residuals from initial solution</span>
+<span class="sd">    beta : numpy.ndarray</span>
+<span class="sd">        Initial solution coefficients</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of elements in r</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Required probability</span>
+<span class="sd">    bins : numpy.ndarray</span>
+<span class="sd">        Vector defining partition intervals</span>
+<span class="sd">    n_in_bin : int</span>
+<span class="sd">        Number of elements per bin</span>
 
-<span class="sd">    Remarks:</span>
-<span class="sd">    This implementation requires that the number of elements in each bin of</span>
-<span class="sd">    the initial solution is less than or equal to n_in_bin.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T)</span>
+<span class="sd">        - N: Number of simplex steps</span>
+<span class="sd">        - BETA: Solution matrix</span>
+<span class="sd">        - GAIN: Loss function gain</span>
+<span class="sd">        - Ld: Number of descent directions</span>
+<span class="sd">        - Rny: One-step-ahead prediction residuals</span>
+<span class="sd">        - Mx: Minimum constraint solution</span>
+<span class="sd">        - Re: Training set reliability</span>
+<span class="sd">        - CON1: Condition numbers</span>
+<span class="sd">        - T: Computation times</span>
 
-<span class="sd">    Output:</span>
-<span class="sd">    N    : The number of simplex steps to get the solutions at time t+1</span>
-<span class="sd">           given the solution at time t. This is a vector.</span>
-<span class="sd">    BETA : A matrix with each column being the solution to the quantile</span>
-<span class="sd">           regression problem, corresponding to the matrix X(n+1:end,1:end).</span>
-<span class="sd">    GAIN : This is a parameter used only to analyze the method. It is the</span>
-<span class="sd">           gain in the loss function in each simplex step. If this is very</span>
-<span class="sd">           large at some points, it can be taken as a sign of the problem</span>
-<span class="sd">           being ill-posed.</span>
-<span class="sd">    Ld   : This is only used for analyzing the algorithm in its own right. It</span>
-<span class="sd">           gives the number of descent directions in each simplex step.</span>
-<span class="sd">    Rny  : This is the residual of the one-step-ahead prediction of the</span>
-<span class="sd">           method.</span>
-<span class="sd">    Mx   : This is only used for analyzing the algorithm in its own right. It</span>
-<span class="sd">           is the minimum of the constraint solution to the simplex</span>
-<span class="sd">           formulation. This should be larger than or equal to zero. If this</span>
-<span class="sd">           becomes large in absolute value, then it is an indication of the</span>
-<span class="sd">           algorithm having problems at this point.</span>
-<span class="sd">    Re   : The reliability on the training set for each point along the</span>
-<span class="sd">           solution. If everything is good, then this should follow Theorem</span>
-<span class="sd">           2.3 in the reference mentioned above. I.e., this is close to tau at</span>
-<span class="sd">           all points.</span>
-<span class="sd">    CON1 : The condition number of the matrices X(h(t)).</span>
-<span class="sd">    T    : The time used for each iteration.</span>
-
-<span class="sd">    References:</span>
-<span class="sd">    [1] J. K. Møller (2006), Modeling of Uncertainty in Wind Energy</span>
-<span class="sd">           Forecast. Master Thesis, Informatics and Mathematical Modelling,</span>
-<span class="sd">           Technical University of Denmark. Available at</span>
-<span class="sd">           http://www.imm.dtu.dk/pubdb/p.php?4428.</span>
-
-<span class="sd">    [2] H. B. Nielsen (1999), Algorithms for Linear Optimization, an</span>
-<span class="sd">           Introduction. Course note for the DTU course &quot;Optimization and Data</span>
-<span class="sd">           Fitting 2&quot;. Available at http://www.imm.dtu.dk/courses/02611/</span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] J. K. Møller (2006), &quot;Modeling of Uncertainty in Wind Energy</span>
+<span class="sd">           Forecast&quot;. Master Thesis, Technical University of Denmark.</span>
+<span class="sd">    .. [2] H. B. Nielsen (1999), &quot;Algorithms for Linear Optimization, an</span>
+<span class="sd">           Introduction&quot;. DTU Course Notes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">GAIN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">Rny</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
@@ -566,21 +578,32 @@
     <span class="n">already_correct_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">n_in_X</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    As input, this function should take the entire training set, and based on the last n_init observations,</span>
-<span class="sd">    calculate residuals and coefficients for the quantile regression.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform one-step quantile prediction using TAQR.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    X_input (numpy.ndarray): Input features matrix</span>
-<span class="sd">    Y_input (numpy.ndarray): Target values array</span>
-<span class="sd">    n_init (int): Number of initial observations for training</span>
-<span class="sd">    n_full (int): Total number of observations to use</span>
-<span class="sd">    quantile (float): Quantile level to predict</span>
-<span class="sd">    already_correct_size (bool): Whether inputs are already correctly sized</span>
-<span class="sd">    n_in_X (int): Number of observations to use in X</span>
+<span class="sd">    Takes the entire training set and, based on the last n_init observations,</span>
+<span class="sd">    calculates residuals and coefficients for the quantile regression.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    tuple: (y_pred, y_actual, BETA) Predictions, actual values, and coefficients</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X_input : numpy.ndarray</span>
+<span class="sd">        Input features matrix</span>
+<span class="sd">    Y_input : numpy.ndarray</span>
+<span class="sd">        Target values array</span>
+<span class="sd">    n_init : int</span>
+<span class="sd">        Number of initial observations for training</span>
+<span class="sd">    n_full : int</span>
+<span class="sd">        Total number of observations to use</span>
+<span class="sd">    quantile : float, optional</span>
+<span class="sd">        Quantile level to predict, by default 0.5</span>
+<span class="sd">    already_correct_size : bool, optional</span>
+<span class="sd">        Whether inputs are already correctly sized, by default False</span>
+<span class="sd">    n_in_X : int, optional</span>
+<span class="sd">        Number of observations to use in X, by default 5000</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (y_pred, y_actual, BETA) Predictions, actual values, and coefficients</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">n_init</span> <span class="o">&lt;=</span> <span class="n">n_full</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;n_init must be less than n_full&quot;</span>
 

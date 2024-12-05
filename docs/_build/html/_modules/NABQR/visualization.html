@@ -87,18 +87,24 @@
 <div class="viewcode-block" id="visualize_results">
 <a class="viewcode-back" href="../../NABQR.html#NABQR.visualization.visualize_results">[docs]</a>
 <span class="k">def</span> <span class="nf">visualize_results</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">q_hat</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates a visualization of prediction intervals with actual values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a visualization of prediction intervals with actual values.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    y_hat (numpy.ndarray): Actual observed values</span>
-<span class="sd">    q_hat (numpy.ndarray): Predicted quantiles for different probability levels</span>
-<span class="sd">    ylabel (str): Label for the y-axis</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_hat : numpy.ndarray</span>
+<span class="sd">        Actual observed values</span>
+<span class="sd">    q_hat : numpy.ndarray</span>
+<span class="sd">        Predicted quantiles for different probability levels</span>
+<span class="sd">    ylabel : str</span>
+<span class="sd">        Label for the y-axis</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    None: Saves the plot as &#39;TEST_NABQR_taqr_pi_plot.pdf&#39; and displays it</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Saves the plot as &#39;TEST_NABQR_taqr_pi_plot.pdf&#39; and displays it</span>
 
-<span class="sd">    Notes:</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
 <span class="sd">    - Creates a filled plot showing prediction intervals using a blue gradient</span>
 <span class="sd">    - Overlays actual values as a black line</span>
 <span class="sd">    - Automatically adjusts x-axis date formatting</span>

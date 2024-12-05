@@ -3,15 +3,19 @@ import pandas as pd
 
 
 def set_n_smallest_to_zero(arr, n):
-    """
-    Sets the n smallest elements in an array to zero.
+    """Set the n smallest elements in an array to zero.
 
-    Parameters:
-    arr (array-like): Input array of numbers
-    n (int): Number of smallest elements to set to zero
+    Parameters
+    ----------
+    arr : array-like
+        Input array of numbers
+    n : int
+        Number of smallest elements to set to zero
 
-    Returns:
-    numpy.ndarray: Modified array with n smallest elements set to zero
+    Returns
+    -------
+    numpy.ndarray
+        Modified array with n smallest elements set to zero
     """
     if n <= 0:
         return arr
@@ -29,15 +33,19 @@ def set_n_smallest_to_zero(arr, n):
 
 
 def set_n_closest_to_zero(arr, n):
-    """
-    Sets the n elements closest to zero in an array to zero.
+    """Set the n elements closest to zero in an array to zero.
 
-    Parameters:
-    arr (array-like): Input array of numbers
-    n (int): Number of elements closest to zero to set to zero
+    Parameters
+    ----------
+    arr : array-like
+        Input array of numbers
+    n : int
+        Number of elements closest to zero to set to zero
 
-    Returns:
-    numpy.ndarray: Modified array with n elements closest to zero set to zero
+    Returns
+    -------
+    numpy.ndarray
+        Modified array with n elements closest to zero set to zero
     """
     if n <= 0:
         return arr
@@ -59,18 +67,24 @@ def set_n_closest_to_zero(arr, n):
 
 
 def quantile_score(p, z, q):
-    """
-    Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.
+    """Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.
+
     Implementation based on Fauer et al. (2021): "Flexible and consistent quantile estimation for
     intensity–duration–frequency curves"
 
-    Parameters:
-    p (float): The probability level (between 0 and 1)
-    z (numpy.ndarray): The observed values
-    q (numpy.ndarray): The predicted quantiles
+    Parameters
+    ----------
+    p : float
+        The probability level (between 0 and 1)
+    z : numpy.ndarray
+        The observed values
+    q : numpy.ndarray
+        The predicted quantiles
 
-    Returns:
-    float: The Quantile Score (QS)
+    Returns
+    -------
+    float
+        The Quantile Score (QS)
     """
     u = z - q
     rho = np.where(u > 0, p * u, (p - 1) * u)
@@ -80,21 +94,30 @@ def quantile_score(p, z, q):
 def simulate_correlated_ar1_process(
     n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
 ):
-    """
-    Simulate a correlated AR(1) process with multiple dimensions.
+    """Simulate a correlated AR(1) process with multiple dimensions.
 
-    Parameters:
-    n (int): Number of time steps to simulate
-    phi (float): AR(1) coefficient (persistence parameter)
-    sigma (float): Standard deviation of the noise
-    m (int): Number of dimensions/variables
-    corr_matrix (numpy.ndarray, optional): Correlation matrix between dimensions. Defaults to identity matrix
-    offset (numpy.ndarray, optional): Offset vector for each dimension. Defaults to zero vector
-    smooth (int or str, optional): Number of initial time steps to discard for smoothing. Defaults to "no"
+    Parameters
+    ----------
+    n : int
+        Number of time steps to simulate
+    phi : float
+        AR(1) coefficient (persistence parameter)
+    sigma : float
+        Standard deviation of the noise
+    m : int
+        Number of dimensions/variables
+    corr_matrix : numpy.ndarray, optional
+        Correlation matrix between dimensions. Defaults to identity matrix
+    offset : numpy.ndarray, optional
+        Offset vector for each dimension. Defaults to zero vector
+    smooth : int or str, optional
+        Number of initial time steps to discard for smoothing. Defaults to "no"
 
-    Returns:
-    tuple: (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
-           and actuals is the median of ensembles with added noise
+    Returns
+    -------
+    tuple
+        (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
+        and actuals is the median of ensembles with added noise
     """
     if offset is None:
         offset = np.zeros(m)

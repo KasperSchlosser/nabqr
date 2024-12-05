@@ -49,8 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">NABQR</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">NABQR package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.functions">NABQR.functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.functions">NABQR.functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions.QuantileRegressionLSTM"><code class="docutils literal notranslate"><span class="pre">QuantileRegressionLSTM</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions.calculate_crps"><code class="docutils literal notranslate"><span class="pre">calculate_crps()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions.calculate_qss"><code class="docutils literal notranslate"><span class="pre">calculate_qss()</span></code></a></li>
@@ -72,7 +71,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions.variogram_score_single_observation"><code class="docutils literal notranslate"><span class="pre">variogram_score_single_observation()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.functions_for_TAQR">NABQR.functions_for_TAQR module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.functions_for_TAQR">NABQR.functions_for_TAQR</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions_for_TAQR.one_step_quantile_prediction"><code class="docutils literal notranslate"><span class="pre">one_step_quantile_prediction()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions_for_TAQR.opdatering_final"><code class="docutils literal notranslate"><span class="pre">opdatering_final()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions_for_TAQR.rq_initialiser_final"><code class="docutils literal notranslate"><span class="pre">rq_initialiser_final()</span></code></a></li>
@@ -81,22 +80,21 @@
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.functions_for_TAQR.rq_simplex_final"><code class="docutils literal notranslate"><span class="pre">rq_simplex_final()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.helper_functions">NABQR.helper_functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.helper_functions">NABQR.helper_functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.helper_functions.quantile_score"><code class="docutils literal notranslate"><span class="pre">quantile_score()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.helper_functions.set_n_closest_to_zero"><code class="docutils literal notranslate"><span class="pre">set_n_closest_to_zero()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.helper_functions.set_n_smallest_to_zero"><code class="docutils literal notranslate"><span class="pre">set_n_smallest_to_zero()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.helper_functions.simulate_correlated_ar1_process"><code class="docutils literal notranslate"><span class="pre">simulate_correlated_ar1_process()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.nabqr">NABQR.nabqr module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.nabqr">NABQR.nabqr</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.nabqr.run_nabqr_pipeline"><code class="docutils literal notranslate"><span class="pre">run_nabqr_pipeline()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.visualization">NABQR.visualization module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-NABQR.visualization">NABQR.visualization</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#NABQR.visualization.visualize_results"><code class="docutils literal notranslate"><span class="pre">visualize_results()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NABQR">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -133,40 +131,62 @@
              
   <section id="nabqr-package">
 <h1>NABQR package<a class="headerlink" href="#nabqr-package" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-</section>
 <section id="module-NABQR.functions">
-<span id="nabqr-functions-module"></span><h2>NABQR.functions module<a class="headerlink" href="#module-NABQR.functions" title="Link to this heading"></a></h2>
+<span id="nabqr-functions"></span><h2>NABQR.functions<a class="headerlink" href="#module-NABQR.functions" title="Link to this heading"></a></h2>
+<p>Neural Additive Bayesian Quantile Regression (NABQR) Core Functions</p>
+<p>This module provides the core functionality for NABQR.</p>
+<p>This module includes:
+- Scoring metrics (Variogram, CRPS, QSS)
+- Dataset creation and preprocessing
+- Model definitions and training
+- TAQR (Time-Adaptive Quantile Regression) implementation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="NABQR.functions.QuantileRegressionLSTM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">QuantileRegressionLSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#QuantileRegressionLSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.QuantileRegressionLSTM" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <p>LSTM-based model for quantile regression.</p>
-<p>Parameters:
-n_quantiles (int): Number of quantiles to predict
-units (int): Number of LSTM units
-n_timesteps (int): Number of time steps in input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_quantiles</strong> (<em>int</em>) – Number of quantiles to predict</p></li>
+<li><p><strong>units</strong> (<em>int</em>) – Number of LSTM units</p></li>
+<li><p><strong>n_timesteps</strong> (<em>int</em>) – Number of time steps in input</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="NABQR.functions.QuantileRegressionLSTM.call">
 <span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#QuantileRegressionLSTM.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.QuantileRegressionLSTM.call" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Forward pass of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>tensorflow.Tensor</em>) – Input tensor</p></li>
+<li><p><strong>training</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether in training mode, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Model output</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tensorflow.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NABQR.functions.QuantileRegressionLSTM.from_config">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#QuantileRegressionLSTM.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.QuantileRegressionLSTM.from_config" title="Link to this definition"></a></dt>
-<dd><p>Creates a layer from its config.</p>
-<p>This method is the reverse of <cite>get_config</cite>,
-capable of instantiating the same layer from the config
-dictionary. It does not handle layer connectivity
-(handled by Network), nor weights (handled by <cite>set_weights</cite>).</p>
+<dd><p>Create model from configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config</strong> – A Python dictionary, typically the
-output of get_config.</p>
+<dd class="field-odd"><p><strong>config</strong> (<em>dict</em>) – Model configuration</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A layer instance.</p>
+<dd class="field-even"><p>Model instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#NABQR.functions.QuantileRegressionLSTM" title="NABQR.functions.QuantileRegressionLSTM">QuantileRegressionLSTM</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -174,9 +194,15 @@ output of get_config.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="NABQR.functions.QuantileRegressionLSTM.get_config">
 <span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#QuantileRegressionLSTM.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.QuantileRegressionLSTM.get_config" title="Link to this definition"></a></dt>
-<dd><p>Returns the config of the object.</p>
-<p>An object config is a Python dictionary (serializable)
-containing the information needed to re-instantiate it.</p>
+<dd><p>Get model configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Model configuration</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -185,69 +211,117 @@ containing the information needed to re-instantiate it.</p>
 <dt class="sig sig-object py" id="NABQR.functions.calculate_crps">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">calculate_crps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrected_ensembles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#calculate_crps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.calculate_crps" title="Link to this definition"></a></dt>
 <dd><p>Calculate the Continuous Ranked Probability Score (CRPS).</p>
-<p>Parameters:
-actuals (numpy.ndarray): Actual observations
-corrected_ensembles (numpy.ndarray): Ensemble forecasts</p>
-<p>Returns:
-float: Mean CRPS score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actuals</strong> (<em>numpy.ndarray</em>) – Actual observations</p></li>
+<li><p><strong>corrected_ensembles</strong> (<em>numpy.ndarray</em>) – Ensemble forecasts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mean CRPS score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.calculate_qss">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">calculate_qss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taqr_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#calculate_qss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.calculate_qss" title="Link to this definition"></a></dt>
-<dd><p>Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.</p>
-<p>Parameters:
-actuals (numpy.ndarray): Actual observations
-taqr_results (numpy.ndarray): Predicted quantiles
-quantiles (list): List of quantile levels</p>
-<p>Returns:
-float: Mean QSS score</p>
+<dd><p>Calculate the Quantile Skill Score (QSS).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actuals</strong> (<em>numpy.ndarray</em>) – Actual observations</p></li>
+<li><p><strong>taqr_results</strong> (<em>numpy.ndarray</em>) – TAQR ensemble forecasts</p></li>
+<li><p><strong>quantiles</strong> (<em>array-like</em>) – Quantile levels to evaluate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Quantile Skill Score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.create_dataset_for_lstm">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">create_dataset_for_lstm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#create_dataset_for_lstm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.create_dataset_for_lstm" title="Link to this definition"></a></dt>
 <dd><p>Create a dataset suitable for LSTM training with multiple time steps.</p>
-<p>Parameters:
-X (numpy.ndarray): Input features
-Y (numpy.ndarray): Target values
-time_steps (list): List of time steps to include</p>
-<p>Returns:
-tuple: (X_lstm, Y_lstm) LSTM-ready datasets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Input features</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – Target values</p></li>
+<li><p><strong>time_steps</strong> (<em>list</em>) – List of time steps to include</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(X_lstm, Y_lstm) LSTM-ready datasets</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.legend_without_duplicate_labels">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">legend_without_duplicate_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#legend_without_duplicate_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.legend_without_duplicate_labels" title="Link to this definition"></a></dt>
 <dd><p>Create a legend without duplicate labels.</p>
-<p>Parameters:
-ax (matplotlib.axes.Axes): Axes object to create legend for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – Axes object to create legend for</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.map_range">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">map_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#map_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.map_range" title="Link to this definition"></a></dt>
 <dd><p>Map values from one range to another.</p>
-<p>Parameters:
-values (list): Values to map
-input_start (float): Start of input range
-input_end (float): End of input range
-output_start (float): Start of output range
-output_end (float): End of output range</p>
-<p>Returns:
-numpy.ndarray: Mapped values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<em>list</em>) – Values to map</p></li>
+<li><p><strong>input_start</strong> (<em>float</em>) – Start of input range</p></li>
+<li><p><strong>input_end</strong> (<em>float</em>) – End of input range</p></li>
+<li><p><strong>output_start</strong> (<em>float</em>) – Start of output range</p></li>
+<li><p><strong>output_end</strong> (<em>float</em>) – End of output range</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mapped values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.multi_quantile_skill_score">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">multi_quantile_skill_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#multi_quantile_skill_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.multi_quantile_skill_score" title="Link to this definition"></a></dt>
 <dd><p>Calculate the Quantile Skill Score (QSS) for multiple quantile forecasts.</p>
-<p>Parameters:
-y_true (numpy.ndarray): True observed values
-y_pred (numpy.ndarray): Predicted quantile values
-quantiles (list): Quantile levels between 0 and 1</p>
-<p>Returns:
-numpy.ndarray: QSS for each quantile forecast</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>numpy.ndarray</em>) – True observed values</p></li>
+<li><p><strong>y_pred</strong> (<em>numpy.ndarray</em>) – Predicted quantile values</p></li>
+<li><p><strong>quantiles</strong> (<em>list</em>) – Quantile levels between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>QSS for each quantile forecast</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -256,16 +330,25 @@ numpy.ndarray: QSS for each quantile forecast</p>
 <dd><p>Perform one-step quantile prediction using TAQR.</p>
 <p>This function takes the entire training set and, based on the last n_init observations,
 calculates residuals and coefficients for the quantile regression.</p>
-<p>Parameters:
-X_input (numpy.ndarray/pd.DataFrame): Input features
-Y_input (numpy.ndarray/pd.Series): Target values
-n_init (int): Number of initial observations for warm start
-n_full (int): Total number of observations to process
-quantile (float): Quantile level for prediction (default: 0.5)
-already_correct_size (bool): Whether input data is already correctly sized
-n_in_X (int): Number of observations to include in design matrix</p>
-<p>Returns:
-tuple: (predictions, actual values, coefficients)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_input</strong> (<em>numpy.ndarray</em><em> or </em><em>pd.DataFrame</em>) – Input features</p></li>
+<li><p><strong>Y_input</strong> (<em>numpy.ndarray</em><em> or </em><em>pd.Series</em>) – Target values</p></li>
+<li><p><strong>n_init</strong> (<em>int</em>) – Number of initial observations for warm start</p></li>
+<li><p><strong>n_full</strong> (<em>int</em>) – Total number of observations to process</p></li>
+<li><p><strong>quantile</strong> (<em>float</em><em>, </em><em>optional</em>) – Quantile level for prediction, by default 0.5</p></li>
+<li><p><strong>already_correct_size</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether input data is already correctly sized, by default False</p></li>
+<li><p><strong>n_in_X</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of observations to include in design matrix, by default 5000</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(predictions, actual values, coefficients)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -276,50 +359,75 @@ tuple: (predictions, actual values, coefficients)</p>
 1. Trains an LSTM network to correct the provided ensembles
 2. Runs TAQR algorithm on corrected ensembles to predict observations
 3. Saves results and model artifacts</p>
-<p>Parameters:
-X (pd.DataFrame/numpy.ndarray): Shape (n_samples, n_features) - Ensemble data
-y (pd.Series/numpy.ndarray): Shape (n_samples,) - Observations
-name (str): Dataset identifier
-training_size (float): Proportion of data for training
-epochs (int): Number of LSTM training epochs
-timesteps_for_lstm (list): Time steps for LSTM input
-<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: Additional parameters (e.g., quantiles_taqr)</p>
-<p>Returns:
-None: Results are saved to files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em><em> or </em><em>numpy.ndarray</em>) – Shape (n_samples, n_features) - Ensemble data</p></li>
+<li><p><strong>y</strong> (<em>pd.Series</em><em> or </em><em>numpy.ndarray</em>) – Shape (n_samples,) - Observations</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Dataset identifier, by default “TEST”</p></li>
+<li><p><strong>training_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of data to use for training, by default 0.8</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of training epochs, by default 100</p></li>
+<li><p><strong>timesteps_for_lstm</strong> (<em>list</em><em>, </em><em>optional</em>) – Time steps to use for LSTM input, by default [0, 1, 2, 6, 12, 24, 48]</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results are saved to files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.quantile_loss_3">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">quantile_loss_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#quantile_loss_3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.quantile_loss_3" title="Link to this definition"></a></dt>
 <dd><p>Calculate quantile loss for a single quantile.</p>
-<p>Parameters:
-q (float): Quantile level
-y_true (tensor): True values
-y_pred (tensor): Predicted values</p>
-<p>Returns:
-tensor: Quantile loss</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>float</em>) – Quantile level</p></li>
+<li><p><strong>y_true</strong> (<em>tensorflow.Tensor</em>) – True values</p></li>
+<li><p><strong>y_pred</strong> (<em>tensorflow.Tensor</em>) – Predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Quantile loss value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tensorflow.Tensor</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.quantile_loss_func">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">quantile_loss_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quantiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#quantile_loss_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.quantile_loss_func" title="Link to this definition"></a></dt>
 <dd><p>Create a loss function for multiple quantiles.</p>
-<p>Parameters:
-quantiles (list): List of quantile levels</p>
-<p>Returns:
-function: Loss function for multiple quantiles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>quantiles</strong> (<em>list</em>) – List of quantile levels</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loss function for multiple quantiles</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.remove_straight_line_outliers">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">remove_straight_line_outliers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ensembles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#remove_straight_line_outliers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.remove_straight_line_outliers" title="Link to this definition"></a></dt>
-<dd><p>Removes ensemble members that are perfectly straight lines (constant slope).</p>
+<dd><p>Remove ensemble members that are perfectly straight lines (constant slope).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ensembles</strong> (<em>numpy.ndarray</em>) – 2D array where rows are time steps and columns are ensemble members.</p>
+<dd class="field-odd"><p><strong>ensembles</strong> (<em>numpy.ndarray</em>) – 2D array where rows are time steps and columns are ensemble members</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Filtered ensemble data without straight-line outliers.</p>
+<dd class="field-even"><p>Filtered ensemble data without straight-line outliers</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
@@ -331,390 +439,512 @@ function: Loss function for multiple quantiles</p>
 <dt class="sig sig-object py" id="NABQR.functions.remove_zero_columns">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">remove_zero_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#remove_zero_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.remove_zero_columns" title="Link to this definition"></a></dt>
 <dd><p>Remove columns that contain only zeros from a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Input DataFrame</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with zero columns removed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.remove_zero_columns_numpy">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">remove_zero_columns_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#remove_zero_columns_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.remove_zero_columns_numpy" title="Link to this definition"></a></dt>
 <dd><p>Remove columns that contain only zeros or constant values from a numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>arr</strong> (<em>numpy.ndarray</em>) – Input array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array with zero/constant columns removed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.run_r_script">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">run_r_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#run_r_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.run_r_script" title="Link to this definition"></a></dt>
 <dd><p>Run R script for quantile regression.</p>
-<p>Parameters:
-X_filename (str): Path to X data CSV file
-Y_filename (str): Path to Y data CSV file
-tau (float): Quantile level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_filename</strong> (<em>str</em>) – Path to X data CSV file</p></li>
+<li><p><strong>Y_filename</strong> (<em>str</em>) – Path to Y data CSV file</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Quantile level</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.run_taqr">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">run_taqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corrected_ensembles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_full</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_in_X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#run_taqr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.run_taqr" title="Link to this definition"></a></dt>
 <dd><p>Run TAQR on corrected ensembles.</p>
-<p>Parameters:
-corrected_ensembles (numpy.ndarray): Shape (n_timesteps, n_ensembles)
-actuals (numpy.ndarray): Shape (n_timesteps,)
-quantiles (list): Quantiles to predict
-n_init (int): Number of initial timesteps for warm start
-n_full (int): Total number of timesteps
-n_in_X (int): Number of timesteps in design matrix</p>
-<p>Returns:
-list: TAQR results for each quantile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corrected_ensembles</strong> (<em>numpy.ndarray</em>) – Shape (n_timesteps, n_ensembles)</p></li>
+<li><p><strong>actuals</strong> (<em>numpy.ndarray</em>) – Shape (n_timesteps,)</p></li>
+<li><p><strong>quantiles</strong> (<em>list</em>) – Quantiles to predict</p></li>
+<li><p><strong>n_init</strong> (<em>int</em>) – Number of initial timesteps for warm start</p></li>
+<li><p><strong>n_full</strong> (<em>int</em>) – Total number of timesteps</p></li>
+<li><p><strong>n_in_X</strong> (<em>int</em>) – Number of timesteps in design matrix</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TAQR results for each quantile</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.train_model_lstm">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">train_model_lstm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quantiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_timesteps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#train_model_lstm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.train_model_lstm" title="Link to this definition"></a></dt>
 <dd><p>Train an LSTM model for quantile regression.</p>
-<p>Parameters:
-quantiles (list): List of quantile levels to predict
-epochs (int): Number of training epochs
-lr (float): Learning rate for optimizer
-batch_size (int): Batch size for training
-x (tensor): Training input data
-y (tensor): Training target data
-x_val (tensor): Validation input data
-y_val (tensor): Validation target data
-n_timesteps (int): Number of time steps in input sequence
-data_name (str): Name identifier for saving model artifacts</p>
-<p>Returns:
-tf.keras.Model: Trained LSTM model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quantiles</strong> (<em>list</em>) – List of quantile levels to predict</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Number of training epochs</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate for optimizer</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Batch size for training</p></li>
+<li><p><strong>x</strong> (<em>tensor</em>) – Training input data</p></li>
+<li><p><strong>y</strong> (<em>tensor</em>) – Training target data</p></li>
+<li><p><strong>x_val</strong> (<em>tensor</em>) – Validation input data</p></li>
+<li><p><strong>y_val</strong> (<em>tensor</em>) – Validation target data</p></li>
+<li><p><strong>n_timesteps</strong> (<em>int</em>) – Number of time steps in input sequence</p></li>
+<li><p><strong>data_name</strong> (<em>str</em>) – Name identifier for saving model artifacts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Trained LSTM model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.keras.Model</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.variogram_score_R_multivariate">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">variogram_score_R_multivariate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">36</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#variogram_score_R_multivariate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.variogram_score_R_multivariate" title="Link to this definition"></a></dt>
 <dd><p>Calculate the Variogram score for all observations for the time horizon t1 to t2.</p>
-<p>Parameters:
-x (numpy.ndarray): Ensemble forecast (m x k)
-y (numpy.ndarray): Actual observations (k,)
-p (float): Power parameter
-t1 (int): Start hour (inclusive)
-t2 (int): End hour (exclusive)</p>
-<p>Returns:
-tuple: (score, score_list) Overall score and list of individual scores</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – Ensemble forecast (m x k)</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Actual observations (k,)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Power parameter, by default 0.5</p></li>
+<li><p><strong>t1</strong> (<em>int</em><em>, </em><em>optional</em>) – Start hour (inclusive), by default 12</p></li>
+<li><p><strong>t2</strong> (<em>int</em><em>, </em><em>optional</em>) – End hour (exclusive), by default 36</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(score, score_list) Overall score and list of individual scores</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions.variogram_score_single_observation">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions.</span></span><span class="sig-name descname"><span class="pre">variogram_score_single_observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions.html#variogram_score_single_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions.variogram_score_single_observation" title="Link to this definition"></a></dt>
-<dd><p>Calculate the Variogram score for a given observation.
-Translated from the R code in Energy and AI paper.</p>
-<p>Parameters:
-x (numpy.ndarray): Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon
-y (numpy.ndarray): Actual observations (k,)
-p (float): Power parameter for the variogram score</p>
-<p>Returns:
-float: Variogram score for the observation</p>
+<dd><p>Calculate the Variogram score for a given observation.</p>
+<p>Translated from the R code in Energy and AI paper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – Ensemble forecast (m x k), where m is ensemble size, k is forecast horizon</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Actual observations (k,)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Power parameter for the variogram score, by default 0.5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Variogram score for the observation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-NABQR.functions_for_TAQR">
-<span id="nabqr-functions-for-taqr-module"></span><h2>NABQR.functions_for_TAQR module<a class="headerlink" href="#module-NABQR.functions_for_TAQR" title="Link to this heading"></a></h2>
+<span id="nabqr-functions-for-taqr"></span><h2>NABQR.functions_for_TAQR<a class="headerlink" href="#module-NABQR.functions_for_TAQR" title="Link to this heading"></a></h2>
+<p>Time-Adaptive Quantile Regression (TAQR) Implementation</p>
+<p>This module provides the core implementation of the TAQR algorithm based on
+Møller’s thesis “Modeling of Uncertainty in Wind Energy Forecast” (2006).
+It implements an adaptive simplex algorithm for quantile regression problems.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.one_step_quantile_prediction">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">one_step_quantile_prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_full</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">already_correct_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_in_X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#one_step_quantile_prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.one_step_quantile_prediction" title="Link to this definition"></a></dt>
-<dd><p>As input, this function should take the entire training set, and based on the last n_init observations,
-calculate residuals and coefficients for the quantile regression.</p>
-<p>Parameters:
-X_input (numpy.ndarray): Input features matrix
-Y_input (numpy.ndarray): Target values array
-n_init (int): Number of initial observations for training
-n_full (int): Total number of observations to use
-quantile (float): Quantile level to predict
-already_correct_size (bool): Whether inputs are already correctly sized
-n_in_X (int): Number of observations to use in X</p>
-<p>Returns:
-tuple: (y_pred, y_actual, BETA) Predictions, actual values, and coefficients</p>
+<dd><p>Perform one-step quantile prediction using TAQR.</p>
+<p>Takes the entire training set and, based on the last n_init observations,
+calculates residuals and coefficients for the quantile regression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_input</strong> (<em>numpy.ndarray</em>) – Input features matrix</p></li>
+<li><p><strong>Y_input</strong> (<em>numpy.ndarray</em>) – Target values array</p></li>
+<li><p><strong>n_init</strong> (<em>int</em>) – Number of initial observations for training</p></li>
+<li><p><strong>n_full</strong> (<em>int</em>) – Total number of observations to use</p></li>
+<li><p><strong>quantile</strong> (<em>float</em><em>, </em><em>optional</em>) – Quantile level to predict, by default 0.5</p></li>
+<li><p><strong>already_correct_size</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether inputs are already correctly sized, by default False</p></li>
+<li><p><strong>n_in_X</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of observations to use in X, by default 5000</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(y_pred, y_actual, BETA) Predictions, actual values, and coefficients</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.opdatering_final">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">opdatering_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ih</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ihc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_in_bin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#opdatering_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.opdatering_final" title="Link to this definition"></a></dt>
 <dd><p>Updates the design matrix and related parameters for the adaptive quantile regression.</p>
-<p>Parameters:
-X (numpy.ndarray): Full data matrix
-Xny (numpy.ndarray): Current design matrix
-IX (numpy.ndarray): Index set for design matrix columns
-Iy (int): Index for response variable
-Iex (int): Index for grouping variable
-Ih (numpy.ndarray): Index set for basic variables
-Ihc (numpy.ndarray): Index set for non-basic variables
-beta (numpy.ndarray): Current coefficient estimates
-Rny (numpy.ndarray): Residuals array
-K (int): Number of explanatory variables
-n (int): Current number of observations
-xB (numpy.ndarray): Basic solution
-P (numpy.ndarray): Sign vector
-tau (float): Quantile level
-i (int): Current iteration
-bins (numpy.ndarray): Bin boundaries
-n_in_bin (int): Maximum number of observations per bin</p>
-<p>Returns:
-tuple: Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Full data matrix</p></li>
+<li><p><strong>Xny</strong> (<em>numpy.ndarray</em>) – Current design matrix</p></li>
+<li><p><strong>IX</strong> (<em>numpy.ndarray</em>) – Index set for design matrix columns</p></li>
+<li><p><strong>Iy</strong> (<em>int</em>) – Index for response variable</p></li>
+<li><p><strong>Iex</strong> (<em>int</em>) – Index for grouping variable</p></li>
+<li><p><strong>Ih</strong> (<em>numpy.ndarray</em>) – Index set for basic variables</p></li>
+<li><p><strong>Ihc</strong> (<em>numpy.ndarray</em>) – Index set for non-basic variables</p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Current coefficient estimates</p></li>
+<li><p><strong>Rny</strong> (<em>numpy.ndarray</em>) – Residuals array</p></li>
+<li><p><strong>K</strong> (<em>int</em>) – Number of explanatory variables</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Current number of observations</p></li>
+<li><p><strong>xB</strong> (<em>numpy.ndarray</em>) – Basic solution</p></li>
+<li><p><strong>P</strong> (<em>numpy.ndarray</em>) – Sign vector</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Quantile level</p></li>
+<li><p><strong>i</strong> (<em>int</em>) – Current iteration</p></li>
+<li><p><strong>bins</strong> (<em>numpy.ndarray</em>) – Bin boundaries</p></li>
+<li><p><strong>n_in_bin</strong> (<em>int</em>) – Maximum number of observations per bin</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated parameters (Ih, Ihc, xB, Xny, Rny, P, n, i)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.rq_initialiser_final">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">rq_initialiser_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#rq_initialiser_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.rq_initialiser_final" title="Link to this definition"></a></dt>
-<dd><p>This function initializes the parameters needed for the simplex algorithm based on initial solution.
-If the number of zero elements in r is equal to rank(X), then the work is essentially done.
+<dd><p>Initialize parameters for the simplex algorithm based on initial solution.</p>
+<p>If the number of zero elements in r is equal to rank(X), then the work is essentially done.
 Otherwise, the if statement will find the index set Ih s.t. X(Ih)*beta=y(Ih) and X(Ih)^(-1)*y(Ih)=beta,
 the important note being that X(Ih) has an inverse.
 This is done by using the LU transform of a non-quadratic matrix.</p>
-<p>Parameters:
-X (numpy.ndarray): Design matrix
-r (numpy.ndarray): Initial residuals
-beta (numpy.ndarray): Initial coefficients
-n (int): Number of observations</p>
-<p>Returns:
-tuple: (xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Design matrix</p></li>
+<li><p><strong>r</strong> (<em>numpy.ndarray</em>) – Initial residuals</p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Initial coefficients</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of observations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(xB, Ih, Ihc, P) Basic solution, basic indices, non-basic indices, and sign vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.rq_purify_final">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">rq_purify_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ih</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ihc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yny</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#rq_purify_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.rq_purify_final" title="Link to this definition"></a></dt>
-<dd><p>This function takes care of infeasible points in a simplex formulation
-of a quantile regression problem. The underlying assumption in this
-function is that there are no restrictions in the problem.</p>
-<p>The updating can therefore be done by recalculating all residuals and
-coefficients.</p>
-<p>The assumption is further that we are in a position s.t.
+<dd><p>Handle infeasible points in a simplex formulation of a quantile regression problem.</p>
+<p>The underlying assumption is that there are no restrictions in the problem.
+The updating can therefore be done by recalculating all residuals and coefficients.
+The assumption is further that we are in a position s.t.
 Xny*Xny(Ih)^(-1)*yny(Ih)=yny+residuals
 K=rank(Xny)</p>
-<p>Parameters:
-xB (numpy.ndarray): Basic solution
-Ih (numpy.ndarray): Index set for basic variables
-Ihc (numpy.ndarray): Index set for non-basic variables
-P (numpy.ndarray): Sign vector
-K (int): Number of explanatory variables
-Xny (numpy.ndarray): Design matrix
-yny (numpy.ndarray): Response vector</p>
-<p>Returns:
-tuple: (xB, P) Updated basic solution and sign vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xB</strong> (<em>numpy.ndarray</em>) – Basic solution</p></li>
+<li><p><strong>Ih</strong> (<em>numpy.ndarray</em>) – Index set for basic variables</p></li>
+<li><p><strong>Ihc</strong> (<em>numpy.ndarray</em>) – Index set for non-basic variables</p></li>
+<li><p><strong>P</strong> (<em>numpy.ndarray</em>) – Sign vector</p></li>
+<li><p><strong>K</strong> (<em>int</em>) – Number of explanatory variables</p></li>
+<li><p><strong>Xny</strong> (<em>numpy.ndarray</em>) – Design matrix</p></li>
+<li><p><strong>yny</strong> (<em>numpy.ndarray</em>) – Response vector</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(xB, P) Updated basic solution and sign vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.rq_simplex_alg_final">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">rq_simplex_alg_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ih</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ihc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#rq_simplex_alg_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.rq_simplex_alg_final" title="Link to this definition"></a></dt>
-<dd><p>Performs one step of the simplex algorithm for quantile regression.</p>
-<p>Parameters:
-Ih (numpy.ndarray): Index set for basic variables
-Ihc (numpy.ndarray): Index set for non-basic variables
-n (int): Number of observations
-K (int): Number of explanatory variables
-xB (numpy.ndarray): Basic solution
-Xny (numpy.ndarray): Design matrix
-IH (numpy.ndarray): History of index sets
-P (numpy.ndarray): Sign vector
-tau (float): Quantile level</p>
-<p>Returns:
-tuple: Algorithm parameters for the next iteration</p>
+<dd><p>Perform one step of the simplex algorithm for quantile regression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ih</strong> (<em>numpy.ndarray</em>) – Index set for basic variables</p></li>
+<li><p><strong>Ihc</strong> (<em>numpy.ndarray</em>) – Index set for non-basic variables</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of observations</p></li>
+<li><p><strong>K</strong> (<em>int</em>) – Number of explanatory variables</p></li>
+<li><p><strong>xB</strong> (<em>numpy.ndarray</em>) – Basic solution</p></li>
+<li><p><strong>Xny</strong> (<em>numpy.ndarray</em>) – Design matrix</p></li>
+<li><p><strong>IH</strong> (<em>numpy.ndarray</em>) – History of index sets</p></li>
+<li><p><strong>P</strong> (<em>numpy.ndarray</em>) – Sign vector</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Quantile level</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Algorithm parameters for the next iteration</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.functions_for_TAQR.rq_simplex_final">
 <span class="sig-prename descclassname"><span class="pre">NABQR.functions_for_TAQR.</span></span><span class="sig-name descname"><span class="pre">rq_simplex_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_in_bin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/functions_for_TAQR.html#rq_simplex_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.functions_for_TAQR.rq_simplex_final" title="Link to this definition"></a></dt>
-<dd><p>rq_simplex_final calculates the solution to an adaptive simplex
-algorithm for a quantile regression problem. The function uses
-knowledge of the solution at time t to calculate the solution at
-time t+1.</p>
-<p>The basic idea is that the solution to the quantile regression
+<dd><p>Calculate solution to an adaptive simplex algorithm for quantile regression.</p>
+<p>The function uses knowledge of the solution at time t to calculate the solution at
+time t+1. The basic idea is that the solution to the quantile regression
 problem can be written as:
-y(t) = X(t)’<a href="#id3"><span class="problematic" id="id4">*</span></a>beta + r(t)</p>
+y(t) = X(t)’<a href="#id1"><span class="problematic" id="id2">*</span></a>beta + r(t)</p>
 <p>where beta = X(h)^(-1)*y(h) for some index set h. Simplex algorithm
-is now used to calculate the optimal h at time t+1 based on the solution
-at time t. So basically, the function uses h(t) as a starting guess for
-the simplex algorithm to iterate to h(t+1). This function is described
-in the master thesis “Modelling of Uncertainty in Wind Energy Forecast”
-by Jan K. Moeller, URL <a class="reference external" href="http://www.imm.dtu.dk/pubdb/p.php?4428">http://www.imm.dtu.dk/pubdb/p.php?4428</a>.</p>
-<p>Inputs to the function:
-X        : The design matrix for the linear quantile regression problem,</p>
-<blockquote>
-<div><p>or rather it contains the design matrix, see the three next
-input variables.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>IX<span class="classifier">An index set, it refers to the columns of X which is the</span></dt><dd><p>design matrix.</p>
+is used to calculate the optimal h at time t+1 based on the solution
+at time t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Design matrix for the linear quantile regression problem</p></li>
+<li><p><strong>IX</strong> (<em>numpy.ndarray</em>) – Index set referring to columns of X which is the design matrix</p></li>
+<li><p><strong>Iy</strong> (<em>int</em>) – Index referring to response column in X</p></li>
+<li><p><strong>Iex</strong> (<em>int</em>) – Index referring to grouping variable column in X</p></li>
+<li><p><strong>r</strong> (<em>numpy.ndarray</em>) – Residuals from initial solution</p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Initial solution coefficients</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of elements in r</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Required probability</p></li>
+<li><p><strong>bins</strong> (<em>numpy.ndarray</em>) – Vector defining partition intervals</p></li>
+<li><p><strong>n_in_bin</strong> (<em>int</em>) – Number of elements per bin</p></li>
+</ul>
 </dd>
-<dt>Iy<span class="classifier">One index refers to the matrix X, the column Iy of X contains</span></dt><dd><p>the response corresponding to the explanatory variables in the
-design matrix.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T)
+- N: Number of simplex steps
+- BETA: Solution matrix
+- GAIN: Loss function gain
+- Ld: Number of descent directions
+- Rny: One-step-ahead prediction residuals
+- Mx: Minimum constraint solution
+- Re: Training set reliability
+- CON1: Condition numbers
+- T: Computation times</p>
 </dd>
-<dt>Iex<span class="classifier">An index referring to a grouping variable, refers to a column of</span></dt><dd><p>X this may or may not be a part of the design matrix. This is
-used in the updating algorithm.</p>
-</dd>
-<dt>r<span class="classifier">The residuals from a solution to the quantile regression</span></dt><dd><p>problem based on the first n (see below) elements of X. Such a
-solution could be obtained by the “rq” method in “R”. This is
-only used to initialize the solution.</p>
-</dd>
-<dt>beta<span class="classifier">The solution corresponding to the residuals in the vector r</span></dt><dd><p>above.</p>
-</dd>
-</dl>
-<p>n        : The number of elements in r, i.e., y(1:n) = X(1:n,IX)*beta + r(1:n).
-tau      : The required probability, the solution in r and beta should be</p>
-<blockquote>
-<div><p>based on this probability.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>bins<span class="classifier">A vector defining a partition of an interval that covers all</span></dt><dd><p>elements in X(1:end,Iex). This is used for the updating
-procedure of the design matrix. If bins = [-Inf,Inf], then the
-updating procedure is on a gliding window.</p>
-</dd>
-<dt>n_in_bin<span class="classifier">Number of elements in the bins defined above, this is one</span></dt><dd><p>number, so the number of elements will be the same in each of
-the bins after some time.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
-<p>Remarks:
-This implementation requires that the number of elements in each bin of
-the initial solution is less than or equal to n_in_bin.</p>
-<p>Output:
-N    : The number of simplex steps to get the solutions at time t+1</p>
-<blockquote>
-<div><p>given the solution at time t. This is a vector.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>BETA<span class="classifier">A matrix with each column being the solution to the quantile</span></dt><dd><p>regression problem, corresponding to the matrix X(n+1:end,1:end).</p>
-</dd>
-<dt>GAIN<span class="classifier">This is a parameter used only to analyze the method. It is the</span></dt><dd><p>gain in the loss function in each simplex step. If this is very
-large at some points, it can be taken as a sign of the problem
-being ill-posed.</p>
-</dd>
-<dt>Ld<span class="classifier">This is only used for analyzing the algorithm in its own right. It</span></dt><dd><p>gives the number of descent directions in each simplex step.</p>
-</dd>
-<dt>Rny<span class="classifier">This is the residual of the one-step-ahead prediction of the</span></dt><dd><p>method.</p>
-</dd>
-<dt>Mx<span class="classifier">This is only used for analyzing the algorithm in its own right. It</span></dt><dd><p>is the minimum of the constraint solution to the simplex
-formulation. This should be larger than or equal to zero. If this
-becomes large in absolute value, then it is an indication of the
-algorithm having problems at this point.</p>
-</dd>
-<dt>Re<span class="classifier">The reliability on the training set for each point along the</span></dt><dd><p>solution. If everything is good, then this should follow Theorem
-2.3 in the reference mentioned above. I.e., this is close to tau at
-all points.</p>
-</dd>
-</dl>
-<p>CON1 : The condition number of the matrices X(h(t)).
-T    : The time used for each iteration.</p>
-<p>References:
-[1] J. K. Møller (2006), Modeling of Uncertainty in Wind Energy</p>
-<blockquote>
-<div><p>Forecast. Master Thesis, Informatics and Mathematical Modelling,
-Technical University of Denmark. Available at
-<a class="reference external" href="http://www.imm.dtu.dk/pubdb/p.php?4428">http://www.imm.dtu.dk/pubdb/p.php?4428</a>.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>[2] H. B. Nielsen (1999), Algorithms for Linear Optimization, an</dt><dd><p>Introduction. Course note for the DTU course “Optimization and Data
-Fitting 2”. Available at <a class="reference external" href="http://www.imm.dtu.dk/courses/02611/">http://www.imm.dtu.dk/courses/02611/</a></p>
-</dd>
-</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>J. K. Møller (2006), “Modeling of Uncertainty in Wind Energy
+Forecast”. Master Thesis, Technical University of Denmark.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>H. B. Nielsen (1999), “Algorithms for Linear Optimization, an
+Introduction”. DTU Course Notes.</p>
+</aside>
+</aside>
 </dd></dl>
 
 </section>
 <section id="module-NABQR.helper_functions">
-<span id="nabqr-helper-functions-module"></span><h2>NABQR.helper_functions module<a class="headerlink" href="#module-NABQR.helper_functions" title="Link to this heading"></a></h2>
+<span id="nabqr-helper-functions"></span><h2>NABQR.helper_functions<a class="headerlink" href="#module-NABQR.helper_functions" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.helper_functions.quantile_score">
 <span class="sig-prename descclassname"><span class="pre">NABQR.helper_functions.</span></span><span class="sig-name descname"><span class="pre">quantile_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/helper_functions.html#quantile_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.helper_functions.quantile_score" title="Link to this definition"></a></dt>
-<dd><p>Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.
-Implementation based on Fauer et al. (2021): “Flexible and consistent quantile estimation for
+<dd><p>Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.</p>
+<p>Implementation based on Fauer et al. (2021): “Flexible and consistent quantile estimation for
 intensity–duration–frequency curves”</p>
-<p>Parameters:
-p (float): The probability level (between 0 and 1)
-z (numpy.ndarray): The observed values
-q (numpy.ndarray): The predicted quantiles</p>
-<p>Returns:
-float: The Quantile Score (QS)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>float</em>) – The probability level (between 0 and 1)</p></li>
+<li><p><strong>z</strong> (<em>numpy.ndarray</em>) – The observed values</p></li>
+<li><p><strong>q</strong> (<em>numpy.ndarray</em>) – The predicted quantiles</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Quantile Score (QS)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.helper_functions.set_n_closest_to_zero">
 <span class="sig-prename descclassname"><span class="pre">NABQR.helper_functions.</span></span><span class="sig-name descname"><span class="pre">set_n_closest_to_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/helper_functions.html#set_n_closest_to_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.helper_functions.set_n_closest_to_zero" title="Link to this definition"></a></dt>
-<dd><p>Sets the n elements closest to zero in an array to zero.</p>
-<p>Parameters:
-arr (array-like): Input array of numbers
-n (int): Number of elements closest to zero to set to zero</p>
-<p>Returns:
-numpy.ndarray: Modified array with n elements closest to zero set to zero</p>
+<dd><p>Set the n elements closest to zero in an array to zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>array-like</em>) – Input array of numbers</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of elements closest to zero to set to zero</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified array with n elements closest to zero set to zero</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.helper_functions.set_n_smallest_to_zero">
 <span class="sig-prename descclassname"><span class="pre">NABQR.helper_functions.</span></span><span class="sig-name descname"><span class="pre">set_n_smallest_to_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/helper_functions.html#set_n_smallest_to_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.helper_functions.set_n_smallest_to_zero" title="Link to this definition"></a></dt>
-<dd><p>Sets the n smallest elements in an array to zero.</p>
-<p>Parameters:
-arr (array-like): Input array of numbers
-n (int): Number of smallest elements to set to zero</p>
-<p>Returns:
-numpy.ndarray: Modified array with n smallest elements set to zero</p>
+<dd><p>Set the n smallest elements in an array to zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>array-like</em>) – Input array of numbers</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of smallest elements to set to zero</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified array with n smallest elements set to zero</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.helper_functions.simulate_correlated_ar1_process">
 <span class="sig-prename descclassname"><span class="pre">NABQR.helper_functions.</span></span><span class="sig-name descname"><span class="pre">simulate_correlated_ar1_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'no'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/helper_functions.html#simulate_correlated_ar1_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.helper_functions.simulate_correlated_ar1_process" title="Link to this definition"></a></dt>
 <dd><p>Simulate a correlated AR(1) process with multiple dimensions.</p>
-<p>Parameters:
-n (int): Number of time steps to simulate
-phi (float): AR(1) coefficient (persistence parameter)
-sigma (float): Standard deviation of the noise
-m (int): Number of dimensions/variables
-corr_matrix (numpy.ndarray, optional): Correlation matrix between dimensions. Defaults to identity matrix
-offset (numpy.ndarray, optional): Offset vector for each dimension. Defaults to zero vector
-smooth (int or str, optional): Number of initial time steps to discard for smoothing. Defaults to “no”</p>
-<p>Returns:
-tuple: (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process</p>
-<blockquote>
-<div><p>and actuals is the median of ensembles with added noise</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Number of time steps to simulate</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – AR(1) coefficient (persistence parameter)</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – Standard deviation of the noise</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Number of dimensions/variables</p></li>
+<li><p><strong>corr_matrix</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Correlation matrix between dimensions. Defaults to identity matrix</p></li>
+<li><p><strong>offset</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Offset vector for each dimension. Defaults to zero vector</p></li>
+<li><p><strong>smooth</strong> (<em>int</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Number of initial time steps to discard for smoothing. Defaults to “no”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
+and actuals is the median of ensembles with added noise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-NABQR.nabqr">
-<span id="nabqr-nabqr-module"></span><h2>NABQR.nabqr module<a class="headerlink" href="#module-NABQR.nabqr" title="Link to this heading"></a></h2>
+<span id="nabqr-nabqr"></span><h2>NABQR.nabqr<a class="headerlink" href="#module-NABQR.nabqr" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.nabqr.run_nabqr_pipeline">
 <span class="sig-prename descclassname"><span class="pre">NABQR.nabqr.</span></span><span class="sig-name descname"><span class="pre">run_nabqr_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.995</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NABQR-TEST'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">6,</span> <span class="pre">12,</span> <span class="pre">24]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.01,</span> <span class="pre">0.1,</span> <span class="pre">0.3,</span> <span class="pre">0.5,</span> <span class="pre">0.7,</span> <span class="pre">0.9,</span> <span class="pre">0.99]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/nabqr.html#run_nabqr_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.nabqr.run_nabqr_pipeline" title="Link to this definition"></a></dt>
-<dd><p>Runs the complete NABQR pipeline including data simulation, model training, and visualization.</p>
-<p>Parameters:
-n_samples (int): Number of time steps to simulate
-phi (float): AR(1) coefficient for simulation
-sigma (float): Standard deviation of noise for simulation
-offset_start (int): Start value for offset range
-offset_end (int): End value for offset range
-offset_step (int): Step size for offset range
-correlation (float): Base correlation between dimensions
-data_source (str): Identifier for the data source
-training_size (float): Proportion of data to use for training
-epochs (int): Number of epochs for model training
-timesteps (list): List of timesteps to use for LSTM
-quantiles (list): List of quantiles to predict</p>
-<p>Returns:
-None: Saves results to files and displays visualization</p>
+<dd><p>Run the complete NABQR pipeline including data simulation, model training, and visualization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of time steps to simulate, by default 5000</p></li>
+<li><p><strong>phi</strong> (<em>float</em><em>, </em><em>optional</em>) – AR(1) coefficient for simulation, by default 0.995</p></li>
+<li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>optional</em>) – Standard deviation of noise for simulation, by default 8</p></li>
+<li><p><strong>offset_start</strong> (<em>int</em><em>, </em><em>optional</em>) – Start value for offset range, by default 10</p></li>
+<li><p><strong>offset_end</strong> (<em>int</em><em>, </em><em>optional</em>) – End value for offset range, by default 500</p></li>
+<li><p><strong>offset_step</strong> (<em>int</em><em>, </em><em>optional</em>) – Step size for offset range, by default 15</p></li>
+<li><p><strong>correlation</strong> (<em>float</em><em>, </em><em>optional</em>) – Base correlation between dimensions, by default 0.8</p></li>
+<li><p><strong>data_source</strong> (<em>str</em><em>, </em><em>optional</em>) – Identifier for the data source, by default “NABQR-TEST”</p></li>
+<li><p><strong>training_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Proportion of data to use for training, by default 0.7</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of epochs for model training, by default 100</p></li>
+<li><p><strong>timesteps</strong> (<em>list</em><em>, </em><em>optional</em>) – List of timesteps to use for LSTM, by default [0, 1, 2, 6, 12, 24]</p></li>
+<li><p><strong>quantiles</strong> (<em>list</em><em>, </em><em>optional</em>) – List of quantiles to predict, by default [0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saves results to files and displays visualization</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-NABQR.visualization">
-<span id="nabqr-visualization-module"></span><h2>NABQR.visualization module<a class="headerlink" href="#module-NABQR.visualization" title="Link to this heading"></a></h2>
+<span id="nabqr-visualization"></span><h2>NABQR.visualization<a class="headerlink" href="#module-NABQR.visualization" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="NABQR.visualization.visualize_results">
 <span class="sig-prename descclassname"><span class="pre">NABQR.visualization.</span></span><span class="sig-name descname"><span class="pre">visualize_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_hat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_hat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NABQR/visualization.html#visualize_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NABQR.visualization.visualize_results" title="Link to this definition"></a></dt>
-<dd><p>Creates a visualization of prediction intervals with actual values.</p>
-<p>Parameters:
-y_hat (numpy.ndarray): Actual observed values
-q_hat (numpy.ndarray): Predicted quantiles for different probability levels
-ylabel (str): Label for the y-axis</p>
-<p>Returns:
-None: Saves the plot as ‘TEST_NABQR_taqr_pi_plot.pdf’ and displays it</p>
-<p>Notes:
-- Creates a filled plot showing prediction intervals using a blue gradient
-- Overlays actual values as a black line
-- Automatically adjusts x-axis date formatting</p>
+<dd><p>Create a visualization of prediction intervals with actual values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_hat</strong> (<em>numpy.ndarray</em>) – Actual observed values</p></li>
+<li><p><strong>q_hat</strong> (<em>numpy.ndarray</em>) – Predicted quantiles for different probability levels</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – Label for the y-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saves the plot as ‘TEST_NABQR_taqr_pi_plot.pdf’ and displays it</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Creates a filled plot showing prediction intervals using a blue gradient</p></li>
+<li><p>Overlays actual values as a black line</p></li>
+<li><p>Automatically adjusts x-axis date formatting</p></li>
+</ul>
 </dd></dl>
 
-</section>
-<section id="module-NABQR">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NABQR" title="Link to this heading"></a></h2>
 </section>
 </section>
 

@@ -8,18 +8,24 @@ from matplotlib.cm import ScalarMappable
 
 
 def visualize_results(y_hat, q_hat, ylabel):
-    """
-    Creates a visualization of prediction intervals with actual values.
+    """Create a visualization of prediction intervals with actual values.
 
-    Parameters:
-    y_hat (numpy.ndarray): Actual observed values
-    q_hat (numpy.ndarray): Predicted quantiles for different probability levels
-    ylabel (str): Label for the y-axis
+    Parameters
+    ----------
+    y_hat : numpy.ndarray
+        Actual observed values
+    q_hat : numpy.ndarray
+        Predicted quantiles for different probability levels
+    ylabel : str
+        Label for the y-axis
 
-    Returns:
-    None: Saves the plot as 'TEST_NABQR_taqr_pi_plot.pdf' and displays it
+    Returns
+    -------
+    None
+        Saves the plot as 'TEST_NABQR_taqr_pi_plot.pdf' and displays it
 
-    Notes:
+    Notes
+    -----
     - Creates a filled plot showing prediction intervals using a blue gradient
     - Overlays actual values as a black line
     - Automatically adjusts x-axis date formatting
