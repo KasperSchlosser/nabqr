@@ -1,16 +1,6 @@
 NABQR package
 =============
 
-Submodules
-----------
-
-NABQR.cli module
-----------------
-
-.. automodule:: NABQR.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 NABQR.functions module
 ----------------------
@@ -31,7 +21,7 @@ functions\_for\_TAQR module
 NABQR.helper\_functions module
 ------------------------------
 
-.. automodule:: _build/html/_modules/helper_functions
+.. automodule:: NABQR.helper_functions
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +45,7 @@ NABQR.visualization module
 Module contents
 ---------------
 
-.. automodule:: NABQR
+.. automodule:: nabqr
    :members:
    :undoc-members:
    :show-inheritance:
