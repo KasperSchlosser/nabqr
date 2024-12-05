@@ -15,6 +15,7 @@ nabqr documentation
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Main functions](#main-functions)
+- [Function Descriptions](#function-descriptions)
 - [Test file](#test-file)
 - [Requirements](#requirements)
 ---
@@ -125,6 +126,14 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
   - The total number of timesteps to run TAQR for.
 - **n_in_X**: `int`
   - The number of timesteps to include in the design matrix.
+
+
+## Function Descriptions
+Function documentation is generated automatically using sphinx.
+
+{% include "modules.rst" %}
+
+
 
 
 ## Test file 

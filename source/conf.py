@@ -19,6 +19,21 @@ release = '0.0.1'
 templates_path = ['_templates']
 exclude_patterns = []
 
+# Here we add the automatic documentation generation
+import sys
+import os
+sys.path.insert(0,  os.path.abspath('../NABQR'))
+
+#  add in the extension names to the empty list variable 'extensions'
+extensions = [
+      'sphinx.ext.autodoc', 
+    #   'sphinx.ext.napoleon', 
+      'autodocsumm', 
+      'sphinx.ext.coverage'
+]
+
+# add in this line for the autosummary functionality
+auto_doc_default_options = {'autosummary': True}
 
 
 # -- Options for HTML output -------------------------------------------------
