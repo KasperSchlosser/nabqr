@@ -1,12 +1,10 @@
-<!-- .. nabqr-RTD documentation master file, created by
-   sphinx-quickstart on Wed Nov 20 09:07:39 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive. 
-   
-   THIS FILE IS OUR MAIN DOCUMENTATION FILE FOR READ THE DOCS.
-   
-   -->
+# NABQR
 
+[![PyPI Version](https://img.shields.io/pypi/v/nabqr.svg)](https://pypi.python.org/pypi/nabqr)
+[![Documentation Status](https://readthedocs.org/projects/nabqr/badge/?version=latest)](https://nabqr.readthedocs.io/en/latest/?version=latest)
+
+- **Free software**: MIT license  
+- **Documentation**: [NABQR Documentation](https://nabqr.readthedocs.io)
 
 nabqr documentation
 =======================
@@ -15,16 +13,19 @@ nabqr documentation
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Main functions](#main-functions)
-- [Function Descriptions](#function-descriptions)
 - [Test file](#test-file)
-- [Requirements](#requirements)
+- [Notes](#notes)
+- [Credits](#credits)
 ---
 
 ## Introduction
 
-NABQR is a method for sequential error-corrections tailored for probabilisticwind power forecast in Denmark.
+This section provides an overview of the project. Discuss the goals, purpose, and high-level summary here.
 
-The method is based on the paper: *Sequential methods for Error Corrections in Probabilistic Wind Power Forecasts*, with the following abstract:
+
+NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.
+
+The method is based on the paper: *Sequential methods for Error Corrections in Wind Power Forecasts*, with the following abstract:
 > Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
 > Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
 > This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions. 
@@ -44,7 +45,6 @@ The method is based on the paper: *Sequential methods for Error Corrections in P
 
 ### Installation
 `pip install nabqr`
-
 
 Then see the [Test file](#test-file) section for an example of how to use the package.
 
@@ -128,14 +128,6 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
   - The number of timesteps to include in the design matrix.
 
 
-## Function Descriptions
-Function documentation is generated automatically using sphinx.
-
-{% include "modules.rst" %}
-
-
-
-
 ## Test file 
 Here we introduce the function `simulate_correlated_ar1_process`, which can be used to simulate multivariate AR data. The entire file can be run by 
 ```python
@@ -187,3 +179,7 @@ len(quantiles_taqr): 7
 - Python 3.10 or later
 - icecream, matplotlib, numpy, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras
 - R with the following packages: quantreg, readr
+
+## Credits
+
+This package was partially created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [`audreyr/cookiecutter-pypackage`](https://github.com/audreyr/cookiecutter-pypackage) project template.
