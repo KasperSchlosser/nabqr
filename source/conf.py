@@ -83,7 +83,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
@@ -143,6 +143,18 @@ man_pages = [
      [author], 1)
 ]
 
+sys.path.insert(0,  os.path.abspath('../NABQR'))
+
+#  add in the extension names to the empty list variable 'extensions'
+extensions = [
+      'sphinx.ext.autodoc', 
+    #   'sphinx.ext.napoleon', 
+      'autodocsumm', 
+      'sphinx.ext.coverage'
+]
+
+# add in this line for the autosummary functionality
+auto_doc_default_options = {'autosummary': True}
 
 # -- Options for Texinfo output ----------------------------------------
 
@@ -159,4 +171,6 @@ texinfo_documents = [
 ]
 
 
+extensions = ['myst_parser']
 
+source_suffix = ['.rst', '.md']
