@@ -16,3 +16,4 @@ myst_parser>=4.0.0
 tf_keras>=2.16.0
 autodocsumm>=0.2.14
 nabqr==0.0.12
+sphinx-mdinclude>=0.6.2

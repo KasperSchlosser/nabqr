@@ -39,7 +39,8 @@ extensions = [
     'autodocsumm', 
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
-    'sphinx.ext.autosummary'
+    'sphinx.ext.autosummary',
+    'sphinx_mdinclude'
 ]
 
 # add in this line for the autosummary functionality
