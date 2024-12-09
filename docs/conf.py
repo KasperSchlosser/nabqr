@@ -40,7 +40,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
-    'sphinx_mdinclude'
+    # 'sphinx_mdinclude'
 ]
 
 # add in this line for the autosummary functionality
