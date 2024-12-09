@@ -35,12 +35,12 @@ sys.path.insert(0, os.path.abspath('../src'))
 extensions = [
     'sphinx.ext.autodoc', 
     'sphinx.ext.viewcode', 
-    'myst_parser',
+   # 'myst_parser',
     'autodocsumm', 
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
-    # 'sphinx_mdinclude'
+    'sphinx_mdinclude'
 ]
 
 # add in this line for the autosummary functionality
