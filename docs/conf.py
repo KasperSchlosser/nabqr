@@ -32,11 +32,26 @@ class Mock(MagicMock):
         return MagicMock()
 
 MOCK_MODULES = [
-    'numpy', 'pandas', 'matplotlib', 'matplotlib.pyplot', 'matplotlib.dates',
-    'matplotlib.lines', 'matplotlib.colors', 'matplotlib.cm',
-    'scienceplots', 'tensorflow', 'tensorflow_probability',
-    'properscoring', 'scipy', 'scipy.linalg'
+    'numpy',
+    'numpy.random',
+    'pandas',
+    'matplotlib',
+    'matplotlib.pyplot',
+    'matplotlib.dates',
+    'matplotlib.lines',
+    'matplotlib.colors',
+    'matplotlib.cm',
+    'scienceplots',
+    'tensorflow',
+    'tensorflow_probability',
+    'properscoring',
+    'scipy',
+    'scipy.linalg',
+    'scipy.sparse',
+    'scipy.sparse.linalg',
+    'scipy.stats',
 ]
+
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # Project information
@@ -212,8 +227,8 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 # Autodoc settings
-# autodoc_mock_imports = MOCK_MODULES
-# autodoc_member_order = 'bysource'
-# autoclass_content = 'both'
+autodoc_mock_imports = MOCK_MODULES
+autodoc_member_order = 'bysource'
+autoclass_content = 'both'
 
 
