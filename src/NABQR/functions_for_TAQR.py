@@ -12,7 +12,7 @@ from scipy import linalg as la
 from sklearn.linear_model import QuantileRegressor
 from .helper_functions import *
 import pandas as pd
-
+from .functions import run_r_script
 
 def opdatering_final(
     X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, i, bins, n_in_bin
