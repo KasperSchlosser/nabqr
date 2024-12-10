@@ -209,8 +209,8 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 # Autodoc settings
-autodoc_mock_imports = MOCK_MODULES
-autodoc_member_order = 'bysource'
-autoclass_content = 'both'
+# autodoc_mock_imports = MOCK_MODULES
+# autodoc_member_order = 'bysource'
+# autoclass_content = 'both'
 
 
