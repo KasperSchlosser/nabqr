@@ -13,6 +13,7 @@ docs_require = [
     'sphinx>=4.0.0',
     'sphinx-rtd-theme',
     'sphinx-autodoc-typehints',
+    'autodocsumm',
 ]
 
 setup(
