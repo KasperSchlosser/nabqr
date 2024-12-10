@@ -1,7 +1,7 @@
-NABQR
+nabqr
 =====
 
 .. toctree::
    :maxdepth: 4
 
-   NABQR
+   nabqr

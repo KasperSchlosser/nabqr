@@ -7,9 +7,9 @@ Welcome to NABQR's documentation!
    :caption: Contents:
 
 
+   modules
    readme
    installation
-   modules
    usage
    contributing
    authors

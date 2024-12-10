@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NABQR Package Documentation &mdash; NABQR 0.0.17 documentation</title>
+  <title>nabqr package &mdash; NABQR 0.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -18,9 +18,7 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="NABQR" href="modules.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,29 +41,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">nabqr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">NABQR</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html#id1">nabqr documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NABQR</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">NABQR Package Documentation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#main-pipeline">Main Pipeline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#core-functions">Core Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#taqr-implementation">TAQR Implementation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#helper-functions">Helper Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#nabqr.helper_functions.build_ar1_covariance"><code class="docutils literal notranslate"><span class="pre">build_ar1_covariance()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nabqr.helper_functions.quantile_score"><code class="docutils literal notranslate"><span class="pre">quantile_score()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nabqr.helper_functions.set_n_closest_to_zero"><code class="docutils literal notranslate"><span class="pre">set_n_closest_to_zero()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nabqr.helper_functions.set_n_smallest_to_zero"><code class="docutils literal notranslate"><span class="pre">set_n_smallest_to_zero()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nabqr.helper_functions.simulate_correlated_ar1_process"><code class="docutils literal notranslate"><span class="pre">simulate_correlated_ar1_process()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#package-contents">Package Contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
@@ -86,8 +66,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">NABQR</a></li>
-      <li class="breadcrumb-item active">NABQR Package Documentation</li>
+      <li class="breadcrumb-item active">nabqr package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/NABQR.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -97,22 +76,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="nabqr-package-documentation">
-<h1>NABQR Package Documentation<a class="headerlink" href="#nabqr-package-documentation" title="Link to this heading"></a></h1>
-<p>Neural Adaptive Basis Quantile Regression (NABQR) is a method for sequential error-corrections
-tailored for wind power forecasting in Denmark.</p>
-<section id="main-pipeline">
-<h2>Main Pipeline<a class="headerlink" href="#main-pipeline" title="Link to this heading"></a></h2>
+  <section id="nabqr-package">
+<h1>nabqr package<a class="headerlink" href="#nabqr-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="core-functions">
-<h2>Core Functions<a class="headerlink" href="#core-functions" title="Link to this heading"></a></h2>
+<section id="nabqr-functions-module">
+<h2>nabqr.functions module<a class="headerlink" href="#nabqr-functions-module" title="Link to this heading"></a></h2>
 </section>
-<section id="taqr-implementation">
-<h2>TAQR Implementation<a class="headerlink" href="#taqr-implementation" title="Link to this heading"></a></h2>
+<section id="nabqr-functions-for-taqr-module">
+<h2>nabqr.functions_for_TAQR module<a class="headerlink" href="#nabqr-functions-for-taqr-module" title="Link to this heading"></a></h2>
 </section>
-<section id="helper-functions">
-<h2>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
-<dl class="py function" id="module-nabqr.helper_functions">
+<section id="module-nabqr.helper_functions">
+<span id="nabqr-helper-functions-module"></span><h2>nabqr.helper_functions module<a class="headerlink" href="#module-nabqr.helper_functions" title="Link to this heading"></a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="nabqr.helper_functions.build_ar1_covariance">
 <span class="sig-prename descclassname"><span class="pre">nabqr.helper_functions.</span></span><span class="sig-name descname"><span class="pre">build_ar1_covariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nabqr/helper_functions.html#build_ar1_covariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nabqr.helper_functions.build_ar1_covariance" title="Link to this definition"></a></dt>
 <dd><p>Build the AR(1) covariance matrix for an n-dimensional process.</p>
@@ -224,21 +201,24 @@ and actuals is the median of ensembles with added noise</p>
 </dd></dl>
 
 </section>
-<section id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<section id="nabqr-info-module">
+<h2>nabqr.info module<a class="headerlink" href="#nabqr-info-module" title="Link to this heading"></a></h2>
 </section>
-<section id="package-contents">
-<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
+<section id="nabqr-nabqr-module">
+<h2>nabqr.nabqr module<a class="headerlink" href="#nabqr-nabqr-module" title="Link to this heading"></a></h2>
+</section>
+<section id="nabqr-visualization-module">
+<h2>nabqr.visualization module<a class="headerlink" href="#nabqr-visualization-module" title="Link to this heading"></a></h2>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="modules.html" class="btn btn-neutral float-left" title="NABQR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
