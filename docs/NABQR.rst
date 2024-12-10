@@ -13,7 +13,7 @@ nabqr.functions
 nabqr.functions\_for\_TAQR 
 ---------------------------------
 
-.. automodule:: .functions_for_TAQR
+.. automodule:: src.nabqr.functions_for_TAQR
    :members:
    :undoc-members:
    :show-inheritance:
