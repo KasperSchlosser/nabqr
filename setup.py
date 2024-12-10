@@ -8,6 +8,13 @@ with open("README.md", "r") as f:
 with open("requirements.txt", "r") as f:
     install_requires = f.read().splitlines()
 
+# Documentation requirements
+docs_require = [
+    'sphinx>=4.0.0',
+    'sphinx-rtd-theme',
+    'sphinx-autodoc-typehints',
+]
+
 setup(
     name='nabqr',
     version='0.0.17',
@@ -20,10 +27,12 @@ setup(
     license='MIT',
     keywords=['nabqr', 'energy', 'quantile', 'forecasting'],
     package_dir={'': 'src'},
-    # modules = ['nabqr'],
     packages=find_namespace_packages(where='src'),
     python_requires='>=3.10',
     install_requires=install_requires,
+    extras_require={
+        'docs': docs_require,
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',

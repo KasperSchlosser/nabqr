@@ -5,9 +5,9 @@ Neural Adaptive Basis Quantile Regression (NABQR) is a method for sequential err
 tailored for wind power forecasting in Denmark.
 
 Main Pipeline
-----------------------
+------------
 
-.. automodule:: nabqr.src.nabqr.nabqr
+.. automodule:: nabqr.nabqr
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ Core Functions
 TAQR Implementation
 ------------------
 
-.. automodule:: nabqr.functions_for_TAQR
+.. automodule:: nabqr.functions_for_taqr
    :members:
    :undoc-members:
    :show-inheritance:
