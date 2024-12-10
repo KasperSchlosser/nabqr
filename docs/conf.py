@@ -21,6 +21,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../src'))
 
+sys.path.insert(0, os.path.abspath('../src/nabqr'))
 
 
 
@@ -96,7 +97,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
 
 
 # -- Options for HTML output -------------------------------------------
@@ -115,7 +116,8 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_build/html/_static']
+# html_static_path = ['_build/html/_static']
+
 
 
 # -- Options for HTMLHelp output ---------------------------------------
