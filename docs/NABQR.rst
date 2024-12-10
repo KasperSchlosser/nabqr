@@ -1,43 +1,43 @@
-NABQR package
+nabqr package
 =============
 
 
-NABQR.functions  
+nabqr.functions  
 ----------------------
 
-.. automodule:: NABQR.functions
+.. automodule:: nabqr.functions
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.functions\_for\_TAQR 
+nabqr.functions\_for\_TAQR 
 ---------------------------------
 
-.. automodule:: NABQR.functions_for_TAQR
+.. automodule:: nabqr.functions_for_TAQR
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.helper\_functions  
+nabqr.helper\_functions  
 ------------------------------
 
-.. automodule:: NABQR.helper_functions
+.. automodule:: nabqr.helper_functions
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.nabqr  
+nabqr.nabqr  
 ------------------
 
-.. automodule:: NABQR.nabqr
+.. automodule:: nabqr.nabqr
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.visualization  
+nabqr.visualization  
 --------------------------
 
-.. automodule:: NABQR.visualization
+.. automodule:: nabqr.visualization
    :members:
    :undoc-members:
    :show-inheritance:
