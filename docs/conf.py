@@ -22,6 +22,7 @@ import sys
 from unittest.mock import MagicMock
 
 # Add the src directory to the Python path
+sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../src'))
 
 # Mock imports for packages that might not be installed during doc building
@@ -38,7 +39,12 @@ MOCK_MODULES = [
 ]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
-# -- General configuration ---------------------------------------------
+# Project information
+project = 'NABQR'
+copyright = '2024, Bastian S. Jørgensen'
+author = 'Bastian S. Jørgensen'
+version = '0.0.17'
+release = '0.0.17'
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
@@ -47,15 +53,12 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc', 
-    'sphinx.ext.viewcode', 
-   # 'myst_parser',
-    'autodocsumm', 
-    'sphinx.ext.coverage',
+    'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.coverage',
     'sphinx.ext.autosummary',
-    'sphinx_mdinclude',
-    'sphinx.ext.mathjax'
+    'autodocsumm',
 ]
 
 # add in this line for the autosummary functionality
