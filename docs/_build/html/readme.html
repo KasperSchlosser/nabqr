@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>nabqr documentation &mdash; NABQR  documentation</title>
+  <title>NABQR &mdash; NABQR 0.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/documentation_options.js?v=63b572e7"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -44,10 +44,27 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">nabqr documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NABQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id1">nabqr documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#main-functions">Main functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline">Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-adaptive-quantile-regression">Time-Adaptive Quantile Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-file">Test file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">NABQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
@@ -67,7 +84,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">nabqr documentation</li>
+      <li class="breadcrumb-item active">NABQR</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -77,162 +94,241 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p># NABQR</p>
-<p>[![PyPI Version](<a class="reference external" href="https://img.shields.io/pypi/v/nabqr.svg)](https://pypi.python.org/pypi/nabqr">https://img.shields.io/pypi/v/nabqr.svg)](https://pypi.python.org/pypi/nabqr</a>)
-[![Documentation Status](<a class="reference external" href="https://readthedocs.org/projects/nabqr/badge/?version=latest)](https://nabqr.readthedocs.io/en/latest/">https://readthedocs.org/projects/nabqr/badge/?version=latest)](https://nabqr.readthedocs.io/en/latest/</a>?version=latest)</p>
+  <section id="nabqr">
+<h1>NABQR<a class="headerlink" href="#nabqr" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/nabqr"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/nabqr.svg" />
+</a>
+<a class="reference external image-reference" href="https://nabqr.readthedocs.io/en/latest/?version=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/nabqr/badge/?version=latest" />
+</a>
 <ul class="simple">
 <li><p><strong>Free software</strong>: MIT license</p></li>
-<li><p><strong>Documentation</strong>: [NABQR Documentation](<a class="reference external" href="https://nabqr.readthedocs.io">https://nabqr.readthedocs.io</a>)</p></li>
+<li><p><strong>Documentation</strong>: <a class="reference external" href="https://nabqr.readthedocs.io">NABQR Documentation</a></p></li>
 </ul>
-<section id="nabqr-documentation">
-<h1>nabqr documentation<a class="headerlink" href="#nabqr-documentation" title="Link to this heading"></a></h1>
-<p>## Table of Contents
-- [Introduction](#introduction)
-- [Getting Started](#getting-started)
-- [Main functions](#main-functions)
-- [Test file](#test-file)
-- [Notes](#notes)
-- [Credits](#credits)
-—</p>
-<p>## Introduction</p>
+</section>
+<section id="id1">
+<h1>nabqr documentation<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="xref std std-ref">Introduction</span></p></li>
+<li><p><span class="xref std std-ref">Getting Started</span></p></li>
+<li><p><span class="xref std std-ref">Main functions</span></p></li>
+<li><p><span class="xref std std-ref">Test file</span></p></li>
+<li><p><span class="xref std std-ref">Notes</span></p></li>
+<li><p><span class="xref std std-ref">Credits</span></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>This section provides an overview of the project. Discuss the goals, purpose, and high-level summary here.</p>
 <p>NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark.</p>
-<p>The method is based on the paper: <em>Sequential methods for Error Corrections in Wind Power Forecasts</em>, with the following abstract:
-&gt; Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
-&gt; Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
-&gt; This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions.
-&gt; We introduce Neural Adaptive Basis for (Time-Adaptive) Quantile Regression (NABQR), a novel approach that combines neural networks with Time-Adaptive Quantile Regression (TAQR) to enhance the accuracy of wind power production forecasts.
-&gt; First, NABQR corrects power production ensembles using neural networks.
-&gt; Our study identifies Long Short-Term Memory networks as the most effective architecture for this purpose.
-&gt; Second, TAQR is applied to the corrected ensembles to obtain optimal median predictions along with quantile descriptions of the forecast density.
-&gt; The method achieves substantial improvements upwards of 40% in mean absolute terms. Additionally, we explore the potential of this methodology for applications in energy trading.
-&gt; The method is available as an open-source Python package to support further research and applications in renewable energy forecasting.</p>
+<p>The method is based on the paper: <em>Sequential methods for Error Corrections in Wind Power Forecasts</em>, with the following abstract:</p>
+<blockquote>
+<div><p>Wind power is a rapidly expanding renewable energy source and is set for continued growth in the future. This leads to parts of the world relying on an inherently volatile energy source.
+Efficient operation of such systems requires reliable probabilistic forecasts of future wind power production to better manage the uncertainty that wind power bring. These forecasts provide critical insights, enabling wind power producers and system operators to maximize the economic benefits of renewable energy while minimizing its potential adverse effects on grid stability.
+This study introduces sequential methods to correct errors in power production forecasts derived from numerical weather predictions.
+We introduce Neural Adaptive Basis for (Time-Adaptive) Quantile Regression (NABQR), a novel approach that combines neural networks with Time-Adaptive Quantile Regression (TAQR) to enhance the accuracy of wind power production forecasts.
+First, NABQR corrects power production ensembles using neural networks.
+Our study identifies Long Short-Term Memory networks as the most effective architecture for this purpose.
+Second, TAQR is applied to the corrected ensembles to obtain optimal median predictions along with quantile descriptions of the forecast density.
+The method achieves substantial improvements upwards of 40% in mean absolute terms. Additionally, we explore the potential of this methodology for applications in energy trading.
+The method is available as an open-source Python package to support further research and applications in renewable energy forecasting.</p>
+</div></blockquote>
 <ul class="simple">
 <li><p><strong>Free software</strong>: MIT license</p></li>
-<li><p><strong>Documentation</strong>: [NABQR Documentation](<a class="reference external" href="https://nabqr.readthedocs.io">https://nabqr.readthedocs.io</a>)</p></li>
+<li><p><strong>Documentation</strong>: <a class="reference external" href="https://nabqr.readthedocs.io">NABQR Documentation</a></p></li>
 </ul>
-<p>—</p>
-<p>## Getting Started</p>
-<p>### Installation
-<cite>pip install nabqr</cite></p>
-<p>Then see the [Test file](#test-file) section for an example of how to use the package.</p>
-<p>## Main functions
-### Pipeline
-<code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">import</span> <span class="pre">nabqr</span> <span class="pre">as</span> <span class="pre">nq</span>
-<span class="pre">`</span></code></p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
-nq.pipeline(X, y,</p>
-<blockquote>
-<div><p>name = “TEST”,
-training_size = 0.8,
-epochs = 100,
-timesteps_for_lstm = [0,1,2,6,12,24,48],
-<a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs)</p>
-</div></blockquote>
-<p><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a></p>
+</section>
+<hr class="docutils" />
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nabqr</span></code></p>
+<p>Then see the <span class="xref std std-ref">Test file</span> section for an example of how to use the package.</p>
+</section>
+</section>
+<section id="main-functions">
+<h2>Main functions<a class="headerlink" href="#main-functions" title="Link to this heading"></a></h2>
+<section id="pipeline">
+<h3>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nabqr</span> <span class="k">as</span> <span class="nn">nq</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nq</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+             <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;TEST&quot;</span><span class="p">,</span>
+             <span class="n">training_size</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+             <span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+             <span class="n">timesteps_for_lstm</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">48</span><span class="p">],</span>
+             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The pipeline trains a LSTM network to correct the provided ensembles.
 It then runs the TAQR algorithm on the corrected ensembles to predict the observations, y, on the test set.</p>
 <p><strong>Parameters:</strong></p>
 <ul class="simple">
-<li><p><strong>X</strong>: <cite>pd.DataFrame</cite> or <cite>np.array</cite>, shape <cite>(n_timesteps, n_ensembles)</cite>
-- The ensemble data to be corrected.</p></li>
-<li><p><strong>y</strong>: <cite>pd.Series</cite> or <cite>np.array</cite>, shape <cite>(n_timesteps,)</cite>
-- The observations to be predicted.</p></li>
-<li><p><strong>name</strong>: <cite>str</cite>
-- The name of the dataset.</p></li>
-<li><p><strong>training_size</strong>: <cite>float</cite>
-- The proportion of the data to be used for training.</p></li>
-<li><p><strong>epochs</strong>: <cite>int</cite>
-- The number of epochs to train the LSTM.</p></li>
-<li><p><strong>timesteps_for_lstm</strong>: <cite>list</cite>
-- The timesteps to use for the LSTM.</p></li>
+<li><p><strong>X</strong>: <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_timesteps,</span> <span class="pre">n_ensembles)</span></code></p>
+<ul>
+<li><p>The ensemble data to be corrected.</p></li>
+</ul>
+</li>
+<li><p><strong>y</strong>: <code class="docutils literal notranslate"><span class="pre">pd.Series</span></code> or <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_timesteps,)</span></code></p>
+<ul>
+<li><p>The observations to be predicted.</p></li>
+</ul>
+</li>
+<li><p><strong>name</strong>: <code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+<ul>
+<li><p>The name of the dataset.</p></li>
+</ul>
+</li>
+<li><p><strong>training_size</strong>: <code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+<ul>
+<li><p>The proportion of the data to be used for training.</p></li>
+</ul>
+</li>
+<li><p><strong>epochs</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<ul>
+<li><p>The number of epochs to train the LSTM.</p></li>
+</ul>
+</li>
+<li><p><strong>timesteps_for_lstm</strong>: <code class="docutils literal notranslate"><span class="pre">list</span></code></p>
+<ul>
+<li><p>The timesteps to use for the LSTM.</p></li>
+</ul>
+</li>
 </ul>
 <p><strong>Output:</strong>
 The pipeline saves the following outputs:</p>
 <ul class="simple">
-<li><p><strong>Actuals Out of Sample</strong>:
-- File: <cite>results_&lt;today&gt;_&lt;data_source&gt;_actuals_out_of_sample.npy</cite>
-- Description: Contains the actual observations that are out of the sample.</p></li>
-<li><p><strong>Corrected Ensembles</strong>:
-- File: <cite>results_&lt;today&gt;_&lt;data_source&gt;_corrected_ensembles.csv</cite>
-- Description: A CSV file containing the corrected ensemble data.</p></li>
-<li><p><strong>TAQR Results</strong>:
-- File: <cite>results_&lt;today&gt;_&lt;data_source&gt;_taqr_results.npy</cite>
-- Description: Contains the results from the Time-Adaptive Quantile Regression (TAQR).</p></li>
+<li><p><strong>Actuals Out of Sample</strong>:</p>
+<ul>
+<li><p>File: <code class="docutils literal notranslate"><span class="pre">results_&amp;lt;today&amp;gt;_&amp;lt;data_source&amp;gt;_actuals_out_of_sample.npy</span></code></p></li>
+<li><p>Description: Contains the actual observations that are out of the sample.</p></li>
 </ul>
-<p>Note: <cite>&lt;today&gt;</cite> is the current date in the format <cite>YYYY-MM-DD</cite>, and <cite>&lt;data_source&gt;</cite> is the name of the dataset.</p>
+</li>
+<li><p><strong>Corrected Ensembles</strong>:</p>
+<ul>
+<li><p>File: <code class="docutils literal notranslate"><span class="pre">results_&amp;lt;today&amp;gt;_&amp;lt;data_source&amp;gt;_corrected_ensembles.csv</span></code></p></li>
+<li><p>Description: A CSV file containing the corrected ensemble data.</p></li>
+</ul>
+</li>
+<li><p><strong>TAQR Results</strong>:</p>
+<ul>
+<li><p>File: <code class="docutils literal notranslate"><span class="pre">results_&amp;lt;today&amp;gt;_&amp;lt;data_source&amp;gt;_taqr_results.npy</span></code></p></li>
+<li><p>Description: Contains the results from the Time-Adaptive Quantile Regression (TAQR).</p></li>
+</ul>
+</li>
+</ul>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">&amp;lt;today&amp;gt;</span></code> is the current date in the format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>, and <code class="docutils literal notranslate"><span class="pre">&amp;lt;data_source&amp;gt;</span></code> is the name of the dataset.</p>
 <p>The pipeline trains a LSTM network to correct the provided ensembles and then runs the TAQR algorithm on the corrected ensembles to predict the observations, y, on the test set.</p>
-<p>### Time-Adaptive Quantile Regression
-nabqr also include a time-adaptive quantile regression model, which can be used independently of the pipeline.
-<code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">import</span> <span class="pre">nabqr</span> <span class="pre">as</span> <span class="pre">nq</span>
-<span class="pre">`</span></code>
-<code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">nq.run_taqr(corrected_ensembles,</span> <span class="pre">actuals,</span> <span class="pre">quantiles,</span> <span class="pre">n_init,</span> <span class="pre">n_full,</span> <span class="pre">n_in_X)</span>
-<span class="pre">`</span></code></p>
-<p>Run TAQR on <cite>corrected_ensembles</cite>, <cite>X</cite>, based on the actual values, <cite>y</cite>, and the given quantiles.</p>
+</section>
+<section id="time-adaptive-quantile-regression">
+<h3>Time-Adaptive Quantile Regression<a class="headerlink" href="#time-adaptive-quantile-regression" title="Link to this heading"></a></h3>
+<p>nabqr also include a time-adaptive quantile regression model, which can be used independently of the pipeline.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nabqr</span> <span class="k">as</span> <span class="nn">nq</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nq</span><span class="o">.</span><span class="n">run_taqr</span><span class="p">(</span><span class="n">corrected_ensembles</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">quantiles</span><span class="p">,</span> <span class="n">n_init</span><span class="p">,</span> <span class="n">n_full</span><span class="p">,</span> <span class="n">n_in_X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run TAQR on <code class="docutils literal notranslate"><span class="pre">corrected_ensembles</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code>, based on the actual values, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and the given quantiles.</p>
 <p><strong>Parameters:</strong></p>
 <ul class="simple">
-<li><p><strong>corrected_ensembles</strong>: <cite>np.array</cite>, shape <cite>(n_timesteps, n_ensembles)</cite>
-- The corrected ensembles to run TAQR on.</p></li>
-<li><p><strong>actuals</strong>: <cite>np.array</cite>, shape <cite>(n_timesteps,)</cite>
-- The actual values to run TAQR on.</p></li>
-<li><p><strong>quantiles</strong>: <cite>list</cite>
-- The quantiles to run TAQR for.</p></li>
-<li><p><strong>n_init</strong>: <cite>int</cite>
-- The number of initial timesteps to use for warm start.</p></li>
-<li><p><strong>n_full</strong>: <cite>int</cite>
-- The total number of timesteps to run TAQR for.</p></li>
-<li><p><strong>n_in_X</strong>: <cite>int</cite>
-- The number of timesteps to include in the design matrix.</p></li>
+<li><p><strong>corrected_ensembles</strong>: <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_timesteps,</span> <span class="pre">n_ensembles)</span></code></p>
+<ul>
+<li><p>The corrected ensembles to run TAQR on.</p></li>
 </ul>
-<p>## Test file
-Here we introduce the function <cite>simulate_correlated_ar1_process</cite>, which can be used to simulate multivariate AR data. The entire file can be run by
-<code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">import</span> <span class="pre">nabqr</span> <span class="pre">as</span> <span class="pre">nq</span>
-<span class="pre">nq.run_nabqr_pipeline()</span>
-<span class="pre">`</span></code></p>
-<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a>python
-from functions import *
-from helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
-import matplotlib.pyplot as plt
-import scienceplots
-plt.style.use([‘no-latex’])
-from visualization import visualize_results
-import datetime as dt
-# Example usage. Inputs:
-offset = np.arange(10, 500, 15)
-m = len(offset)
-corr_matrix = 0.8 * np.ones((m, m)) + 0.2 * np.eye(m)  # Example correlation structure
-data_source = “NABQR-TEST”
-today = dt.datetime.today().strftime(‘%Y-%m-%d’)</p>
-<p>simulated_data, actuals = simulate_correlated_ar1_process(5000, 0.995, 8, m, corr_matrix, offset, smooth=5)</p>
-<p># Optional kwargs
-quantiles_taqr = [0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99]</p>
-<p>pipeline(simulated_data, actuals, data_source, training_size = 0.7, epochs = 100, timesteps_for_lstm = [0,1,2,6,12,24], quantiles_taqr = quantiles_taqr)</p>
-<p># Import old results
-CE = pd.read_csv(f”results_{today}_{data_source}_corrected_ensembles.csv”)
-y_hat = np.load(f”results_{today}_{data_source}_actuals_out_of_sample.npy”)
-q_hat = np.load(f”results_{today}_{data_source}_taqr_results.npy”)</p>
-<p># Call the visualization function
-visualize_results(y_hat, q_hat, “NABQR-TEST example”)
-<a href="#id15"><span class="problematic" id="id16">``</span></a><a href="#id17"><span class="problematic" id="id18">`</span></a></p>
-<p>We provide an overview of the shapes for this test file:
-<code class="docutils literal notranslate"><span class="pre">`python</span>
-<span class="pre">simulated_data.shape:</span> <span class="pre">(5000,</span> <span class="pre">33)</span>
-<span class="pre">actuals.shape:</span> <span class="pre">(5000,)</span>
-<span class="pre">m:</span> <span class="pre">33</span>
-<span class="pre">len(quantiles_taqr):</span> <span class="pre">7</span>
-<span class="pre">`</span></code></p>
-<p>## Requirements</p>
+</li>
+<li><p><strong>actuals</strong>: <code class="docutils literal notranslate"><span class="pre">np.array</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_timesteps,)</span></code></p>
+<ul>
+<li><p>The actual values to run TAQR on.</p></li>
+</ul>
+</li>
+<li><p><strong>quantiles</strong>: <code class="docutils literal notranslate"><span class="pre">list</span></code></p>
+<ul>
+<li><p>The quantiles to run TAQR for.</p></li>
+</ul>
+</li>
+<li><p><strong>n_init</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<ul>
+<li><p>The number of initial timesteps to use for warm start.</p></li>
+</ul>
+</li>
+<li><p><strong>n_full</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<ul>
+<li><p>The total number of timesteps to run TAQR for.</p></li>
+</ul>
+</li>
+<li><p><strong>n_in_X</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+<ul>
+<li><p>The number of timesteps to include in the design matrix.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="test-file">
+<h2>Test file<a class="headerlink" href="#test-file" title="Link to this heading"></a></h2>
+<p>Here we introduce the function <code class="docutils literal notranslate"><span class="pre">simulate_correlated_ar1_process</span></code>, which can be used to simulate multivariate AR data. The entire file can be run by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nabqr</span> <span class="k">as</span> <span class="nn">nq</span>
+<span class="n">nq</span><span class="o">.</span><span class="n">run_nabqr_pipeline</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="kn">from</span> <span class="nn">nabqr</span> <span class="kn">import</span> <span class="n">run_nabqr_pipeline</span>
+<span class="n">run_nabqr_pipeline</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">helper_functions</span> <span class="kn">import</span> <span class="n">simulate_correlated_ar1_process</span><span class="p">,</span> <span class="n">set_n_closest_to_zero</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scienceplots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">([</span><span class="s1">&#39;no-latex&#39;</span><span class="p">])</span>
+<span class="kn">from</span> <span class="nn">visualization</span> <span class="kn">import</span> <span class="n">visualize_results</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="c1"># Example usage. Inputs:</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+<span class="n">corr_matrix</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># Example correlation structure</span>
+<span class="n">data_source</span> <span class="o">=</span> <span class="s2">&quot;NABQR-TEST&quot;</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">simulated_data</span><span class="p">,</span> <span class="n">actuals</span> <span class="o">=</span> <span class="n">simulate_correlated_ar1_process</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mf">0.995</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">corr_matrix</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Optional kwargs</span>
+<span class="n">quantiles_taqr</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">]</span>
+
+<span class="n">pipeline</span><span class="p">(</span><span class="n">simulated_data</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span> <span class="n">training_size</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">timesteps_for_lstm</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">24</span><span class="p">],</span> <span class="n">quantiles_taqr</span> <span class="o">=</span> <span class="n">quantiles_taqr</span><span class="p">)</span>
+
+<span class="c1"># Import old results</span>
+<span class="n">CE</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results_</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">data_source</span><span class="si">}</span><span class="s2">_corrected_ensembles.csv&quot;</span><span class="p">)</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results_</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">data_source</span><span class="si">}</span><span class="s2">_actuals_out_of_sample.npy&quot;</span><span class="p">)</span>
+<span class="n">q_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results_</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">data_source</span><span class="si">}</span><span class="s2">_taqr_results.npy&quot;</span><span class="p">)</span>
+
+<span class="c1"># Call the visualization function</span>
+<span class="n">visualize_results</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">q_hat</span><span class="p">,</span> <span class="s2">&quot;NABQR-TEST example&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We provide an overview of the shapes for this test file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simulated_data</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span> <span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">33</span><span class="p">)</span>
+<span class="n">actuals</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span> <span class="p">(</span><span class="mi">5000</span><span class="p">,)</span>
+<span class="n">m</span><span class="p">:</span> <span class="mi">33</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">quantiles_taqr</span><span class="p">):</span> <span class="mi">7</span>
+</pre></div>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Python 3.10 or later</p></li>
 <li><p>icecream, matplotlib, numpy, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras</p></li>
 <li><p>R with the following packages: quantreg, readr</p></li>
 </ul>
-<p>## Credits</p>
-<p>This package was partially created with [Cookiecutter](<a class="reference external" href="https://github.com/audreyr/cookiecutter">https://github.com/audreyr/cookiecutter</a>) and the [<cite>audreyr/cookiecutter-pypackage</cite>](<a class="reference external" href="https://github.com/audreyr/cookiecutter-pypackage">https://github.com/audreyr/cookiecutter-pypackage</a>) project template.</p>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading"></a></h2>
+<p>This package was partially created with <a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a> and the <span class="raw-html-md"><a href="https://github.com/audreyr/cookiecutter-pypackage"><code class="docutils literal"><span class="pre">audreyr/cookiecutter-pypackage</span></code></a></span> project template.</p>
+</section>
 </section>
 
 

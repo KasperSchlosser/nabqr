@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NABQR.helper_functions &mdash; NABQR  documentation</title>
+  <title>nabqr.helper_functions &mdash; NABQR  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -41,10 +41,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">nabqr documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">NABQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html#id1">nabqr documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">NABQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
@@ -65,7 +66,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">NABQR.helper_functions</li>
+      <li class="breadcrumb-item active">nabqr.helper_functions</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,13 +75,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for NABQR.helper_functions</h1><div class="highlight"><pre>
+  <h1>Source code for nabqr.helper_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
 <div class="viewcode-block" id="set_n_smallest_to_zero">
-<a class="viewcode-back" href="../../NABQR.html#NABQR.helper_functions.set_n_smallest_to_zero">[docs]</a>
+<a class="viewcode-back" href="../../NABQR.html#nabqr.helper_functions.set_n_smallest_to_zero">[docs]</a>
 <span class="k">def</span> <span class="nf">set_n_smallest_to_zero</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the n smallest elements in an array to zero.</span>
 
@@ -113,7 +114,7 @@
 
 
 <div class="viewcode-block" id="set_n_closest_to_zero">
-<a class="viewcode-back" href="../../NABQR.html#NABQR.helper_functions.set_n_closest_to_zero">[docs]</a>
+<a class="viewcode-back" href="../../NABQR.html#nabqr.helper_functions.set_n_closest_to_zero">[docs]</a>
 <span class="k">def</span> <span class="nf">set_n_closest_to_zero</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the n elements closest to zero in an array to zero.</span>
 
@@ -150,7 +151,7 @@
 
 
 <div class="viewcode-block" id="quantile_score">
-<a class="viewcode-back" href="../../NABQR.html#NABQR.helper_functions.quantile_score">[docs]</a>
+<a class="viewcode-back" href="../../NABQR.html#nabqr.helper_functions.quantile_score">[docs]</a>
 <span class="k">def</span> <span class="nf">quantile_score</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.</span>
 
@@ -177,8 +178,106 @@
 
 
 
+<span class="c1"># def simulate_correlated_ar1_process(</span>
+<span class="c1">#     n, phi, sigma, m, corr_matrix=None, offset=None, smooth=&quot;no&quot;</span>
+<span class="c1"># ):</span>
+<span class="c1">#     &quot;&quot;&quot;Simulate a correlated AR(1) process with multiple dimensions.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     n : int</span>
+<span class="c1">#         Number of time steps to simulate</span>
+<span class="c1">#     phi : float</span>
+<span class="c1">#         AR(1) coefficient (persistence parameter)</span>
+<span class="c1">#     sigma : float</span>
+<span class="c1">#         Standard deviation of the noise</span>
+<span class="c1">#     m : int</span>
+<span class="c1">#         Number of dimensions/variables</span>
+<span class="c1">#     corr_matrix : numpy.ndarray, optional</span>
+<span class="c1">#         Correlation matrix between dimensions. Defaults to identity matrix</span>
+<span class="c1">#     offset : numpy.ndarray, optional</span>
+<span class="c1">#         Offset vector for each dimension. Defaults to zero vector</span>
+<span class="c1">#     smooth : int or str, optional</span>
+<span class="c1">#         Number of initial time steps to discard for smoothing. Defaults to &quot;no&quot;</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     tuple</span>
+<span class="c1">#         (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process</span>
+<span class="c1">#         and actuals is the median of ensembles with added noise</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     if offset is None:</span>
+<span class="c1">#         offset = np.zeros(m)</span>
+<span class="c1">#     elif len(offset) != m:</span>
+<span class="c1">#         raise ValueError(&quot;Length of offset array must be equal to m&quot;)</span>
+
+<span class="c1">#     if corr_matrix is None:</span>
+<span class="c1">#         corr_matrix = np.eye(m)  # Default to no correlation (identity matrix)</span>
+<span class="c1">#     elif corr_matrix.shape != (m, m):</span>
+<span class="c1">#         raise ValueError(&quot;Correlation matrix must be of shape (m, m)&quot;)</span>
+
+<span class="c1">#     # Ensure the covariance matrix is positive semi-definite</span>
+<span class="c1">#     cov_matrix = sigma**2 * corr_matrix</span>
+<span class="c1">#     L = np.linalg.cholesky(cov_matrix)  # Cholesky decomposition</span>
+
+<span class="c1">#     if isinstance(smooth, int):</span>
+<span class="c1">#         ensembles = np.zeros((n + smooth, m))</span>
+<span class="c1">#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)</span>
+
+<span class="c1">#         for t in range(1, n + smooth):</span>
+<span class="c1">#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)</span>
+<span class="c1">#             ensembles[t] = phi * ensembles[t - 1] + noise</span>
+
+<span class="c1">#         # Extract the smoothed part of the ensembles</span>
+<span class="c1">#         smoothed_ensembles = ensembles[smooth:]</span>
+
+<span class="c1">#         return smoothed_ensembles + offset, np.median(</span>
+<span class="c1">#             smoothed_ensembles + offset, axis=1</span>
+<span class="c1">#         ) + np.random.normal(0, sigma / 2, n)</span>
+
+<span class="c1">#     else:</span>
+<span class="c1">#         ensembles = np.zeros((n, m))</span>
+<span class="c1">#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)</span>
+
+<span class="c1">#         for t in range(1, n):</span>
+<span class="c1">#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)</span>
+<span class="c1">#             ensembles[t] = phi * ensembles[t - 1] + noise</span>
+<span class="c1">#         return ensembles + offset, np.median(</span>
+<span class="c1">#             ensembles + offset, axis=1</span>
+<span class="c1">#         ) + np.random.normal(0, sigma / 2, n)</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="build_ar1_covariance">
+<a class="viewcode-back" href="../../NABQR.html#nabqr.helper_functions.build_ar1_covariance">[docs]</a>
+<span class="k">def</span> <span class="nf">build_ar1_covariance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build the AR(1) covariance matrix for an n-dimensional process.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Dimension of the covariance matrix.</span>
+<span class="sd">    rho : float</span>
+<span class="sd">        AR(1) correlation parameter (the AR coefficient).</span>
+<span class="sd">    sigma : float, optional</span>
+<span class="sd">        Standard deviation of the noise (innovation), defaults to 1.0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        The AR(1) covariance matrix of shape (n, n), with elements sigma^2 * rho^(|i-j|).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span>
+    <span class="n">cov_matrix</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span><span class="o">**</span><span class="n">abs_diff</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cov_matrix</span></div>
+
+
 <div class="viewcode-block" id="simulate_correlated_ar1_process">
-<a class="viewcode-back" href="../../NABQR.html#NABQR.helper_functions.simulate_correlated_ar1_process">[docs]</a>
+<a class="viewcode-back" href="../../NABQR.html#nabqr.helper_functions.simulate_correlated_ar1_process">[docs]</a>
 <span class="k">def</span> <span class="nf">simulate_correlated_ar1_process</span><span class="p">(</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">corr_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="s2">&quot;no&quot;</span>
 <span class="p">):</span>
@@ -189,13 +288,14 @@
 <span class="sd">    n : int</span>
 <span class="sd">        Number of time steps to simulate</span>
 <span class="sd">    phi : float</span>
-<span class="sd">        AR(1) coefficient (persistence parameter)</span>
+<span class="sd">        AR(1) coefficient (persistence parameter, often denoted rho)</span>
 <span class="sd">    sigma : float</span>
 <span class="sd">        Standard deviation of the noise</span>
 <span class="sd">    m : int</span>
 <span class="sd">        Number of dimensions/variables</span>
 <span class="sd">    corr_matrix : numpy.ndarray, optional</span>
-<span class="sd">        Correlation matrix between dimensions. Defaults to identity matrix</span>
+<span class="sd">        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance </span>
+<span class="sd">        structure will be generated.</span>
 <span class="sd">    offset : numpy.ndarray, optional</span>
 <span class="sd">        Offset vector for each dimension. Defaults to zero vector</span>
 <span class="sd">    smooth : int or str, optional</span>
@@ -212,14 +312,15 @@
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">!=</span> <span class="n">m</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of offset array must be equal to m&quot;</span><span class="p">)</span>
 
+    <span class="c1"># If no correlation matrix is provided, build the AR(1) covariance matrix</span>
     <span class="k">if</span> <span class="n">corr_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># Default to no correlation (identity matrix)</span>
+        <span class="c1"># Here we assume phi is the AR(1) correlation parameter</span>
+        <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">build_ar1_covariance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Correlation matrix must be of shape (m, m)&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Ensure the covariance matrix is positive semi-definite</span>
-    <span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">corr_matrix</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">cov_matrix</span><span class="p">)</span>  <span class="c1"># Cholesky decomposition</span>
+    <span class="c1"># cov_matrix now is already constructed (AR(1) type if corr_matrix was None)</span>
+    <span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">corr_matrix</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smooth</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">ensembles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
@@ -232,10 +333,11 @@
         <span class="c1"># Extract the smoothed part of the ensembles</span>
         <span class="n">smoothed_ensembles</span> <span class="o">=</span> <span class="n">ensembles</span><span class="p">[</span><span class="n">smooth</span><span class="p">:]</span>
 
-        <span class="k">return</span> <span class="n">smoothed_ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span>
-            <span class="n">smoothed_ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">smoothed_ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">smoothed_ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ensembles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
         <span class="n">ensembles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">cov_matrix</span><span class="p">)</span>
@@ -243,9 +345,11 @@
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
             <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">cov_matrix</span><span class="p">)</span>
             <span class="n">ensembles</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">ensembles</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">noise</span>
-        <span class="k">return</span> <span class="n">ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span>
-            <span class="n">ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ensembles</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 

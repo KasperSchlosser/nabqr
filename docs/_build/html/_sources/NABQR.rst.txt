@@ -1,43 +1,53 @@
-NABQR package
-=============
+NABQR Package Documentation
+========================
 
+Neural Adaptive Basis Quantile Regression (NABQR) is a method for sequential error-corrections 
+tailored for wind power forecasting in Denmark.
 
-NABQR.functions  
-----------------------
+Main Pipeline
+------------
 
-.. automodule:: NABQR.functions
+.. automodule:: nabqr.nabqr
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.functions\_for\_TAQR 
----------------------------------
+Core Functions
+-------------
 
-.. automodule:: NABQR.functions_for_TAQR
+.. automodule:: nabqr.functions
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.helper\_functions  
-------------------------------
-
-.. automodule:: NABQR.helper_functions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-NABQR.nabqr  
+TAQR Implementation
 ------------------
 
-.. automodule:: NABQR.nabqr
+.. automodule:: nabqr.functions_for_taqr
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.visualization  
---------------------------
+Helper Functions
+--------------
 
-.. automodule:: NABQR.visualization
+.. automodule:: nabqr.helper_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Visualization
+------------
+
+.. automodule:: nabqr.visualization
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Package Contents
+--------------
+
+.. automodule:: nabqr
    :members:
    :undoc-members:
    :show-inheritance:
