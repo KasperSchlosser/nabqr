@@ -20,7 +20,8 @@ setup(
     license='MIT',
     keywords=['nabqr', 'energy', 'quantile', 'forecasting'],
     package_dir={'': 'src'},
-    packages=find_namespace_packages(where='src'),
+    
+    packages=find_namespace_packages(where='src/nabqr'),
     python_requires='>=3.10',
     install_requires=install_requires,
     classifiers=[
