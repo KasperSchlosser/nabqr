@@ -132,7 +132,10 @@ Run TAQR on `corrected_ensembles`, `X`, based on the actual values, `y`, and the
 Here we introduce the function `simulate_correlated_ar1_process`, which can be used to simulate multivariate AR data. The entire file can be run by 
 ```python
 import nabqr as nq
-nq.run_nabqr_pipeline()
+nq.run_nabqr_pipeline(...)
+# or
+from nabqr import run_nabqr_pipeline
+run_nabqr_pipeline(...)
 ```
 
 ```python

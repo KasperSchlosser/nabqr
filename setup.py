@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -10,20 +10,19 @@ with open("requirements.txt", "r") as f:
 
 setup(
     name='nabqr',
-    packages=[],
-    version='0.0.12',
+    version='0.0.17',
     description='NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark',
-    author='Bastian S. Jørgensen',
-    license='MIT',
-    author_email='bassc@dtu.dk',
-    url='https://github.com/bast0320/nabqr',
-    keywords=['nabqr', 'energy', 'quantile', 'forecasting', ],
-    package_dir={'': 'NABQR'},
-    py_modules=['nabqr', 'visualization', 'functions', 'helper_functions', 'functions_for_TAQR'],
-    python_requires='>=3.10',
-    install_requires=install_requires,
     long_description=long_description,
     long_description_content_type="text/markdown",
+    author='Bastian S. Jørgensen',
+    author_email='bassc@dtu.dk',
+    url='https://github.com/bast0320/nabqr',
+    license='MIT',
+    keywords=['nabqr', 'energy', 'quantile', 'forecasting'],
+    package_dir={'': 'src'},
+    packages=find_namespace_packages(where='src'),
+    python_requires='>=3.10',
+    install_requires=install_requires,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',

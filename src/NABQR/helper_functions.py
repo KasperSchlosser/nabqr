@@ -91,6 +91,101 @@ def quantile_score(p, z, q):
     return np.sum(rho)
 
 
+# def simulate_correlated_ar1_process(
+#     n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
+# ):
+#     """Simulate a correlated AR(1) process with multiple dimensions.
+
+#     Parameters
+#     ----------
+#     n : int
+#         Number of time steps to simulate
+#     phi : float
+#         AR(1) coefficient (persistence parameter)
+#     sigma : float
+#         Standard deviation of the noise
+#     m : int
+#         Number of dimensions/variables
+#     corr_matrix : numpy.ndarray, optional
+#         Correlation matrix between dimensions. Defaults to identity matrix
+#     offset : numpy.ndarray, optional
+#         Offset vector for each dimension. Defaults to zero vector
+#     smooth : int or str, optional
+#         Number of initial time steps to discard for smoothing. Defaults to "no"
+
+#     Returns
+#     -------
+#     tuple
+#         (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
+#         and actuals is the median of ensembles with added noise
+#     """
+#     if offset is None:
+#         offset = np.zeros(m)
+#     elif len(offset) != m:
+#         raise ValueError("Length of offset array must be equal to m")
+
+#     if corr_matrix is None:
+#         corr_matrix = np.eye(m)  # Default to no correlation (identity matrix)
+#     elif corr_matrix.shape != (m, m):
+#         raise ValueError("Correlation matrix must be of shape (m, m)")
+
+#     # Ensure the covariance matrix is positive semi-definite
+#     cov_matrix = sigma**2 * corr_matrix
+#     L = np.linalg.cholesky(cov_matrix)  # Cholesky decomposition
+
+#     if isinstance(smooth, int):
+#         ensembles = np.zeros((n + smooth, m))
+#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+
+#         for t in range(1, n + smooth):
+#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+#             ensembles[t] = phi * ensembles[t - 1] + noise
+
+#         # Extract the smoothed part of the ensembles
+#         smoothed_ensembles = ensembles[smooth:]
+
+#         return smoothed_ensembles + offset, np.median(
+#             smoothed_ensembles + offset, axis=1
+#         ) + np.random.normal(0, sigma / 2, n)
+
+#     else:
+#         ensembles = np.zeros((n, m))
+#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+
+#         for t in range(1, n):
+#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+#             ensembles[t] = phi * ensembles[t - 1] + noise
+#         return ensembles + offset, np.median(
+#             ensembles + offset, axis=1
+#         ) + np.random.normal(0, sigma / 2, n)
+
+
+import numpy as np
+import pandas as pd
+
+def build_ar1_covariance(n, rho, sigma=1.0):
+    """
+    Build the AR(1) covariance matrix for an n-dimensional process.
+
+    Parameters
+    ----------
+    n : int
+        Dimension of the covariance matrix.
+    rho : float
+        AR(1) correlation parameter (the AR coefficient).
+    sigma : float, optional
+        Standard deviation of the noise (innovation), defaults to 1.0.
+
+    Returns
+    -------
+    numpy.ndarray
+        The AR(1) covariance matrix of shape (n, n), with elements sigma^2 * rho^(|i-j|).
+    """
+    indices = np.arange(n)
+    abs_diff = np.abs(np.subtract.outer(indices, indices))
+    cov_matrix = (sigma**2) * (rho**abs_diff)
+    return cov_matrix
+
 def simulate_correlated_ar1_process(
     n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
 ):
@@ -101,13 +196,14 @@ def simulate_correlated_ar1_process(
     n : int
         Number of time steps to simulate
     phi : float
-        AR(1) coefficient (persistence parameter)
+        AR(1) coefficient (persistence parameter, often denoted rho)
     sigma : float
         Standard deviation of the noise
     m : int
         Number of dimensions/variables
     corr_matrix : numpy.ndarray, optional
-        Correlation matrix between dimensions. Defaults to identity matrix
+        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance 
+        structure will be generated.
     offset : numpy.ndarray, optional
         Offset vector for each dimension. Defaults to zero vector
     smooth : int or str, optional
@@ -124,14 +220,15 @@ def simulate_correlated_ar1_process(
     elif len(offset) != m:
         raise ValueError("Length of offset array must be equal to m")
 
+    # If no correlation matrix is provided, build the AR(1) covariance matrix
     if corr_matrix is None:
-        corr_matrix = np.eye(m)  # Default to no correlation (identity matrix)
+        # Here we assume phi is the AR(1) correlation parameter
+        corr_matrix = build_ar1_covariance(m, phi, sigma)
     elif corr_matrix.shape != (m, m):
         raise ValueError("Correlation matrix must be of shape (m, m)")
 
-    # Ensure the covariance matrix is positive semi-definite
-    cov_matrix = sigma**2 * corr_matrix
-    L = np.linalg.cholesky(cov_matrix)  # Cholesky decomposition
+    # cov_matrix now is already constructed (AR(1) type if corr_matrix was None)
+    cov_matrix = corr_matrix
 
     if isinstance(smooth, int):
         ensembles = np.zeros((n + smooth, m))
@@ -144,10 +241,11 @@ def simulate_correlated_ar1_process(
         # Extract the smoothed part of the ensembles
         smoothed_ensembles = ensembles[smooth:]
 
-        return smoothed_ensembles + offset, np.median(
-            smoothed_ensembles + offset, axis=1
-        ) + np.random.normal(0, sigma / 2, n)
-
+        return (
+            smoothed_ensembles + offset,
+            np.median(smoothed_ensembles + offset, axis=1)
+            + np.random.normal(0, sigma / 2, n)
+        )
     else:
         ensembles = np.zeros((n, m))
         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
@@ -155,6 +253,8 @@ def simulate_correlated_ar1_process(
         for t in range(1, n):
             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
             ensembles[t] = phi * ensembles[t - 1] + noise
-        return ensembles + offset, np.median(
-            ensembles + offset, axis=1
-        ) + np.random.normal(0, sigma / 2, n)
+
+        return (
+            ensembles + offset,
+            np.median(ensembles + offset, axis=1) + np.random.normal(0, sigma / 2, n)
+        )

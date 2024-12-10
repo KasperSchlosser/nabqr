@@ -67,6 +67,14 @@ def run_nabqr_pipeline(
         n_samples, phi, sigma, m, corr_matrix, offset, smooth=5
     )
 
+    # Plot the simulated data
+    plt.figure(figsize=(10, 6))
+    plt.plot(simulated_data)
+    plt.title("Simulated Data")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.show()
+
     # Run the pipeline
     pipeline(
         simulated_data,
