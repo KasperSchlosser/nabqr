@@ -6,20 +6,28 @@ Welcome to NABQR's ReadTheDocs!
    :maxdepth: 2
    :caption: Contents:
 
-
-   nabqr
    readme
    installation
    usage
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference:
+
+   nabqr
+   modules
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Development:
+
    contributing
    authors
    history
-   modules
-
-
-
 
 Indices and tables
 ==================
+
 * :ref:`genindex`
 * :ref:`modindex`
+* :ref:`search`
