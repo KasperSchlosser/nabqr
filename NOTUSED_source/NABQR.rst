@@ -1,61 +1,46 @@
-NABQR package
-=============
+Documentation for all modules in nabqr package
+==============================================
 
-Submodules
-----------
 
-NABQR.cli module
-----------------
+nabqr.nabqr module
+------------------------------------
 
-.. automodule:: NABQR.cli
+.. automodule:: nabqr.nabqr
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.functions module
-----------------------
+nabqr.functions module
+------------------------------------
 
-.. automodule:: NABQR.functions
+.. automodule:: nabqr.functions
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.functions\_for\_TAQR module
----------------------------------
+nabqr.functions\_for\_TAQR module
+------------------------------------
 
-.. automodule:: NABQR.functions_for_TAQR
+.. automodule:: nabqr.functions_for_TAQR
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.helper\_functions module
-------------------------------
+nabqr.helper\_functions module
+------------------------------------
 
-.. automodule:: NABQR.helper_functions
+.. automodule:: nabqr.helper_functions
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.nabqr module
-------------------
 
-.. automodule:: NABQR.nabqr
+
+nabqr.visualization module
+------------------------------------
+
+.. automodule:: nabqr.visualization
    :members:
    :undoc-members:
    :show-inheritance:
 
-NABQR.visualization module
---------------------------
-
-.. automodule:: NABQR.visualization
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: NABQR
-   :members:
-   :undoc-members:
-   :show-inheritance:

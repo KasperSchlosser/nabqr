@@ -1,10 +1,12 @@
-Welcome to NABQR's ReadTheDocs!
-======================================
+Welcome to NABQR's Documentation
+==============================
 
+NABQR (Neural Adaptive Basis Quantile Regression) is a method for sequential error-corrections 
+tailored for wind power forecasting in Denmark.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: User Guide
 
    readme
    installation
@@ -12,14 +14,13 @@ Welcome to NABQR's ReadTheDocs!
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference:
+   :caption: API Documentation
 
-   nabqr
    modules
 
 .. toctree::
    :maxdepth: 1
-   :caption: Development:
+   :caption: Development
 
    contributing
    authors
