@@ -7,7 +7,7 @@ To use NABQR in a project::
     import nabqr as nq
 
 
-Minimal example:
+Minimal example::
 
     nq.pipeline(
         X_data,
