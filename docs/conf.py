@@ -58,8 +58,8 @@ sys.path.insert(0, os.path.abspath('../src'))
 project = 'NABQR'
 copyright = '2024, Bastian S. Jørgensen'
 author = 'Bastian S. Jørgensen'
-version = '0.0.17'
-release = '0.0.17'
+version = '0.0.21'
+release = '0.0.21'
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #

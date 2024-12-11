@@ -10,9 +10,9 @@ import scipy.linalg
 import time
 from scipy import linalg as la
 from sklearn.linear_model import QuantileRegressor
-from nabqr.helper_functions import *
+from .helper_functions import *
 import pandas as pd
-from nabqr.functions import run_r_script
+
 
 def opdatering_final(
     X, Xny, IX, Iy, Iex, Ih, Ihc, beta, Rny, K, n, xB, P, tau, i, bins, n_in_bin
@@ -225,7 +225,16 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
     tuple
         Algorithm parameters for the next iteration
     """
-    invXh = la.inv(Xny[Ih, :])
+    try:
+        invXh = la.inv(Xny[Ih, :])
+    except np.linalg.LinAlgError:
+        print("Error in inverse matrix operation. Trying pseudo-inverse instead.")
+        invXh = np.linalg.pinv(Xny[Ih, :])
+    except Exception as e:
+        raise ValueError("Error in inverse matrix operation. Most likely cause of error: "
+                         "- Increase length of data, "
+                         "- Ensure no collinearity in the data") from e
+    
     cB = (P < 0) + P * tau
     cC = np.vstack((np.ones(K) * tau, np.ones(K) * (1 - tau))).reshape(-1, 1)
     IB2 = -np.dot(P.reshape(-1, 1) * (np.ones((1, K)) * Xny[Ihc, :]), invXh)
@@ -552,7 +561,11 @@ def one_step_quantile_prediction(
         converters={0: ignore_first_column},
     )
 
-    beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
+    if len(beta_init) < p:
+        beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
+    else:
+        beta_init = beta_init[:p]
+
     r_init = set_n_closest_to_zero(arr=residuals, n=len(beta_init))
 
     X_full = np.column_stack((X, Y, np.random.choice([1, 1], size=n_full)))
@@ -572,3 +585,46 @@ def one_step_quantile_prediction(
     y_actual = Y_input[(n_input) : (n_full - 2)]
 
     return y_pred, y_actual, BETA
+
+
+def run_r_script(X_filename, Y_filename, tau):
+    """Run R script for quantile regression.
+
+    Parameters
+    ----------
+    X_filename : str
+        Path to X data CSV file
+    Y_filename : str
+        Path to Y data CSV file
+    tau : float
+        Quantile level
+    """
+    import subprocess
+
+    process = subprocess.Popen(
+        ["R", "--vanilla"], stdin=subprocess.PIPE, stdout=subprocess.PIPE
+    )
+
+    r_script = f"""
+    options(warn = -1)
+    library(onlineforecast) 
+    library(quantreg) 
+    library(readr) 
+    X_full <- read_csv("{X_filename}", col_names = FALSE, show_col_types = FALSE) 
+    y <- read_csv("{Y_filename}", col_names = "y", show_col_types = FALSE) 
+    X_full <- X_full[1:500,]
+    data <- cbind(X_full, y[1:500,1]) 
+    predictor_cols <- colnames(X_full) 
+    formula_string <- paste("y ~ 0+", paste(predictor_cols, collapse = " + ")) 
+    formula <- as.formula(formula_string) 
+    rq_fit <- rq(formula, tau = {tau}, data = data ) 
+    write.csv(rq_fit$coefficients, "rq_fit_coefficients.csv") 
+    write.csv(rq_fit$residuals, "rq_fit_residuals.csv") 
+    """
+
+    for line in r_script.strip().split("\n"):
+        process.stdin.write(line.encode("utf-8") + b"\n")
+
+    process.stdin.close()
+    process.stdout.read()
+    process.terminate()

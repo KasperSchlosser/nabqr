@@ -54,8 +54,16 @@ def run_nabqr_pipeline(
 
     Returns
     -------
-    None
-        Saves results to files and displays visualization
+    tuple
+        A tuple containing:
+        - corrected_ensembles: pd.DataFrame
+            The corrected ensemble predictions.
+        - taqr_results: list of numpy.ndarray
+            The TAQR results.
+        - actuals_output: list of numpy.ndarray
+            The actual output values.
+        - BETA_output: list of numpy.ndarray
+            The BETA parameters.
     """
     # Generate offset and correlation matrix
     offset = np.arange(offset_start, offset_end, offset_step)
@@ -76,7 +84,7 @@ def run_nabqr_pipeline(
     plt.show()
 
     # Run the pipeline
-    pipeline(
+    corrected_ensembles, taqr_results, actuals_output, BETA_output = pipeline(
         simulated_data,
         actuals,
         data_source,
@@ -96,6 +104,8 @@ def run_nabqr_pipeline(
 
     # Visualize results
     visualize_results(y_hat, q_hat, f"{data_source} example")
+
+    return corrected_ensembles, taqr_results, actuals_output, BETA_output
 
 
 if __name__ == "__main__":

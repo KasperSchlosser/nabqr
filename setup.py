@@ -14,11 +14,12 @@ docs_require = [
     'sphinx-rtd-theme',
     'sphinx-autodoc-typehints',
     'autodocsumm',
+    'sphinx_mdinclude',
 ]
 
 setup(
     name='nabqr',
-    version='0.0.17',
+    version='0.0.22',
     description='NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark',
     long_description=long_description,
     long_description_content_type="text/markdown",

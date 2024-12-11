@@ -694,7 +694,10 @@ def one_step_quantile_prediction(
     )
     print("p: ", p)
 
-    beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
+    if len(beta_init) < p:
+        beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
+    else:
+        beta_init = beta_init[:p]
     r_init = set_n_closest_to_zero(arr=residuals, n=len(beta_init))
     print(sum(r_init == 0), "r_init zeros")
 
@@ -752,9 +755,11 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
         actuals[np.isnan(actuals)] = 0
 
     taqr_results = []
+    actuals_output = []
+    BETA_output = []
     for q in quantiles:
         print("running TAQR for quantile: ", q)
-        y_pred, _, _ = one_step_quantile_prediction(
+        y_pred, y_actuals, BETA_q = one_step_quantile_prediction(
             corrected_ensembles,
             actuals,
             n_init=n_init,
@@ -764,8 +769,10 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
             n_in_X=n_in_X,
         )
         taqr_results.append(y_pred)
+        actuals_output.append(y_actuals)
+        BETA_output.append(BETA_q)
 
-    return taqr_results
+    return taqr_results, actuals_output, BETA_output
 
 
 def pipeline(
@@ -803,8 +810,16 @@ def pipeline(
 
     Returns
     -------
-    None
-        Results are saved to files
+    tuple
+        A tuple containing:
+        - corrected_ensembles: pd.DataFrame
+            The corrected ensemble predictions.
+        - taqr_results: list of numpy.ndarray
+            The TAQR results.
+        - actuals_output: list of numpy.ndarray
+            The actual output values.
+        - BETA_output: list of numpy.ndarray
+            The BETA parameters.
     """
     # Data preparation
     actuals = y
@@ -905,7 +920,7 @@ def pipeline(
     corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
 
     n_in_X = n_init
-    taqr_results = run_taqr(
+    taqr_results, actuals_output, BETA_output = run_taqr(
         corrected_ensembles,
         actuals_out_of_sample,
         quantiles_taqr,
@@ -931,3 +946,7 @@ def pipeline(
         f"results_{today}_{data_source}_corrected_ensembles.csv"
     )
     np.save(f"results_{today}_{data_source}_taqr_results.npy", taqr_results)
+    np.save(f"results_{today}_{data_source}_actuals_output.npy", actuals_output)
+    np.save(f"results_{today}_{data_source}_BETA_output.npy", BETA_output)
+
+    return corrected_ensembles, taqr_results, actuals_output, BETA_output
