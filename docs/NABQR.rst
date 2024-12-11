@@ -1,5 +1,5 @@
-nabqr package documentation for all modules
-======================================
+Documentation for all modules in nabqr package
+==============================================
 
 
 nabqr.nabqr module

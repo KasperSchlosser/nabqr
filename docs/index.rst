@@ -1,9 +1,9 @@
-Welcome to NABQR's documentation!
+Welcome to NABQR's ReadTheDocs!
 ======================================
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
 
@@ -14,6 +14,7 @@ Welcome to NABQR's documentation!
    contributing
    authors
    history
+   modules
 
 
 
