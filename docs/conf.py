@@ -26,33 +26,33 @@ sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../src'))
 
 # Mock imports for packages that might not be installed during doc building
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-        return MagicMock()
+# class Mock(MagicMock):
+#     @classmethod
+#     def __getattr__(cls, name):
+#         return MagicMock()
 
-MOCK_MODULES = [
-    'numpy',
-    'numpy.random',
-    'pandas',
-    'matplotlib',
-    'matplotlib.pyplot',
-    'matplotlib.dates',
-    'matplotlib.lines',
-    'matplotlib.colors',
-    'matplotlib.cm',
-    'scienceplots',
-    'tensorflow',
-    'tensorflow_probability',
-    'properscoring',
-    'scipy',
-    'scipy.linalg',
-    'scipy.sparse',
-    'scipy.sparse.linalg',
-    'scipy.stats',
-]
+# MOCK_MODULES = [
+#     'numpy',
+#     'numpy.random',
+#     'pandas',
+#     'matplotlib',
+#     'matplotlib.pyplot',
+#     'matplotlib.dates',
+#     'matplotlib.lines',
+#     'matplotlib.colors',
+#     'matplotlib.cm',
+#     'scienceplots',
+#     'tensorflow',
+#     'tensorflow_probability',
+#     'properscoring',
+#     'scipy',
+#     'scipy.linalg',
+#     'scipy.sparse',
+#     'scipy.sparse.linalg',
+#     'scipy.stats',
+# ]
 
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+# sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # Project information
 project = 'NABQR'
@@ -227,8 +227,8 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 # Autodoc settings
-autodoc_mock_imports = MOCK_MODULES
-autodoc_member_order = 'bysource'
-autoclass_content = 'both'
+# autodoc_mock_imports = MOCK_MODULES
+# autodoc_member_order = 'bysource'
+# autoclass_content = 'both'
 
 
