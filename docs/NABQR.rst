@@ -1,8 +1,9 @@
 nabqr package documentation for all modules
-=============
+======================================
+
 
 nabqr.nabqr module
-------------------
+------------------------------------
 
 .. automodule:: nabqr.nabqr
    :members:
@@ -10,7 +11,7 @@ nabqr.nabqr module
    :show-inheritance:
 
 nabqr.functions module
-----------------------
+------------------------------------
 
 .. automodule:: nabqr.functions
    :members:
@@ -18,7 +19,7 @@ nabqr.functions module
    :show-inheritance:
 
 nabqr.functions\_for\_TAQR module
----------------------------------
+------------------------------------
 
 .. automodule:: nabqr.functions_for_TAQR
    :members:
@@ -26,7 +27,7 @@ nabqr.functions\_for\_TAQR module
    :show-inheritance:
 
 nabqr.helper\_functions module
-------------------------------
+------------------------------------
 
 .. automodule:: nabqr.helper_functions
    :members:
@@ -36,7 +37,7 @@ nabqr.helper\_functions module
 
 
 nabqr.visualization module
---------------------------
+------------------------------------
 
 .. automodule:: nabqr.visualization
    :members:

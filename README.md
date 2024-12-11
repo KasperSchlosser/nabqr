@@ -6,7 +6,7 @@
 - **Free software**: MIT license  
 - **Documentation**: [NABQR Documentation](https://nabqr.readthedocs.io)
 
-nabqr documentation
+README for nabqr package
 =======================
 
 ## Table of Contents
