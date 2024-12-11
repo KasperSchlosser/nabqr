@@ -82,7 +82,7 @@ It then runs the TAQR algorithm on the corrected ensembles to predict the observ
   - The timesteps to use for the LSTM.
 
 **Output:**
-The pipeline saves the following outputs:
+The pipeline saves the following outputs and also returns them:
 
 - **Actuals Out of Sample**: 
   - File: `results_<today>_<data_source>_actuals_out_of_sample.npy`
@@ -95,6 +95,10 @@ The pipeline saves the following outputs:
 - **TAQR Results**: 
   - File: `results_<today>_<data_source>_taqr_results.npy`
   - Description: Contains the results from the Time-Adaptive Quantile Regression (TAQR).
+
+- **BETA Parameters**: 
+  - File: `results_<today>_<data_source>_BETA_output.npy`
+  - Description: Contains the BETA parameters from the TAQR.
 
 Note: `<today>` is the current date in the format `YYYY-MM-DD`, and `<data_source>` is the name of the dataset.
 
