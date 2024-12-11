@@ -8,6 +8,7 @@ Welcome to NABQR's documentation!
 
 
    modules
+   nabqr
    readme
    installation
    usage

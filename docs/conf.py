@@ -73,6 +73,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.coverage',
     'sphinx.ext.autosummary',
+    'sphinx_mdinclude',
     'autodocsumm',
 ]
 

@@ -1,6 +1,13 @@
 nabqr package documentation for all modules
 =============
 
+nabqr.nabqr module
+------------------
+
+.. automodule:: nabqr.nabqr
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 nabqr.functions module
 ----------------------
@@ -28,14 +35,6 @@ nabqr.helper\_functions module
 
 
 
-nabqr.nabqr module
-------------------
-
-.. automodule:: nabqr.nabqr
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 nabqr.visualization module
 --------------------------
 
@@ -44,10 +43,3 @@ nabqr.visualization module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
-
-.. automodule:: nabqr
-   :members:
-   :undoc-members:
-   :show-inheritance:
