@@ -30,10 +30,13 @@ def visualize_results(y_hat, q_hat, ylabel):
     - Overlays actual values as a black line
     - Automatically adjusts x-axis date formatting
     """
-    y_hat = pd.Series(y_hat.flatten())
-    taqr_results_corrected_plot = pd.DataFrame(np.array(q_hat).T, index=y_hat.index)
-    m = taqr_results_corrected_plot.shape[1]  # ensemble size
+    y_hat = pd.Series(np.array(y_hat).flatten())
+    try:
+        taqr_results_corrected_plot = pd.DataFrame(np.array(q_hat).T, index=y_hat.index)
+    except:
+        taqr_results_corrected_plot = pd.DataFrame(np.array(q_hat), index=y_hat.index)
 
+    m = taqr_results_corrected_plot.shape[1]  # ensemble size
     # Define the color gradient from dark blue to light cyan
     colors = [
         (173 / 255, 217 / 255, 229 / 255),

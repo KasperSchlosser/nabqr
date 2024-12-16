@@ -163,6 +163,7 @@ def quantile_score(p, z, q):
 import numpy as np
 import pandas as pd
 
+
 def build_ar1_covariance(n, rho, sigma=1.0):
     """
     Build the AR(1) covariance matrix for an n-dimensional process.
@@ -186,6 +187,7 @@ def build_ar1_covariance(n, rho, sigma=1.0):
     cov_matrix = (sigma**2) * (rho**abs_diff)
     return cov_matrix
 
+
 def simulate_correlated_ar1_process(
     n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
 ):
@@ -202,7 +204,7 @@ def simulate_correlated_ar1_process(
     m : int
         Number of dimensions/variables
     corr_matrix : numpy.ndarray, optional
-        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance 
+        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance
         structure will be generated.
     offset : numpy.ndarray, optional
         Offset vector for each dimension. Defaults to zero vector
@@ -244,7 +246,7 @@ def simulate_correlated_ar1_process(
         return (
             smoothed_ensembles + offset,
             np.median(smoothed_ensembles + offset, axis=1)
-            + np.random.normal(0, sigma / 2, n)
+            + np.random.normal(0, sigma / 2, n),
         )
     else:
         ensembles = np.zeros((n, m))
@@ -256,5 +258,5 @@ def simulate_correlated_ar1_process(
 
         return (
             ensembles + offset,
-            np.median(ensembles + offset, axis=1) + np.random.normal(0, sigma / 2, n)
+            np.median(ensembles + offset, axis=1) + np.random.normal(0, sigma / 2, n),
         )

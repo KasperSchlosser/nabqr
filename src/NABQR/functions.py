@@ -91,6 +91,55 @@ def variogram_score_R_multivariate(x, y, p=0.5, t1=12, t2=36):
     return score / (100_000), score_list
 
 
+def variogram_score_R_v2(x, y, p=0.5, t1=12, t2=36):
+    """
+    Calculate the Variogram score for all observations for the time horizon t1 to t2.
+    From the paper in Energy and AI, >> An introduction to multivariate probabilistic forecast evaluation <<.
+    Assumes that x and y starts from day 0, 00:00.
+
+    Parameters:
+    x : array
+        Ensemble forecast (m x k), where m is the size of the ensemble, and k is the maximal forecast horizon.
+    y : array
+        Actual observations (k,)
+    p : float
+        Power parameter for the variogram score.
+    t1 : int
+        Start of the hour range for comparison (inclusive).
+    t2 : int
+        End of the hour range for comparison (exclusive).
+
+    Returns:
+    --------
+    tuple
+        (score, score_list) Overall score/100_000 and list of individual VarS contributions
+    """
+
+    m, k = x.shape  # Size of ensemble, Maximal forecast horizon
+    score = 0
+    if m > k:
+        x = x.T
+        m, k = k, m
+    else:
+        print("m,k: ", m, k)
+
+    score_list = []
+    # Iterate through every 24-hour block
+    for start in range(0, k, 24):
+        # Ensure we don't exceed the forecast horizon
+        if start + t2 <= k:
+            for i in range(start + t1, start + t2 - 1):
+                for j in range(i + 1, start + t2):
+                    Ediff = (1 / m) * np.sum(np.abs(x[:, i] - x[:, j]) ** p)
+                    score += (1 / np.abs(i - j)) * (
+                        np.abs(y[i] - y[j]) ** p - Ediff
+                    ) ** 2
+                score_list.append(score)
+
+    # Variogram score
+    return score / (100_000), score_list
+
+
 def calculate_crps(actuals, corrected_ensembles):
     """Calculate the Continuous Ranked Probability Score (CRPS).
 
@@ -170,6 +219,305 @@ def multi_quantile_skill_score(y_true, y_pred, quantiles):
         scores[i] = np.sum(np.where(E > 0, q * E, (1 - q) * -E))
 
     return scores / N
+
+
+def reliability_func(
+    quantile_forecasts,
+    corrected_ensembles,
+    ensembles,
+    actuals,
+    corrected_taqr_quantiles,
+    data_source,
+    plot_reliability=True,
+):
+    n = len(actuals)
+
+    # Handling hpe
+    hpe = ensembles[:, 0]
+    hpe_quantile = 0.5
+    ensembles = ensembles[:, 1:]
+
+    quantiles_ensembles = np.arange(2, 100, 2) / 100
+    quantiles_corrected_ensembles = np.linspace(
+        0.05, 0.95, corrected_ensembles.shape[1]
+    ).round(3)
+
+    # Ensuring that we are working with numpy arrays
+    quantile_forecasts = (
+        np.array(quantile_forecasts)
+        if type(quantile_forecasts) != np.ndarray
+        else quantile_forecasts
+    )
+    actuals = np.array(actuals) if type(actuals) != np.ndarray else actuals
+    actuals_ensembles = actuals.copy()
+    corrected_taqr_quantiles = (
+        np.array(corrected_taqr_quantiles)
+        if type(corrected_taqr_quantiles) != np.ndarray
+        else corrected_taqr_quantiles
+    )
+    corrected_ensembles = (
+        np.array(corrected_ensembles)
+        if type(corrected_ensembles) != np.ndarray
+        else corrected_ensembles
+    )
+
+    m, n1 = quantile_forecasts.shape
+    if m != len(actuals):
+        quantile_forecasts = quantile_forecasts.T
+        m, n1 = quantile_forecasts.shape
+
+    # Ensure that the length match up
+    if len(actuals) != len(quantile_forecasts):
+        # who is shorter?
+        if len(actuals) < len(quantile_forecasts):
+            quantile_forecasts = quantile_forecasts[: len(actuals)]
+        else:
+            actuals_taqr = actuals[-len(quantile_forecasts) :]
+
+    if len(actuals) != len(corrected_ensembles):
+        if len(actuals) < len(corrected_ensembles):
+            corrected_ensembles = corrected_ensembles[: len(actuals)]
+        else:
+            actuals_taqr = actuals[-len(corrected_ensembles) :]
+
+    # Reliability: how often actuals are below the given quantiles compared to the quantile levels
+    reliability_points_taqr = []
+    for i, q in enumerate(corrected_taqr_quantiles):
+        forecast = quantile_forecasts[:, i]
+        observed_below = np.sum(actuals_taqr <= forecast) / n
+        reliability_points_taqr.append(observed_below)
+
+    reliability_points_taqr = np.array(reliability_points_taqr)
+
+    reliability_points_ensembles = []
+    n_ensembles = len(actuals_ensembles)
+    for i, q in enumerate(quantiles_ensembles):
+        forecast = ensembles[:, i]
+        observed_below = np.sum(actuals_ensembles <= forecast) / n_ensembles
+        reliability_points_ensembles.append(observed_below)
+
+    reliability_points_corrected_ensembles = []
+    for i, q in enumerate(quantiles_corrected_ensembles):
+        forecast = corrected_ensembles[:, i]
+        observed_below = np.sum(actuals_ensembles <= forecast) / n_ensembles
+        reliability_points_corrected_ensembles.append(observed_below)
+
+    # Handle hpe separately
+    observed_below_hpe = np.sum(actuals_ensembles <= hpe) / n_ensembles
+
+    reliability_points_ensembles = np.array(reliability_points_ensembles)
+
+    # find the index of the 0.5 quantile
+    idx_05 = np.where(corrected_taqr_quantiles == 0.5)[0][0]
+
+    if plot_reliability:
+        import scienceplots
+
+        with plt.style.context("no-latex"):
+            # Plot reliability: nominal quantiles vs calculated quantiles
+            plt.figure(figsize=(6, 6))
+            plt.plot(
+                [0, 1], [0, 1], "k--", label="Perfect Reliability"
+            )  # diagonal line
+            plt.scatter(
+                corrected_taqr_quantiles,
+                reliability_points_taqr,
+                color="blue",
+                label="Reliability CorrectedTAQR",
+            )
+            plt.scatter(
+                quantiles_ensembles,
+                reliability_points_ensembles,
+                color="grey",
+                label="Reliability Original Ensembles",
+                marker="p",
+                alpha=0.5,
+            )
+            plt.scatter(
+                quantiles_corrected_ensembles,
+                reliability_points_corrected_ensembles,
+                color="green",
+                label="Reliability Corrected Ensembles",
+                marker="p",
+                alpha=0.5,
+            )
+            plt.scatter(
+                hpe_quantile,
+                observed_below_hpe,
+                color="grey",
+                label="Reliability HPE",
+                alpha=0.5,
+                marker="D",
+                s=25,
+            )
+            plt.xlabel("Nominal Quantiles")
+            plt.ylabel("Observed Frequencies")
+            plt.title(
+                f'Reliability Plot for {data_source.replace("_", " ").replace("lstm", "")}'
+            )
+            plt.legend()
+            plt.grid(True)
+            plt.savefig(f"reliability_plots/nolatex_reliability_plot_{data_source}.pdf")
+            plt.show()
+
+    return (
+        reliability_points_taqr,
+        reliability_points_ensembles,
+        reliability_points_corrected_ensembles,
+    )
+
+
+def calculate_scores(
+    actuals,
+    taqr_results,
+    raw_ensembles,
+    corrected_ensembles,
+    quantiles_taqr,
+    data_source,
+    plot_reliability=True,
+):
+    """Calculate the scores for the predictions and corrected ensembles.
+
+    Parameters
+    ----------
+    actuals : numpy.ndarray
+        The actual values
+    predictions : numpy.ndarray
+        The predicted values
+    raw_ensembles : numpy.ndarray
+        The raw ensembles
+    corrected_ensembles : numpy.ndarray
+        The corrected ensembles
+    quantiles : list
+        The quantiles to calculate the scores for
+    data_source : str
+        The data source
+    """
+
+    # Find common index
+    common_index = corrected_ensembles.index.intersection(actuals.index)
+
+    ensembles_CE_index = raw_ensembles.loc[common_index]
+    actuals_comp = actuals.loc[common_index]
+
+    variogram_score_raw_v2, _ = variogram_score_R_v2(
+        ensembles_CE_index.loc[actuals_comp.index].values, actuals_comp.values
+    )
+    variogram_score_raw_corrected_v2, _ = variogram_score_R_v2(
+        corrected_ensembles.loc[actuals_comp.index].values, actuals_comp.values
+    )
+    variogram_score_corrected_taqr_v2, _ = variogram_score_R_v2(
+        taqr_results.values, actuals_comp.values
+    )
+
+    qs_raw = calculate_qss(
+        actuals_comp.values,
+        ensembles_CE_index.loc[actuals_comp.index].T,
+        np.linspace(0.05, 0.95, ensembles_CE_index.shape[1]),
+    )
+    qs_corr = calculate_qss(
+        actuals_comp.values,
+        corrected_ensembles.loc[actuals_comp.index].T,
+        np.linspace(0.05, 0.95, corrected_ensembles.shape[1]),
+    )
+    qs_corrected_taqr = calculate_qss(
+        actuals_comp.values, taqr_results.values, quantiles_taqr
+    )
+
+    crps_orig_ensembles = calculate_crps(
+        actuals_comp.values.flatten(), ensembles_CE_index.loc[actuals_comp.index].T
+    )
+    crps_corr_ensembles = calculate_crps(
+        actuals_comp.values.flatten(), corrected_ensembles.loc[actuals_comp.index].T
+    )
+    crps_corrected_taqr = calculate_crps(
+        actuals_comp.values.flatten(), np.array(taqr_results)
+    )
+
+    # instead of calculating mean value of ensembles, we just use the median
+    MAE_raw_ensembles = np.abs(
+        np.median(ensembles_CE_index.loc[actuals_comp.index].values, axis=1)
+        - actuals_comp.values
+    )
+    MAE_corr_ensembles = np.abs(
+        np.median(corrected_ensembles.loc[actuals_comp.index].values, axis=1)
+        - actuals_comp.values
+    )
+    MAE_corrected_taqr = np.abs(
+        (np.median(np.array(taqr_results), axis=1) - actuals_comp.values)
+    )
+
+    scores_data = {
+        "Metric": ["MAE", "CRPS", "Variogram", "QS"],
+        "Original Ensembles": [
+            np.mean(MAE_raw_ensembles),
+            crps_orig_ensembles,
+            variogram_score_raw_v2,
+            np.mean(qs_raw),
+        ],
+        "Corrected Ensembles": [
+            np.mean(MAE_corr_ensembles),
+            crps_corr_ensembles,
+            variogram_score_raw_corrected_v2,
+            np.mean(qs_corr),
+        ],
+        "NABQR": [
+            np.mean(MAE_corrected_taqr),
+            crps_corrected_taqr,
+            variogram_score_corrected_taqr_v2,
+            np.mean(qs_corrected_taqr),
+        ],
+    }
+
+    scores_df = pd.DataFrame(scores_data).T
+
+    # Calculate relative scores
+    scores_data["Corrected Ensembles"] = [
+        1
+        + (x - scores_data["Original Ensembles"][i])
+        / scores_data["Original Ensembles"][i]
+        for i, x in enumerate(scores_data["Corrected Ensembles"])
+    ]
+    scores_data["NABQR"] = [
+        1
+        + (x - scores_data["Original Ensembles"][i])
+        / scores_data["Original Ensembles"][i]
+        for i, x in enumerate(scores_data["NABQR"])
+    ]
+
+    # Create DataFrame
+    scores_df = pd.DataFrame(scores_data).T
+
+    print("Scores: ")
+    print(scores_df)
+
+    # Print LaTeX table
+    latex_output = scores_df.to_latex(
+        column_format="lcccc",
+        header=True,
+        float_format="%.3f",
+        caption=f"Performance Metrics for Different Ensemble Methods on {data_source}",
+        label="tab:performance_metrics",
+        escape=False,
+    ).replace("& 0 & 1 & 2 & 3 \\\\\n\\midrule\n", "")
+
+    # print(latex_output)
+
+    with open(f"latex_output_{data_source}_scores.tex", "w") as f:
+        f.write(latex_output)
+
+    # Reliability plot # reliability_func(quantile_forecasts, ensembles, actuals, corrected_taqr_quantiles, data_source, plot_reliability = True):
+    reliability_func(
+        taqr_results,
+        corrected_ensembles,
+        raw_ensembles,
+        actuals,
+        quantiles_taqr,
+        data_source,
+        plot_reliability,
+    )
+
+    return scores_df
 
 
 def run_r_script(X_filename, Y_filename, tau):
@@ -772,7 +1120,163 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
         actuals_output.append(y_actuals)
         BETA_output.append(BETA_q)
 
-    return taqr_results, actuals_output, BETA_output
+    return taqr_results, actuals_output[1], BETA_output
+
+
+def reliability_func(
+    quantile_forecasts,
+    corrected_ensembles,
+    ensembles,
+    actuals,
+    corrected_taqr_quantiles,
+    data_source,
+    plot_reliability=True,
+):
+    n = len(actuals)
+
+    # Ensuring that we are working with numpy arrays
+    quantile_forecasts = (
+        np.array(quantile_forecasts)
+        if type(quantile_forecasts) != np.ndarray
+        else quantile_forecasts
+    )
+    actuals = np.array(actuals) if type(actuals) != np.ndarray else actuals
+    actuals_ensembles = actuals.copy()
+    actuals_taqr = actuals.copy()
+    corrected_taqr_quantiles = (
+        np.array(corrected_taqr_quantiles)
+        if type(corrected_taqr_quantiles) != np.ndarray
+        else corrected_taqr_quantiles
+    )
+    corrected_ensembles = (
+        np.array(corrected_ensembles)
+        if type(corrected_ensembles) != np.ndarray
+        else corrected_ensembles
+    )
+    ensembles = np.array(ensembles) if type(ensembles) != np.ndarray else ensembles
+
+    # Handling hpe
+    hpe = ensembles[:, 0]
+    hpe_quantile = 0.5
+    ensembles = ensembles[:, 1:]
+
+    quantiles_ensembles = np.linspace(0.05, 0.95, ensembles.shape[1]).round(3)
+    quantiles_corrected_ensembles = np.linspace(
+        0.05, 0.95, corrected_ensembles.shape[1]
+    ).round(3)
+
+    m, n1 = quantile_forecasts.shape
+    if m != len(actuals):
+        quantile_forecasts = quantile_forecasts.T
+        m, n1 = quantile_forecasts.shape
+
+    # Ensure that the length match up
+    if len(actuals) != len(quantile_forecasts):
+        # who is shorter?
+        if len(actuals) < len(quantile_forecasts):
+            quantile_forecasts = quantile_forecasts[: len(actuals)]
+        else:
+            actuals_taqr = actuals[-len(quantile_forecasts) :]
+
+    if len(actuals) != len(corrected_ensembles):
+        if len(actuals) < len(corrected_ensembles):
+            corrected_ensembles = corrected_ensembles[: len(actuals)]
+        else:
+            actuals_taqr = actuals[-len(corrected_ensembles) :]
+
+    if len(actuals) != len(ensembles):
+        if len(actuals) < len(ensembles):
+            ensembles = ensembles[: len(actuals)]
+            hpe = hpe[: len(actuals)]
+        else:
+            actuals_taqr = actuals[-len(ensembles) :]
+            hpe = hpe[-len(ensembles) :]
+
+    # Reliability: how often actuals are below the given quantiles compared to the quantile levels
+    reliability_points_taqr = []
+    for i, q in enumerate(corrected_taqr_quantiles):
+        forecast = quantile_forecasts[:, i]
+        observed_below = np.sum(actuals_taqr <= forecast) / n
+        reliability_points_taqr.append(observed_below)
+
+    reliability_points_taqr = np.array(reliability_points_taqr)
+
+    reliability_points_ensembles = []
+    n_ensembles = len(actuals_ensembles)
+    for i, q in enumerate(quantiles_ensembles):
+        forecast = ensembles[:, i]
+        observed_below = np.sum(actuals_ensembles <= forecast) / n_ensembles
+        reliability_points_ensembles.append(observed_below)
+
+    reliability_points_corrected_ensembles = []
+    for i, q in enumerate(quantiles_corrected_ensembles):
+        forecast = corrected_ensembles[:, i]
+        observed_below = np.sum(actuals_ensembles <= forecast) / n_ensembles
+        reliability_points_corrected_ensembles.append(observed_below)
+
+    # Handle hpe separately
+    observed_below_hpe = np.sum(actuals_ensembles <= hpe) / n_ensembles
+
+    reliability_points_ensembles = np.array(reliability_points_ensembles)
+
+    # find the index of the 0.5 quantile
+    idx_05 = np.where(corrected_taqr_quantiles == 0.5)[0][0]
+
+    if plot_reliability:
+        import scienceplots
+
+        with plt.style.context("no-latex"):
+            # Plot reliability: nominal quantiles vs calculated quantiles
+            plt.figure(figsize=(6, 6))
+            plt.plot(
+                [0, 1], [0, 1], "k--", label="Perfect Reliability"
+            )  # diagonal line
+            plt.scatter(
+                corrected_taqr_quantiles,
+                reliability_points_taqr,
+                color="blue",
+                label="Reliability CorrectedTAQR",
+            )
+            plt.scatter(
+                quantiles_ensembles,
+                reliability_points_ensembles,
+                color="grey",
+                label="Reliability Original Ensembles",
+                marker="p",
+                alpha=0.5,
+            )
+            plt.scatter(
+                quantiles_corrected_ensembles,
+                reliability_points_corrected_ensembles,
+                color="green",
+                label="Reliability Corrected Ensembles",
+                marker="p",
+                alpha=0.5,
+            )
+            plt.scatter(
+                hpe_quantile,
+                observed_below_hpe,
+                color="grey",
+                label="Reliability HPE",
+                alpha=0.5,
+                marker="D",
+                s=25,
+            )
+            plt.xlabel("Nominal Quantiles")
+            plt.ylabel("Observed Frequencies")
+            plt.title(
+                f'Reliability Plot for {data_source.replace("_", " ").replace("lstm", "")}'
+            )
+            plt.legend()
+            plt.grid(True)
+            plt.savefig(f"reliability_plot_{data_source}.pdf")
+            plt.show()
+
+    return (
+        reliability_points_taqr,
+        reliability_points_ensembles,
+        reliability_points_corrected_ensembles,
+    )
 
 
 def pipeline(
@@ -835,12 +1339,12 @@ def pipeline(
 
     train_size = int(training_size * len(actuals))
     ensembles = pd.DataFrame(ensembles, index=idx)
-    ensembles.index = pd.to_datetime(ensembles.index, utc=False).tz_localize(None)
+    # ensembles.index = pd.to_datetime(ensembles.index, utc=False).tz_localize(None)
     actuals = pd.DataFrame(actuals, index=idx)
-    actuals.index = pd.to_datetime(actuals.index, utc=False).tz_localize(None)
+    # actuals.index = pd.to_datetime(actuals.index, utc=False).tz_localize(None)
     common_index = ensembles.index.intersection(actuals.index)
     X_y = pd.DataFrame(X_y, index=idx)
-    X_y.index = pd.to_datetime(X_y.index, utc=False).tz_localize(None)
+    # X_y.index = pd.to_datetime(X_y.index, utc=False).tz_localize(None)
     ensembles = ensembles.loc[common_index]
     actuals = actuals.loc[common_index]
     X_y = X_y.loc[common_index]
@@ -918,7 +1422,7 @@ def pipeline(
     corrected_ensembles = corrected_ensembles.numpy()
     corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
     corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
-
+    corrected_ensembles = pd.DataFrame(corrected_ensembles, index=test_idx)
     n_in_X = n_init
     taqr_results, actuals_output, BETA_output = run_taqr(
         corrected_ensembles,
@@ -929,8 +1433,10 @@ def pipeline(
         n_in_X,
     )
     actuals_out_of_sample = actuals_out_of_sample[(n_init + 1) : (n_full - 1)]
-
-    corrected_ensembles = corrected_ensembles[(n_init + 1) : (n_full - 1)]
+    actuals_output = pd.Series(
+        actuals_output.flatten(), index=test_idx[(n_init + 1) : (n_full - 1)]
+    )
+    corrected_ensembles = corrected_ensembles.iloc[(n_init + 1) : (n_full - 1)]
     idx_to_save = test_idx[(n_init + 1) : (n_full - 1)]
 
     # Save results
@@ -949,4 +1455,10 @@ def pipeline(
     np.save(f"results_{today}_{data_source}_actuals_output.npy", actuals_output)
     np.save(f"results_{today}_{data_source}_BETA_output.npy", BETA_output)
 
-    return corrected_ensembles, taqr_results, actuals_output, BETA_output
+    return (
+        corrected_ensembles,
+        pd.DataFrame(np.array(taqr_results).T, index=idx_to_save),
+        actuals_output,
+        BETA_output,
+        ensembles,
+    )

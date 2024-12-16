@@ -231,10 +231,12 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
         print("Error in inverse matrix operation. Trying pseudo-inverse instead.")
         invXh = np.linalg.pinv(Xny[Ih, :])
     except Exception as e:
-        raise ValueError("Error in inverse matrix operation. Most likely cause of error: "
-                         "- Increase length of data, "
-                         "- Ensure no collinearity in the data") from e
-    
+        raise ValueError(
+            "Error in inverse matrix operation. Most likely cause of error: "
+            "- Increase length of data, "
+            "- Ensure no collinearity in the data"
+        ) from e
+
     cB = (P < 0) + P * tau
     cC = np.vstack((np.ones(K) * tau, np.ones(K) * (1 - tau))).reshape(-1, 1)
     IB2 = -np.dot(P.reshape(-1, 1) * (np.ones((1, K)) * Xny[Ihc, :]), invXh)
