@@ -17,7 +17,7 @@ README for nabqr package
   - [Time-Adaptive Quantile Regression](#time-adaptive-quantile-regression)
   - [LSTM Network](#lstm-network)
 - [Demonstration: Test file](#test-file)
-- [Credits](#credits)
+- [Credits/Copyright](#credits)
 ---
 
 ## Introduction
@@ -318,6 +318,10 @@ len(quantiles_taqr): 7
 - icecream, matplotlib, numpy, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras
 - R with the following packages: quantreg, readr
 
-## Credits
+## Credits/Copyright
+Copyright © 2024 Technical University of Denmark
+
+This version of the software was developed by Bastian Schmidt Jørgensen as a Research Assistant at the Department of Dynamical Systems, DTU Compute.
+
 
 This package was partially created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [`audreyr/cookiecutter-pypackage`](https://github.com/audreyr/cookiecutter-pypackage) project template.
