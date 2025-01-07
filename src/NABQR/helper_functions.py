@@ -280,6 +280,7 @@ def get_parameter_bounds() -> Dict[str, Tuple[float, float]]:
 
 import numpy as np
 
+
 def generate_ou_ensembles(
     X: np.ndarray,
     kappa: float,
@@ -289,11 +290,11 @@ def generate_ou_ensembles(
 ) -> np.ndarray:
     """
     Generate continuous Ornstein-Uhlenbeck (OU) ensemble paths that revert
-    to the given reference series X[t]. Each path is simulated in chunks
-    of 'chunk_size' (e.g. 24 timesteps). New chunks start exactly
-    where the previous chunk ended, ensuring continuity for each path.
+    to the given reference series X[t], in chunk_size increments, but also
+    simulate 'extra' future steps to account for OU lag and shift
+    them back so the paths better align with X in real-time.
 
-    The paths are clipped to remain within [0,1].
+    The ensemble is clipped to remain within [0,1].
 
     Parameters
     ----------
@@ -302,6 +303,7 @@ def generate_ou_ensembles(
         for each OU path.
     kappa : float
         Mean-reversion speed for the OU process.
+        The characteristic lag ~ 1/kappa.
     sigma : float
         Diffusion (volatility) parameter.
     chunk_size : int, optional
@@ -311,75 +313,102 @@ def generate_ou_ensembles(
 
     Returns
     -------
-    Y : np.ndarray, shape (T, n_ensembles)
-        Array of OU ensemble paths. Each column is one continuous path of length T,
-        re-initialized at chunk boundaries but joined at the previous chunk's endpoint.
+    Y_corrected : np.ndarray, shape (T, n_ensembles)
+        The lag-corrected OU ensemble paths, each of length T.
 
     Notes
     -----
-    - The time step `dt` is assumed to be 1.0 for simplicity.
-    - The OU update at each step t -> t+1 is:
-         Y[t+1] = Y[t] + kappa*( X[t] - Y[t] ) + sigma*randn()
-      where randn() is a draw from a standard normal distribution.
-    - The final chunk may be shorter than `chunk_size` if the length of X is
-      not a multiple of chunk_size.
-    - The function returns a matrix Y with shape (T, n_ensembles). You can
-      plot Y[:, i] over time to see the i-th ensemble path.
-
-    Examples
-    --------
-    >>> # Suppose we have a reference X of length 100
-    >>> X = np.linspace(0.2, 0.8, 100)
-    >>> # Parameters
-    >>> kappa = 0.3
-    >>> sigma = 0.05
-    >>> # Generate ensemble
-    >>> Y = generate_ou_ensembles(X, kappa, sigma, chunk_size=24, n_ensembles=50)
-    >>> # You can now visualize these 50 continuous OU paths
-    >>> import matplotlib.pyplot as plt
-    >>> for i in range(Y.shape[1]):
-    ...     plt.plot(Y[:, i], alpha=0.3)
-    >>> plt.plot(X, 'k--', label='Reference X')
-    >>> plt.legend()
-    >>> plt.show()
+    - We break the timeline [0..T-1] into blocks of `chunk_size` steps.
+      At chunk boundaries, each ensemble path is continuous
+      (the new chunk starts where the old chunk ended).
+    - We simulate extra steps (about 1/kappa) at the end, then shift the entire
+      simulation backward by ~1/kappa to reduce the effective lag in real time.
+    - For fractional lag, a simple linear interpolation is applied.
+    - This "lag correction" is heuristic but often aligns the OU paths with
+      X(t) more tightly when the reversion is slow.
     """
+
     T = len(X)
-    # Allocate array for ensembles: shape (T, n_ensembles)
-    Y = np.zeros((T, n_ensembles))
     
-    # For the very first chunk, initialize all ensembles at X[0]
-    Y[0, :] = X[0]
+    # ------------------------------
+    # 1. Calculate the lag
+    # ------------------------------
+    # For an OU with mean reversion kappa, characteristic timescale is 1/kappa
+    lag = 1.0 / kappa
+    lag_int = int(np.floor(lag))
+    lag_frac = lag - lag_int
+
+    # We'll simulate T + lag_int + 1 steps. The "+1" helps with
+    # fractional shift interpolation.
+    sim_len = T + lag_int + 1
+
+    # ------------------------------
+    # 2. Allocate array for ensembles
+    # ------------------------------
+    # We'll simulate a bigger array, shape (sim_len, n_ensembles).
+    Y_big = np.zeros((sim_len, n_ensembles))
     
-    # Precompute chunk boundaries
-    # e.g., if T=90 and chunk_size=24, chunk_starts = [0, 24, 48, 72]
-    # the last chunk will run from 72 -> 90 (18 steps)
-    chunk_starts = list(range(0, T, chunk_size))
-    
-    # Main simulation loop: each chunk is integrated from chunk_start to chunk_end - 1
+    # For the very first step, set them all to X[0]
+    Y_big[0, :] = X[0]
+
+    # Precompute chunk boundaries for the extended length
+    chunk_starts = list(range(0, sim_len, chunk_size))
+
+    # ------------------------------
+    # 3. Simulate with chunking
+    # ------------------------------
     for idx_chunk in range(len(chunk_starts)):
         start = chunk_starts[idx_chunk]
-        end = min(start + chunk_size, T)  # end might be T if remainder < chunk_size
-        
-        # If start==0, we already have Y[start, :] = X[start], so just proceed
-        # If start!=0, we need to set Y[start, :] to the "inherited" value
-        # from Y[start-1, :], because the chunk should start seamlessly
-        # from the previous chunk's last step.
+        end = min(start + chunk_size, sim_len)
+
         if start > 0:
-            Y[start, :] = Y[start - 1, :]
-        
-        # Step through the chunk:
-        # from 'start' to 'end-1' so that we compute Y[i+1] up to i=end-1
+            # Continue from previous chunk's last step
+            Y_big[start, :] = Y_big[start - 1, :]
+
+        # Step through the chunk
         for i in range(start, end - 1):
-            # OU update:
-            # Y[i+1] = Y[i] + kappa*( X[i] - Y[i] ) + sigma * randn
-            drift = kappa * (X[i] - Y[i, :])
+            # We must clamp i to the length of X when indexing X:
+            # Because beyond T-1, we can assume X stays at X[-1]
+            iX = min(i, T - 1)
+
+            # OU update
+            drift = kappa * (X[iX] - Y_big[i, :])
             diffusion = sigma * np.random.randn(n_ensembles)
-            Y[i + 1, :] = Y[i, :] + drift + diffusion
-            
+            Y_big[i + 1, :] = Y_big[i, :] + drift + diffusion
+
             # Enforce [0, 1] clipping
-            Y[i + 1, :] = np.clip(Y[i + 1, :], 0.0, 1.0)
-    
-    return Y
+            Y_big[i + 1, :] = np.clip(Y_big[i + 1, :], 0.0, 1.0)
+
+    # Now we have Y_big of length sim_len = T + lag_int + 1
+
+    # ------------------------------
+    # 4. Shift the result backward
+    #    by "lag = lag_int + lag_frac"
+    # ------------------------------
+    # We'll produce a final array Y_corrected of shape (T, n_ensembles).
+    Y_corrected = np.zeros((T, n_ensembles))
+
+    # If there's no fractional part, we can just slice
+    # If lag_frac == 0, then just do:
+    # Y_corrected[t] = Y_big[t + lag_int]
+    # for t = 0..T-1
+    if np.isclose(lag_frac, 0.0, atol=1e-14):
+        for t in range(T):
+            Y_corrected[t, :] = Y_big[t + lag_int, :]
+    else:
+        # We have a fractional shift, so do a linear interpolation
+        # Y_corrected[t] = (1 - alpha)* Y_big[t + lag_int] + alpha * Y_big[t + lag_int + 1]
+        # where alpha = lag_frac
+        alpha = lag_frac
+        for t in range(T):
+            i1 = t + lag_int
+            i2 = i1 + 1
+            # clamp i2 to avoid out-of-bounds (should not occur with sim_len = T + lag_int + 1)
+            i2 = min(i2, sim_len - 1)
+            Y_corrected[t, :] = (1 - alpha) * Y_big[i1, :] + alpha * Y_big[i2, :]
+
+    # We have a T x n_ensembles array that’s effectively “time-shifted” back by lag steps
+    return Y_corrected
 
 def simulate_wind_power_sde(params: Dict[str, float], T: float = 500, dt: float = 1.0) -> Tuple[np.ndarray, np.ndarray]:
     """
