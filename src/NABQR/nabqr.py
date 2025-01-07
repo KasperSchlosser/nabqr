@@ -23,6 +23,7 @@ def run_nabqr_pipeline(
     quantiles=[0.01, 0.1, 0.3, 0.5, 0.7, 0.9, 0.99],
     X=None,
     actuals=None,
+    simulation_type="sde",
 ):
     """
     Run the complete NABQR pipeline, which may include data simulation, model training,
@@ -61,11 +62,14 @@ def run_nabqr_pipeline(
     actuals : array-like, optional
         Pre-computed actual target values. If not provided along with `X`, the function
         will prompt to simulate data.
+    simulation_type : str, optional
+        Type of simulation to use, by default "ar1". "sde" is more advanced and uses a SDE model and realistic.
 
     Returns
     -------
     tuple
         A tuple containing:
+
         - corrected_ensembles: pd.DataFrame
             The corrected ensemble predictions.
         - taqr_results: list of numpy.ndarray
@@ -105,9 +109,42 @@ def run_nabqr_pipeline(
         corr_matrix = correlation * np.ones((m, m)) + (1 - correlation) * np.eye(m)
 
         # Generate simulated data
-        X, actuals = simulate_correlated_ar1_process(
-            n_samples, phi, sigma, m, corr_matrix, offset, smooth=5
-        )
+        # first check if simulation_type is valid
+        if simulation_type not in ["ar1", "sde"]:
+            raise ValueError("Invalid simulation type. Please choose 'ar1' or 'sde'.")
+        if simulation_type == "ar1":    
+            X, actuals = simulate_correlated_ar1_process(
+                n_samples, phi, sigma, m, corr_matrix, offset, smooth=5
+            )
+        elif simulation_type == "sde":
+            initial_params = {
+                    'X0': 0.6,
+                    'theta': 0.77,
+                    'kappa': 0.12,        # Slower mean reversion
+                    'sigma_base': 1.05,  # Lower base volatility
+                    'alpha': 0.57,       # Lower ARCH effect
+                    'beta': 1.2,        # High persistence
+                    'lambda_jump': 0.045, # Fewer jumps
+                    'jump_mu': 0.0,     # Negative jumps
+                    'jump_sigma': 0.1    # Moderate jump size variation
+                }
+            # Check that initial parameters are within bounds
+            bounds = get_parameter_bounds()
+            for param, value in initial_params.items():
+                lower_bound, upper_bound = bounds[param]
+                if not (lower_bound <= value <= upper_bound):
+                    print(f"Initial parameter {param}={value} is out of bounds ({lower_bound}, {upper_bound})")
+                    # which is it closer to?
+                    if value < lower_bound:
+                        initial_params[param] = lower_bound
+                    else:
+                        initial_params[param] = upper_bound
+            
+            t, actuals, X = simulate_wind_power_sde(
+                initial_params, T=n_samples, dt=1.0
+            )
+
+
 
         # Plot the simulated data with X in shades of blue and actuals in bold black
         plt.figure(figsize=(10, 6))
