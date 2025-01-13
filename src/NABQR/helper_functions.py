@@ -1,7 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
-
 from typing import Dict, List, Tuple
 import time
 
@@ -26,7 +24,7 @@ def set_n_smallest_to_zero(arr, n):
     if n >= len(arr):
         return [0] * len(arr)
 
-    # Find the nth smallest element
+    # Find the n'th smallest element
     nth_smallest = sorted(arr)[n - 1]
 
     # Set elements smaller than or equal to nth_smallest to zero
@@ -92,79 +90,6 @@ def quantile_score(p, z, q):
     u = z - q
     rho = np.where(u > 0, p * u, (p - 1) * u)
     return np.sum(rho)
-
-
-# def simulate_correlated_ar1_process(
-#     n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
-# ):
-#     """Simulate a correlated AR(1) process with multiple dimensions.
-
-#     Parameters
-#     ----------
-#     n : int
-#         Number of time steps to simulate
-#     phi : float
-#         AR(1) coefficient (persistence parameter)
-#     sigma : float
-#         Standard deviation of the noise
-#     m : int
-#         Number of dimensions/variables
-#     corr_matrix : numpy.ndarray, optional
-#         Correlation matrix between dimensions. Defaults to identity matrix
-#     offset : numpy.ndarray, optional
-#         Offset vector for each dimension. Defaults to zero vector
-#     smooth : int or str, optional
-#         Number of initial time steps to discard for smoothing. Defaults to "no"
-
-#     Returns
-#     -------
-#     tuple
-#         (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
-#         and actuals is the median of ensembles with added noise
-#     """
-#     if offset is None:
-#         offset = np.zeros(m)
-#     elif len(offset) != m:
-#         raise ValueError("Length of offset array must be equal to m")
-
-#     if corr_matrix is None:
-#         corr_matrix = np.eye(m)  # Default to no correlation (identity matrix)
-#     elif corr_matrix.shape != (m, m):
-#         raise ValueError("Correlation matrix must be of shape (m, m)")
-
-#     # Ensure the covariance matrix is positive semi-definite
-#     cov_matrix = sigma**2 * corr_matrix
-#     L = np.linalg.cholesky(cov_matrix)  # Cholesky decomposition
-
-#     if isinstance(smooth, int):
-#         ensembles = np.zeros((n + smooth, m))
-#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-
-#         for t in range(1, n + smooth):
-#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-#             ensembles[t] = phi * ensembles[t - 1] + noise
-
-#         # Extract the smoothed part of the ensembles
-#         smoothed_ensembles = ensembles[smooth:]
-
-#         return smoothed_ensembles + offset, np.median(
-#             smoothed_ensembles + offset, axis=1
-#         ) + np.random.normal(0, sigma / 2, n)
-
-#     else:
-#         ensembles = np.zeros((n, m))
-#         ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-
-#         for t in range(1, n):
-#             noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-#             ensembles[t] = phi * ensembles[t - 1] + noise
-#         return ensembles + offset, np.median(
-#             ensembles + offset, axis=1
-#         ) + np.random.normal(0, sigma / 2, n)
-
-
-import numpy as np
-import pandas as pd
 
 
 def build_ar1_covariance(n, rho, sigma=1.0):
@@ -265,7 +190,8 @@ def simulate_correlated_ar1_process(
         )
 
 def get_parameter_bounds() -> Dict[str, Tuple[float, float]]:
-    """Define bounds for all parameters for SDE simulation"""
+    """Define bounds for all parameters for SDE simulation.
+    Used to ensure that the parameters are within a reasonable range."""
     return {
         'X0': (0.0, 1.0),
         'theta': (0.2, 0.8),       # Lowered upper bound for mean level
@@ -277,8 +203,6 @@ def get_parameter_bounds() -> Dict[str, Tuple[float, float]]:
         'jump_mu': (-0.2, 0.2),    # Allowing negative jumps
         'jump_sigma': (0.05, 0.2)   # More consistent jump sizes
     }
-
-import numpy as np
 
 
 def generate_ou_ensembles(
@@ -320,7 +244,7 @@ def generate_ou_ensembles(
     -----
     - We break the timeline [0..T-1] into blocks of `chunk_size` steps.
       At chunk boundaries, each ensemble path is continuous
-      (the new chunk starts where the old chunk ended).
+      (meaning; the new chunk starts where the old chunk ended).
     - We simulate extra steps (about 1/kappa) at the end, then shift the entire
       simulation backward by ~1/kappa to reduce the effective lag in real time.
     - For fractional lag, a simple linear interpolation is applied.

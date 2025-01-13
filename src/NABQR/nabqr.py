@@ -109,7 +109,7 @@ def run_nabqr_pipeline(
         corr_matrix = correlation * np.ones((m, m)) + (1 - correlation) * np.eye(m)
 
         # Generate simulated data
-        # first check if simulation_type is valid
+        # Check if simulation_type is valid
         if simulation_type not in ["ar1", "sde"]:
             raise ValueError("Invalid simulation type. Please choose 'ar1' or 'sde'.")
         if simulation_type == "ar1":    
@@ -134,7 +134,6 @@ def run_nabqr_pipeline(
                 lower_bound, upper_bound = bounds[param]
                 if not (lower_bound <= value <= upper_bound):
                     print(f"Initial parameter {param}={value} is out of bounds ({lower_bound}, {upper_bound})")
-                    # which is it closer to?
                     if value < lower_bound:
                         initial_params[param] = lower_bound
                     else:

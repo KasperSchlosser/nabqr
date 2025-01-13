@@ -36,7 +36,7 @@ def visualize_results(y_hat, q_hat, ylabel):
     except:
         taqr_results_corrected_plot = pd.DataFrame(np.array(q_hat), index=y_hat.index)
 
-    m = taqr_results_corrected_plot.shape[1]  # ensemble size
+    m = taqr_results_corrected_plot.shape[1]  # Ensemble size
     # Define the color gradient from dark blue to light cyan
     colors = [
         (173 / 255, 217 / 255, 229 / 255),

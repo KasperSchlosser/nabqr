@@ -1,4 +1,4 @@
-"""Neural Additive Bayesian Quantile Regression (NABQR) Core Functions
+"""Neural Adaptive Basis Quantile Regression (NABQR) Core Functions
 
 This module provides the core functionality for NABQR.
 
@@ -23,7 +23,8 @@ from .functions_for_TAQR import *
 def variogram_score_single_observation(x, y, p=0.5):
     """Calculate the Variogram score for a given observation.
 
-    Translated from the R code in Energy and AI paper.
+    Translated from the R code in Energy and AI paper: 
+    "An introduction to multivariate probabilistic forecast evaluation" by Mathias B.B. et al.
 
     Parameters
     ----------
@@ -52,7 +53,10 @@ def variogram_score_single_observation(x, y, p=0.5):
 
 def variogram_score_R_multivariate(x, y, p=0.5, t1=12, t2=36):
     """Calculate the Variogram score for all observations for the time horizon t1 to t2.
-
+    Modified from the R code in Energy and AI paper: 
+    "An introduction to multivariate probabilistic forecast evaluation" by Mathias B.B. et al.
+    Here we use t1 -> t2 as our forecast horizon.
+    
     Parameters
     ----------
     x : numpy.ndarray
@@ -94,8 +98,9 @@ def variogram_score_R_multivariate(x, y, p=0.5, t1=12, t2=36):
 def variogram_score_R_v2(x, y, p=0.5, t1=12, t2=36):
     """
     Calculate the Variogram score for all observations for the time horizon t1 to t2.
-    From the paper in Energy and AI, >> An introduction to multivariate probabilistic forecast evaluation <<.
+    Modified from the paper in Energy and AI, >> An introduction to multivariate probabilistic forecast evaluation <<.
     Assumes that x and y starts from day 0, 00:00.
+    
 
     Parameters:
     x : array
@@ -141,7 +146,8 @@ def variogram_score_R_v2(x, y, p=0.5, t1=12, t2=36):
 
 
 def calculate_crps(actuals, corrected_ensembles):
-    """Calculate the Continuous Ranked Probability Score (CRPS).
+    """Calculate the Continuous Ranked Probability Score (CRPS) using the properscoring package.
+    If the ensembles do not have the correct dimensions, we transpose them.
 
     Parameters
     ----------
@@ -268,7 +274,6 @@ def reliability_func(
 
     # Ensure that the length match up
     if len(actuals) != len(quantile_forecasts):
-        # who is shorter?
         if len(actuals) < len(quantile_forecasts):
             quantile_forecasts = quantile_forecasts[: len(actuals)]
         else:
@@ -307,18 +312,18 @@ def reliability_func(
 
     reliability_points_ensembles = np.array(reliability_points_ensembles)
 
-    # find the index of the 0.5 quantile
+    # Index of the 0.5 quantile
     idx_05 = np.where(corrected_taqr_quantiles == 0.5)[0][0]
 
+    # Plotting the reliability plot
     if plot_reliability:
         import scienceplots
 
         with plt.style.context("no-latex"):
-            # Plot reliability: nominal quantiles vs calculated quantiles
             plt.figure(figsize=(6, 6))
             plt.plot(
                 [0, 1], [0, 1], "k--", label="Perfect Reliability"
-            )  # diagonal line
+            )  # Diagonal line
             plt.scatter(
                 corrected_taqr_quantiles,
                 reliability_points_taqr,
@@ -376,7 +381,7 @@ def calculate_scores(
     data_source,
     plot_reliability=True,
 ):
-    """Calculate the scores for the predictions and corrected ensembles.
+    """Calculate Variogram, CRPS, QSS and MAE for the predictions and corrected ensembles.
 
     Parameters
     ----------
@@ -434,7 +439,7 @@ def calculate_scores(
         actuals_comp.values.flatten(), np.array(taqr_results)
     )
 
-    # instead of calculating mean value of ensembles, we just use the median
+    # Instead of calculating mean value of ensembles, we just use the median
     MAE_raw_ensembles = np.abs(
         np.median(ensembles_CE_index.loc[actuals_comp.index].values, axis=1)
         - actuals_comp.values
@@ -501,12 +506,10 @@ def calculate_scores(
         escape=False,
     ).replace("& 0 & 1 & 2 & 3 \\\\\n\\midrule\n", "")
 
-    # print(latex_output)
-
     with open(f"latex_output_{data_source}_scores.tex", "w") as f:
         f.write(latex_output)
 
-    # Reliability plot # reliability_func(quantile_forecasts, ensembles, actuals, corrected_taqr_quantiles, data_source, plot_reliability = True):
+    # Reliability plot 
     reliability_func(
         taqr_results,
         corrected_ensembles,
@@ -564,7 +567,7 @@ def run_r_script(X_filename, Y_filename, tau):
 
 
 def remove_zero_columns(df):
-    """Remove columns that contain only zeros from a DataFrame.
+    """Wrapper function to remove columns that contain only zeros from a DataFrame.
 
     Parameters
     ----------
@@ -596,7 +599,7 @@ def remove_zero_columns_numpy(arr):
 
 
 def create_dataset_for_lstm(X, Y, time_steps):
-    """Create a dataset suitable for LSTM training with multiple time steps.
+    """Create a dataset suitable for LSTM training with multiple time steps (i.e. lags).
 
     Parameters
     ----------
@@ -630,6 +633,7 @@ def create_dataset_for_lstm(X, Y, time_steps):
 
 class QuantileRegressionLSTM(tf.keras.Model):
     """LSTM-based model for quantile regression.
+    Input: x -> LSTM -> Dense -> Dense -> output
 
     Parameters
     ----------
@@ -800,6 +804,7 @@ def map_range(values, input_start, input_end, output_start, output_end):
 
 def legend_without_duplicate_labels(ax):
     """Create a legend without duplicate labels.
+    Primarily used for ensemble plots.
 
     Parameters
     ----------
@@ -818,6 +823,7 @@ import numpy as np
 
 def remove_straight_line_outliers(ensembles):
     """Remove ensemble members that are perfectly straight lines (constant slope).
+    Explanation: Sometimes the output from the LSTM is a straight line, which is not useful for the ensemble.
 
     Parameters
     ----------
@@ -851,7 +857,9 @@ def train_model_lstm(
     n_timesteps,
     data_name,
 ):
-    """Train an LSTM model for quantile regression.
+    """Train LSTM model for quantile regression.
+    The @tf.function decorator is used to speed up the training process.
+
 
     Parameters
     ----------
@@ -960,11 +968,14 @@ def one_step_quantile_prediction(
     quantile=0.5,
     already_correct_size=False,
     n_in_X=5000,
+    print_output=True,
 ):
     """Perform one-step quantile prediction using TAQR.
 
     This function takes the entire training set and, based on the last n_init observations,
     calculates residuals and coefficients for the quantile regression.
+
+    An easy wrapper function to run TAQR.
 
     Parameters
     ----------
@@ -988,7 +999,7 @@ def one_step_quantile_prediction(
     tuple
         (predictions, actual values, coefficients)
     """
-    assert n_init <= n_full - 2, "n_init must be less than n_full"
+    assert n_init <= n_full - 2, "n_init must be less two greater than n_full"
 
     if type(X_input) == pd.DataFrame:
         X_input = X_input.to_numpy()
@@ -997,7 +1008,8 @@ def one_step_quantile_prediction(
         Y_input = Y_input.to_numpy()
 
     n, m = X_input.shape
-    print("X_input shape: ", X_input.shape)
+    if print_output:
+        print("X_input shape: ", X_input.shape)
 
     full_length, p = X_input.shape
 
@@ -1031,23 +1043,26 @@ def one_step_quantile_prediction(
         converters={0: ignore_first_column},
     )
 
-    print("len of beta_init: ", len(beta_init))
-    print(
-        "There is: ",
-        sum(residuals == 0),
-        "zeros in residuals",
-        "and",
-        sum(abs(residuals) < 1e-8),
-        "close to zeroes",
-    )
-    print("p: ", p)
+    if print_output:
+        print("len of beta_init: ", len(beta_init))
+        print(
+            "There is: ",
+            sum(residuals == 0),
+            "zeros in residuals",
+            "and",
+            sum(abs(residuals) < 1e-8),
+            "close to zeroes",
+        )
+        print("p: ", p)
 
     if len(beta_init) < p:
         beta_init = np.append(beta_init, np.ones(p - len(beta_init)))
     else:
         beta_init = beta_init[:p]
     r_init = set_n_closest_to_zero(arr=residuals, n=len(beta_init))
-    print(sum(r_init == 0), "r_init zeros")
+    
+    if print_output:
+        print(sum(r_init == 0), "r_init zeros")
 
     X_full = np.column_stack((X, Y, np.random.choice([1, 1], size=n_full)))
     IX = np.arange(p)
@@ -1056,7 +1071,8 @@ def one_step_quantile_prediction(
     bins = np.array([-np.inf, np.inf])
     tau = quantile
     n_in_bin = int(1.0 * full_length)
-    print("n_in_bin", n_in_bin)
+    if print_output:
+        print("n_in_bin", n_in_bin)
 
     n_input = n_in_X
     N, BETA, GAIN, Ld, Rny, Mx, Re, CON1, T = rq_simplex_final(
@@ -1065,15 +1081,16 @@ def one_step_quantile_prediction(
 
     y_pred = np.sum((X_input[(n_input + 2) : (n_full), :] * BETA[1:, :]), axis=1)
     y_actual = Y_input[(n_input) : (n_full - 2)]
-    print(y_pred.shape, "y_pred shape")
-    print(y_actual.shape, "y_actual shape")
+    if print_output:
+        print("y_pred shape", y_pred.shape)
+        print("y_actual shape", y_actual.shape)
 
     y_actual_quantile = np.quantile(y_actual, quantile)
     return y_pred, y_actual, BETA
 
 
 def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
-    """Run TAQR on corrected ensembles.
+    """Wrapper function to run TAQR on corrected ensembles.
 
     Parameters
     ----------
@@ -1096,7 +1113,6 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
         TAQR results for each quantile
     """
     if type(actuals) == pd.Series or type(actuals) == pd.DataFrame:
-        # remove nans from actuals
         actuals = actuals.to_numpy()
         actuals[np.isnan(actuals)] = 0
     else:
@@ -1106,7 +1122,7 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
     actuals_output = []
     BETA_output = []
     for q in quantiles:
-        print("running TAQR for quantile: ", q)
+        print("Running TAQR for quantile: ", q)
         y_pred, y_actuals, BETA_q = one_step_quantile_prediction(
             corrected_ensembles,
             actuals,
@@ -1155,7 +1171,7 @@ def reliability_func(
     )
     ensembles = np.array(ensembles) if type(ensembles) != np.ndarray else ensembles
 
-    # Handling hpe
+    # Handling hpe (high probability ensemble)
     hpe = ensembles[:, 0]
     hpe_quantile = 0.5
     ensembles = ensembles[:, 1:]
@@ -1172,7 +1188,6 @@ def reliability_func(
 
     # Ensure that the length match up
     if len(actuals) != len(quantile_forecasts):
-        # who is shorter?
         if len(actuals) < len(quantile_forecasts):
             quantile_forecasts = quantile_forecasts[: len(actuals)]
         else:
@@ -1219,7 +1234,7 @@ def reliability_func(
 
     reliability_points_ensembles = np.array(reliability_points_ensembles)
 
-    # find the index of the 0.5 quantile
+    # Find the index of the 0.5 quantile
     idx_05 = np.where(corrected_taqr_quantiles == 0.5)[0][0]
 
     if plot_reliability:
@@ -1230,7 +1245,7 @@ def reliability_func(
             plt.figure(figsize=(6, 6))
             plt.plot(
                 [0, 1], [0, 1], "k--", label="Perfect Reliability"
-            )  # diagonal line
+            )  # Diagonal line
             plt.scatter(
                 corrected_taqr_quantiles,
                 reliability_points_taqr,
@@ -1349,7 +1364,6 @@ def pipeline(
     actuals = actuals.loc[common_index]
     X_y = X_y.loc[common_index]
 
-    print(ensembles)
     timesteps = timesteps_for_lstm
     Xs, X_Ys = create_dataset_for_lstm(ensembles, X_y, timesteps_for_lstm)
 
@@ -1417,7 +1431,7 @@ def pipeline(
     quantiles_taqr = kwargs.get("quantiles_taqr", [0.1, 0.3, 0.5, 0.7, 0.9])
     n_full = len(actuals_out_of_sample)
     n_init = int(0.25 * n_full)
-    print("n_init, n_full: ", n_init, n_full)
+    # print("n_init, n_full: ", n_init, n_full)
 
     corrected_ensembles = corrected_ensembles.numpy()
     corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
