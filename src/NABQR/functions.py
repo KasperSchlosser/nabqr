@@ -187,6 +187,11 @@ def calculate_qss(actuals, taqr_results, quantiles):
         Quantile Skill Score
     """
     qss_scores = multi_quantile_skill_score(actuals, taqr_results, quantiles)
+    table = pd.DataFrame({
+        "Quantiles": quantiles,
+        "QSS NABQR": qss_scores
+    })
+    print(table)
     return np.mean(qss_scores)
 
 
@@ -380,6 +385,7 @@ def calculate_scores(
     quantiles_taqr,
     data_source,
     plot_reliability=True,
+    visualize = True
 ):
     """Calculate Variogram, CRPS, QSS and MAE for the predictions and corrected ensembles.
 
@@ -425,9 +431,14 @@ def calculate_scores(
         corrected_ensembles.loc[actuals_comp.index].T,
         np.linspace(0.05, 0.95, corrected_ensembles.shape[1]),
     )
+
+    # TODO: Should be done with max and min from the training set. 
+    taqr_values_clipped = np.clip(taqr_results, 0, max(actuals_comp.values))
     qs_corrected_taqr = calculate_qss(
-        actuals_comp.values, taqr_results.values, quantiles_taqr
+        actuals_comp.values, taqr_values_clipped, quantiles_taqr
     )
+
+    
 
     crps_orig_ensembles = calculate_crps(
         actuals_comp.values.flatten(), ensembles_CE_index.loc[actuals_comp.index].T
@@ -517,7 +528,7 @@ def calculate_scores(
         actuals,
         quantiles_taqr,
         data_source,
-        plot_reliability,
+        plot_reliability = visualize,
     )
 
     return scores_df
@@ -546,6 +557,7 @@ def run_r_script(X_filename, Y_filename, tau):
     library(onlineforecast) 
     library(quantreg) 
     library(readr) 
+    library(SparseM)
     X_full <- read_csv("{X_filename}", col_names = FALSE, show_col_types = FALSE) 
     y <- read_csv("{Y_filename}", col_names = "y", show_col_types = FALSE) 
     X_full <- X_full[1:500,]
@@ -816,9 +828,6 @@ def legend_without_duplicate_labels(ax):
         (h, l) for i, (h, l) in enumerate(zip(handles, labels)) if l not in labels[:i]
     ]
     ax.legend(*zip(*unique))
-
-
-import numpy as np
 
 
 def remove_straight_line_outliers(ensembles):
@@ -1341,16 +1350,23 @@ def pipeline(
             The BETA parameters.
     """
     # Data preparation
+    #. // TODO: check, that this loading works for npy and pd,... seems fine as of now, 5th feb 2025
     actuals = y
     ensembles = X
-    X_y = np.concatenate((X, y.reshape(-1, 1)), axis=1)
-
+    
     if isinstance(y, pd.Series):
         idx = y.index
     elif isinstance(X, pd.DataFrame):
         idx = X.index
     else:
         idx = pd.RangeIndex(start=0, stop=len(y), step=1)
+
+    if isinstance(y, np.ndarray):
+        X_y = np.concatenate((X, y.reshape(-1, 1)), axis=1)
+        y = pd.Series(y, index=idx)
+    else:
+        X_y = np.concatenate((X, y.values.reshape(-1, 1)), axis=1)
+        y = pd.Series(y.values, index=idx)
 
     train_size = int(training_size * len(actuals))
     ensembles = pd.DataFrame(ensembles, index=idx)
@@ -1431,6 +1447,10 @@ def pipeline(
     quantiles_taqr = kwargs.get("quantiles_taqr", [0.1, 0.3, 0.5, 0.7, 0.9])
     n_full = len(actuals_out_of_sample)
     n_init = int(0.25 * n_full)
+    limit = kwargs.get("limit", 5000)
+    if n_init < limit: # TODO: should actually be 5000 for optimal results... for wind power production.
+        print(f"25% of the data is less than {limit} timesteps, thus, setting n_init to 50% of the data length or {limit}, whichever is larger")
+        n_init = max(int(0.5*n_full), limit)
     # print("n_init, n_full: ", n_init, n_full)
 
     corrected_ensembles = corrected_ensembles.numpy()

@@ -1,5 +1,5 @@
-from .functions import *
-from .helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
+from nabqr.functions import *
+from nabqr.helper_functions import simulate_correlated_ar1_process, set_n_closest_to_zero
 import matplotlib.pyplot as plt
 import scienceplots
 
@@ -24,8 +24,6 @@ def run_nabqr_pipeline(
     X=None,
     actuals=None,
     simulation_type="sde",
-    visualize = True,
-    taqr_limit=5000
 ):
     """
     Run the complete NABQR pipeline, which may include data simulation, model training,
@@ -66,10 +64,7 @@ def run_nabqr_pipeline(
         will prompt to simulate data.
     simulation_type : str, optional
         Type of simulation to use, by default "ar1". "sde" is more advanced and uses a SDE model and realistic.
-    visualize : bool, optional
-        Determines if any visual elements will be plotted to the screen or saved as figures.
-    taqr_limit : int, optional
-        The lookback limit for the TAQR model, by default 5000.
+
     Returns
     -------
     tuple
@@ -154,7 +149,9 @@ def run_nabqr_pipeline(
         plt.figure(figsize=(10, 6))
         cmap = plt.cm.Blues
         num_series = X.shape[1] if X.ndim > 1 else 1
-        colors = [cmap(i) for i in np.linspace(0.3, 1, num_series)]  # Shades of blue
+        colors = []
+        for i in np.linspace(0.3, 1, num_series):
+            colors.append(cmap(i))
         if num_series > 1:
             for i in range(num_series):
                 plt.plot(X[:, i], color=colors[i], alpha=0.7)
@@ -176,15 +173,13 @@ def run_nabqr_pipeline(
         epochs=epochs,
         timesteps_for_lstm=timesteps,
         quantiles_taqr=quantiles,
-        limit=taqr_limit
     )
 
     # Get today's date for file naming
     today = dt.datetime.today().strftime("%Y-%m-%d")
 
     # Visualize results
-    if visualize:
-        visualize_results(actuals_output, taqr_results, f"{data_source} example")
+    visualize_results(actuals_output, taqr_results, f"{data_source} example")
 
     # Calculate scores
     scores = calculate_scores(
@@ -195,7 +190,6 @@ def run_nabqr_pipeline(
         quantiles,
         data_source,
         plot_reliability=True,
-        visualize = visualize
     )
 
     return corrected_ensembles, taqr_results, actuals_output, BETA_output, scores

@@ -79,5 +79,5 @@ def visualize_results(y_hat, q_hat, ylabel):
     ax.xaxis.set_major_formatter(formatter)
 
     plt.tight_layout()
-    plt.savefig("TEST_NABQR_taqr_pi_plot.pdf")
+    plt.savefig(f"{ylabel}_taqr_pi_plot.pdf")
     plt.show()
