@@ -19,7 +19,7 @@ docs_require = [
 
 setup(
     name='nabqr',
-    version='0.0.39',
+    version='0.0.44',
     description='NABQR is a method for sequential error-corrections tailored for wind power forecast in Denmark',
     long_description=long_description,
     long_description_content_type="text/markdown",

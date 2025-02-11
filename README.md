@@ -87,10 +87,6 @@ It then runs the TAQR algorithm on the corrected ensembles to predict the observ
 **Output:**
 The pipeline saves the following outputs and also returns them:
 
-- **Actuals Out of Sample**: 
-  - File: `results_<today>_<data_source>_actuals_out_of_sample.npy`
-  - Contains the actual observations that are out of the sample.
-
 - **Corrected Ensembles**: 
   - File: `results_<today>_<data_source>_corrected_ensembles.csv`
   - A CSV file containing the corrected ensemble data.
@@ -99,12 +95,19 @@ The pipeline saves the following outputs and also returns them:
   - File: `results_<today>_<data_source>_taqr_results.npy`
   - Contains the results from the Time-Adaptive Quantile Regression (TAQR).
 
+- **Actuals Out of Sample**: 
+  - File: `results_<today>_<data_source>_actuals_out_of_sample.npy`
+  - Contains the actual observations that are out of the sample.
+
 - **BETA Parameters**: 
   - File: `results_<today>_<data_source>_BETA_output.npy`
   - Contains the BETA parameters from the TAQR.
 
-Note: `<today>` is the current date in the format `YYYY-MM-DD`, and `<data_source>` is the name of the dataset.
+- **Ensembles**: 
+  - Contains the original ensembles.
 
+
+Note: `<today>` is the current date in the format `YYYY-MM-DD`, and `<data_source>` is the name of the dataset.
 
 The pipeline trains a LSTM network to correct the provided ensembles and then runs the TAQR algorithm on the corrected ensembles to predict the observations, y, on the test set.
 
@@ -208,6 +211,14 @@ def run_nabqr_pipeline(
     actuals : array-like, optional
         Pre-computed actual target values. If not provided along with `X`, the function
         will prompt to simulate data.
+    simulation_type : str, optional
+        Type of simulation to use, by default "ar1". "sde" is more advanced and uses a SDE model and realistic.
+    visualize : bool, optional
+        Determines if any visual elements will be plotted to the screen or saved as figures.
+    taqr_limit : int, optional
+        The lookback limit for the TAQR model, by default 5000.
+    save_files : bool, optional
+        Determines if any files will be saved, by default True. Note: the R-file needs to save some .csv files to run properly.
 
     Returns
     -------
@@ -229,7 +240,6 @@ def run_nabqr_pipeline(
     ValueError
         If user opts not to simulate data when both X and actuals are missing.
     """
-
     # If both X and actuals are not provided, ask user if they want to simulate
     if X is None or actuals is None:
         if X is not None or actuals is not None:
@@ -252,9 +262,41 @@ def run_nabqr_pipeline(
         corr_matrix = correlation * np.ones((m, m)) + (1 - correlation) * np.eye(m)
 
         # Generate simulated data
-        X, actuals = simulate_correlated_ar1_process(
-            n_samples, phi, sigma, m, corr_matrix, offset, smooth=5
-        )
+        # Check if simulation_type is valid
+        if simulation_type not in ["ar1", "sde"]:
+            raise ValueError("Invalid simulation type. Please choose 'ar1' or 'sde'.")
+        if simulation_type == "ar1":    
+            X, actuals = simulate_correlated_ar1_process(
+                n_samples, phi, sigma, m, corr_matrix, offset, smooth=5
+            )
+        elif simulation_type == "sde":
+            initial_params = {
+                    'X0': 0.6,
+                    'theta': 0.77,
+                    'kappa': 0.12,        # Slower mean reversion
+                    'sigma_base': 1.05,  # Lower base volatility
+                    'alpha': 0.57,       # Lower ARCH effect
+                    'beta': 1.2,        # High persistence
+                    'lambda_jump': 0.045, # Fewer jumps
+                    'jump_mu': 0.0,     # Negative jumps
+                    'jump_sigma': 0.1    # Moderate jump size variation
+                }
+            # Check that initial parameters are within bounds
+            bounds = get_parameter_bounds()
+            for param, value in initial_params.items():
+                lower_bound, upper_bound = bounds[param]
+                if not (lower_bound <= value <= upper_bound):
+                    print(f"Initial parameter {param}={value} is out of bounds ({lower_bound}, {upper_bound})")
+                    if value < lower_bound:
+                        initial_params[param] = lower_bound
+                    else:
+                        initial_params[param] = upper_bound
+            
+            t, actuals, X = simulate_wind_power_sde(
+                initial_params, T=n_samples, dt=1.0
+            )
+
+
 
         # Plot the simulated data with X in shades of blue and actuals in bold black
         plt.figure(figsize=(10, 6))
@@ -282,13 +324,16 @@ def run_nabqr_pipeline(
         epochs=epochs,
         timesteps_for_lstm=timesteps,
         quantiles_taqr=quantiles,
+        limit=taqr_limit,
+        save_files = save_files
     )
 
     # Get today's date for file naming
     today = dt.datetime.today().strftime("%Y-%m-%d")
 
     # Visualize results
-    visualize_results(actuals_output, taqr_results, f"{data_source} example")
+    if visualize:
+        visualize_results(actuals_output, taqr_results, f"{data_source} example")
 
     # Calculate scores
     scores = calculate_scores(
@@ -299,9 +344,11 @@ def run_nabqr_pipeline(
         quantiles,
         data_source,
         plot_reliability=True,
+        visualize = visualize
     )
 
     return corrected_ensembles, taqr_results, actuals_output, BETA_output, scores
+
 ```
 
 We provide an overview of the shapes for this test file:
@@ -315,8 +362,8 @@ len(quantiles_taqr): 7
 ## Requirements
 
 - Python 3.10 or later
-- icecream, matplotlib, numpy, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras
-- R with the following packages: quantreg, readr
+- icecream, matplotlib, numpy<2.0.0, pandas, properscoring, rich, SciencePlots, scikit_learn, scipy, tensorflow, tensorflow_probability, torch, typer, sphinx_rtd_theme, myst_parser, tf_keras
+- R with the following packages: quantreg, readr, SparseM (implicitly called)
 
 ## Credits/Copyright
 Copyright © 2024 Technical University of Denmark

@@ -25,7 +25,8 @@ def run_nabqr_pipeline(
     actuals=None,
     simulation_type="sde",
     visualize = True,
-    taqr_limit=5000
+    taqr_limit=5000,
+    save_files = True,
 ):
     """
     Run the complete NABQR pipeline, which may include data simulation, model training,
@@ -70,6 +71,8 @@ def run_nabqr_pipeline(
         Determines if any visual elements will be plotted to the screen or saved as figures.
     taqr_limit : int, optional
         The lookback limit for the TAQR model, by default 5000.
+    save_files : bool, optional
+        Determines if any files will be saved, by default True. Note: the R-file needs to save some .csv files to run properly.
     Returns
     -------
     tuple
@@ -176,7 +179,8 @@ def run_nabqr_pipeline(
         epochs=epochs,
         timesteps_for_lstm=timesteps,
         quantiles_taqr=quantiles,
-        limit=taqr_limit
+        limit=taqr_limit,
+        save_files = save_files
     )
 
     # Get today's date for file naming

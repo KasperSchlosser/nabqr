@@ -554,7 +554,7 @@ def run_r_script(X_filename, Y_filename, tau):
 
     r_script = f"""
     options(warn = -1)
-    library(onlineforecast) 
+    # library(onlineforecast) 
     library(quantreg) 
     library(readr) 
     library(SparseM)
@@ -1259,13 +1259,13 @@ def reliability_func(
                 corrected_taqr_quantiles,
                 reliability_points_taqr,
                 color="blue",
-                label="Reliability CorrectedTAQR",
+                label="NABQR",
             )
             plt.scatter(
                 quantiles_ensembles,
                 reliability_points_ensembles,
                 color="grey",
-                label="Reliability Original Ensembles",
+                label="Original Ensembles",
                 marker="p",
                 alpha=0.5,
             )
@@ -1273,7 +1273,7 @@ def reliability_func(
                 quantiles_corrected_ensembles,
                 reliability_points_corrected_ensembles,
                 color="green",
-                label="Reliability Corrected Ensembles",
+                label="Corrected Ensembles",
                 marker="p",
                 alpha=0.5,
             )
@@ -1281,7 +1281,7 @@ def reliability_func(
                 hpe_quantile,
                 observed_below_hpe,
                 color="grey",
-                label="Reliability HPE",
+                label="High Prob. Ensemble",
                 alpha=0.5,
                 marker="D",
                 s=25,
@@ -1366,7 +1366,7 @@ def pipeline(
         y = pd.Series(y, index=idx)
     else:
         X_y = np.concatenate((X, y.values.reshape(-1, 1)), axis=1)
-        y = pd.Series(y.values, index=idx)
+        y = pd.Series(y.values.reshape(-1, 1), index=idx)
 
     train_size = int(training_size * len(actuals))
     ensembles = pd.DataFrame(ensembles, index=idx)
@@ -1425,12 +1425,14 @@ def pipeline(
         data_name=f"{name}_LSTM_epochs_{epochs}",
     )
 
-    # Save model
-    try:
-        today = dt.datetime.today().strftime("%Y-%m-%d")
-        model.save(f"Model_{name}_{epochs}_{today}.keras")
-    except:
-        model.save(f"Models_{name}_{epochs}.keras")
+    save_files = kwargs.get("save_files", True)
+    if save_files:
+        # Save model
+        try:
+            today = dt.datetime.today().strftime("%Y-%m-%d")
+            model.save(f"Model_{name}_{epochs}_{today}.keras")
+        except:
+            model.save(f"Models_{name}_{epochs}.keras")
 
     # Generate predictions
     Xs_scaled_test = (Xs[train_size:] - XY_s_min_train) / (
@@ -1449,8 +1451,8 @@ def pipeline(
     n_init = int(0.25 * n_full)
     limit = kwargs.get("limit", 5000)
     if n_init < limit: # TODO: should actually be 5000 for optimal results... for wind power production.
-        print(f"25% of the data is less than {limit} timesteps, thus, setting n_init to 50% of the data length or {limit}, whichever is larger")
-        n_init = max(int(0.5*n_full), limit)
+        print(f"25% of the data is less than {limit} timesteps, thus, setting n_init to 50% of the data length or {limit}, whichever is smaller")
+        n_init = min(int(0.5*n_full), limit)
     # print("n_init, n_full: ", n_init, n_full)
 
     corrected_ensembles = corrected_ensembles.numpy()
@@ -1477,17 +1479,19 @@ def pipeline(
     data_source = f"{name}"
     today = dt.datetime.today().strftime("%Y-%m-%d")
 
-    np.save(
-        f"results_{today}_{data_source}_actuals_out_of_sample.npy",
-        actuals_out_of_sample,
-    )
+    if save_files:  
+        np.save(
+            f"results_{today}_{data_source}_actuals_out_of_sample.npy",
+            actuals_out_of_sample,
+        )
     df_corrected_ensembles = pd.DataFrame(corrected_ensembles, index=idx_to_save)
-    df_corrected_ensembles.to_csv(
-        f"results_{today}_{data_source}_corrected_ensembles.csv"
-    )
-    np.save(f"results_{today}_{data_source}_taqr_results.npy", taqr_results)
-    np.save(f"results_{today}_{data_source}_actuals_output.npy", actuals_output)
-    np.save(f"results_{today}_{data_source}_BETA_output.npy", BETA_output)
+    if save_files:
+        df_corrected_ensembles.to_csv(
+            f"results_{today}_{data_source}_corrected_ensembles.csv"
+        )
+        np.save(f"results_{today}_{data_source}_taqr_results.npy", taqr_results)
+        np.save(f"results_{today}_{data_source}_actuals_output.npy", actuals_output)
+        np.save(f"results_{today}_{data_source}_BETA_output.npy", BETA_output)
 
     return (
         corrected_ensembles,
