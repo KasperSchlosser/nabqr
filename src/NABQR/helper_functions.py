@@ -396,9 +396,9 @@ def simulate_wind_power_sde(params: Dict[str, float], T: float = 500, dt: float 
     Examples
     --------
     >>> params = {
-    ...     'X0': 0.5, 'theta': 0.7, 'kappa': 1.0, 'sigma_base': 0.1,
-    ...     'alpha': 0.2, 'beta': 0.5, 'lambda_jump': 0.05,
-    ...     'jump_mu': 0.0, 'jump_sigma': 0.02
+    ...     'X0': 0.6, 'theta': 0.77, 'kappa': 0.12, 'sigma_base': 1.05,
+    ...     'alpha': 0.57, 'beta': 1.2, 'lambda_jump': 0.045,
+    ...     'jump_mu': 0.0, 'jump_sigma': 0.1
     ... }
     >>> t, X = simulate_wind_power_sde(params, T=100, dt=1.0)
     >>> import matplotlib.pyplot as plt

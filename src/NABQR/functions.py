@@ -1366,7 +1366,7 @@ def pipeline(
         y = pd.Series(y, index=idx)
     else:
         X_y = np.concatenate((X, y.values.reshape(-1, 1)), axis=1)
-        y = pd.Series(y.values.reshape(-1, 1), index=idx)
+        y = pd.Series(y.values.flatten(), index=idx)
 
     train_size = int(training_size * len(actuals))
     ensembles = pd.DataFrame(ensembles, index=idx)
