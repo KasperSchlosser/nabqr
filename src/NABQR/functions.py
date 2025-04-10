@@ -1141,16 +1141,13 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
 
     return taqr_results, actuals_output[1], BETA_output
 
-
-
+    
 def pipeline(
-    X,
-    y,
-    name="TEST",
-    training_size=0.8,
-    epochs=100,
-    timesteps_for_lstm=[0, 1, 2, 6, 12, 24, 48],
-    **kwargs,
+    X, y,
+    epochs = 100, training_size = 0.8, validation_size = 100,
+    taqr_init = "In-sample", quantiles_taqr = None, init_limit = 5000,
+    quantiles_lstm = None, timesteps_lstm = None,
+    save_name = None,
 ):
     """Main pipeline for NABQR model training and evaluation.
 
@@ -1161,9 +1158,9 @@ def pipeline(
 
     Parameters
     ----------
-    X : pd.DataFrame or numpy.ndarray
+    X : numpy.ndarray
         Shape (n_samples, n_features) - Ensemble data
-    y : pd.Series or numpy.ndarray
+    y : numpy.ndarray
         Shape (n_samples,) - Observations
     name : str, optional
         Dataset identifier, by default "TEST"
@@ -1190,38 +1187,25 @@ def pipeline(
             The BETA parameters.
     """
     # Data preparation
-    #. // TODO: check, that this loading works for npy and pd,... seems fine as of now, 5th feb 2025
-    actuals = y
-    ensembles = X
+    assert type(y) is pd.Series or type(y) is pd.DataFrame, "Observations y must be a Pandas Dataframe or Series"
+    assert type(X) is pd.DataFrame, "Ensembles X Must Be a Pandas Dataframe "
+    assert taqr_init in {"In-sample", "Out-Of-Sample"}, "taqr_init must be one of In-sample, Out-of-Sample"
     
-    if isinstance(y, pd.Series):
-        idx = y.index
-    elif isinstance(X, pd.DataFrame):
-        idx = X.index
-    else:
-        idx = pd.RangeIndex(start=0, stop=len(y), step=1)
-
-    if isinstance(y, np.ndarray):
-        X_y = np.concatenate((X, y.reshape(-1, 1)), axis=1)
-        y = pd.Series(y, index=idx)
-    else:
-        X_y = np.concatenate((X, y.values.reshape(-1, 1)), axis=1)
-        y = pd.Series(y.values.flatten(), index=idx)
-
-    train_size = int(training_size * len(actuals))
-    ensembles = pd.DataFrame(ensembles, index=idx)
-    # ensembles.index = pd.to_datetime(ensembles.index, utc=False).tz_localize(None)
-    actuals = pd.DataFrame(actuals, index=idx)
-    # actuals.index = pd.to_datetime(actuals.index, utc=False).tz_localize(None)
-    common_index = ensembles.index.intersection(actuals.index)
-    X_y = pd.DataFrame(X_y, index=idx)
-    # X_y.index = pd.to_datetime(X_y.index, utc=False).tz_localize(None)
-    ensembles = ensembles.loc[common_index]
-    actuals = actuals.loc[common_index]
-    X_y = X_y.loc[common_index]
-
-    timesteps = timesteps_for_lstm
-    Xs, X_Ys = create_dataset_for_lstm(ensembles, X_y, timesteps_for_lstm)
+    if quantiles_taqr is None: quantiles_taqr = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
+    if quantiles_taqr is None: quantiles_taqr = np.arange(0.05,1,0.05)
+    if timesteps_lstm is None: np.array([0, 1, 2, 6, 12, 24, 48])
+    
+    idx = X.index.intersection(y.index)
+    
+    X = X[idx]
+    y = y[idx]
+    X_y = pd.concat((X.values, y.values), axis = 1)
+    
+    train_size = int(training_size * len(idx))
+    train_idx = idx[:train_size]
+    test_idx = idx[train_size:]
+    
+    Xs, X_Ys = create_dataset_for_lstm(X, X_y, timesteps_lstm)
 
     # Handle NaN values
     if np.isnan(Xs).any():
@@ -1232,106 +1216,98 @@ def pipeline(
         X_Ys[np.isnan(X_Ys).any(axis=1)] = 0
 
     # Data standardization
-    XY_s_max_train = np.max(X_Ys[:train_size])
-    XY_s_min_train = np.min(X_Ys[:train_size])
+    min_val = np.min(X_Ys[:train_size])
+    max_val = np.max(np.min(X_Ys[:train_size]))
+    def transformer(vals):
+        return (vals - min_val) / (max_val - min_val)
+    def detransformer(vals):
+        return (max_val - min_val) * vals + min_val
 
-    X_Ys_scaled_train = (X_Ys[:train_size] - XY_s_min_train) / (
-        XY_s_max_train - XY_s_min_train
-    )
-    Xs_scaled_train = (Xs[:train_size] - XY_s_min_train) / (
-        XY_s_max_train - XY_s_min_train
-    )
-
-    validation_size = 100
-    X_Ys_scaled_validation = (
-        X_Ys[train_size : (train_size + validation_size)] - XY_s_min_train
-    ) / (XY_s_max_train - XY_s_min_train)
-    Xs_scaled_validation = (
-        Xs[train_size : (train_size + validation_size)] - XY_s_min_train
-    ) / (XY_s_max_train - XY_s_min_train)
+    X_Ys_scaled = transformer(X_Ys)
+    Xs_scaled = transformer(Xs)
 
     # Train LSTM model
-    quantiles_lstm = np.linspace(0.05, 0.95, 20)
     model = train_model_lstm(
         quantiles=quantiles_lstm,
         epochs=epochs,
         lr=1e-3,
         batch_size=50,
-        x=tf.convert_to_tensor(Xs_scaled_train),
-        y=tf.convert_to_tensor(X_Ys_scaled_train),
-        x_val=tf.convert_to_tensor(Xs_scaled_validation),
-        y_val=tf.convert_to_tensor(X_Ys_scaled_validation),
-        n_timesteps=timesteps,
-        data_name=f"{name}_LSTM_epochs_{epochs}",
+        x=tf.convert_to_tensor(Xs_scaled[:train_size]),
+        y=tf.convert_to_tensor(X_Ys_scaled[:train_size]),
+        x_val=tf.convert_to_tensor(Xs_scaled[train_size:train_size + validation_size]),
+        y_val=tf.convert_to_tensor(X_Ys_scaled[train_size:train_size + validation_size]),
+        n_timesteps=timesteps_lstm,
+        data_name=save_name,
     )
 
-    save_files = kwargs.get("save_files", True)
-    if save_files:
-        # Save model
-        try:
-            today = dt.datetime.today().strftime("%Y-%m-%d")
-            model.save(f"Model_{name}_{epochs}_{today}.keras")
-        except:
-            model.save(f"Models_{name}_{epochs}.keras")
-
-    # Generate predictions
-    Xs_scaled_test = (Xs[train_size:] - XY_s_min_train) / (
-        XY_s_max_train - XY_s_min_train
-    )
-    corrected_ensembles = model(Xs_scaled_test)
-    corrected_ensembles = (
-        corrected_ensembles * (XY_s_max_train - XY_s_min_train) + XY_s_min_train
-    )
-    actuals_out_of_sample = actuals[train_size:]
-    test_idx = idx[train_size:]
-
-    # Run TAQR
-    quantiles_taqr = kwargs.get("quantiles_taqr", [0.1, 0.3, 0.5, 0.7, 0.9])
-    n_full = len(actuals_out_of_sample)
-    n_init = int(0.25 * n_full)
-    limit = kwargs.get("limit", 5000)
-    if n_init < limit: # TODO: should actually be 5000 for optimal results... for wind power production.
-        print(f"25% of the data is less than {limit} timesteps, thus, setting n_init to 50% of the data length or {limit}, whichever is smaller")
-        n_init = min(int(0.5*n_full), limit)
-    # print("n_init, n_full: ", n_init, n_full)
-
-    corrected_ensembles = corrected_ensembles.numpy()
+    # run LSTM and sanitise LSTM output
+    corrected_ensembles = model(Xs_scaled).numpy()
     corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
     corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
-    corrected_ensembles = pd.DataFrame(corrected_ensembles, index=test_idx)
-    n_in_X = n_init
+    corrected_ensembles = pd.DataFrame(corrected_ensembles, index = train_idx)
+    # maybe these should be made in two steps
+    # problem would be that the out-of-sample data get some information from the in-sample data
+    # not comepletely analogues to when you would completely cold start on new data
+    # but maybe not a big problem, when would you start on completely new data?
+    
+    # run taqr
+    match taqr_init: 
+        case "In_sample":
+            n_init = len(train_idx)
+            n_full = len(corrected_ensembles)
+            n_in_X = n_init
+            
+            
+        case "Out-Of-Sample":
+            # we need enough data to initialise TAQR
+            # but we also need data to validate on
+            # take 25% of data if this is more than the limit
+            # else take between 50% of the data or the limit
+            corrected_ensembles = corrected_ensembles[test_idx]
+            y = y[test_idx]
+            
+            n_full = len(y)
+            n_init = max(int(0.25*len(n_full)), min(int(len(n_full) * 0.5), init_limit))
+            n_in_X = n_full
+            
+            train_idx = test_idx[:n_init]
+            test_idx = test_idx[n_init:]
+    
     taqr_results, actuals_output, BETA_output = run_taqr(
-        corrected_ensembles,
-        actuals_out_of_sample,
+        corrected_ensembles.values,
+        y.values,
         quantiles_taqr,
         n_init,
         n_full,
-        n_in_X,
+        n_in_X
     )
-    actuals_out_of_sample = actuals_out_of_sample[(n_init + 1) : (n_full - 1)]
-    actuals_output = pd.Series(
-        actuals_output.flatten(), index=test_idx[(n_init + 1) : (n_full - 1)]
-    )
-    corrected_ensembles = corrected_ensembles.iloc[(n_init + 1) : (n_full - 1)]
-    idx_to_save = test_idx[(n_init + 1) : (n_full - 1)]
-
-    # Save results
-    data_source = f"{name}"
-    today = dt.datetime.today().strftime("%Y-%m-%d")
-
-    if save_files:  
-        np.save(
-            f"results_{today}_{data_source}_actuals_out_of_sample.npy",
-            actuals_out_of_sample,
-        )
-    df_corrected_ensembles = pd.DataFrame(corrected_ensembles, index=idx_to_save)
-    if save_files:
-        df_corrected_ensembles.to_csv(
-            f"results_{today}_{data_source}_corrected_ensembles.csv"
-        )
-        np.save(f"results_{today}_{data_source}_taqr_results.npy", taqr_results)
-        np.save(f"results_{today}_{data_source}_actuals_output.npy", actuals_output)
-        np.save(f"results_{today}_{data_source}_BETA_output.npy", BETA_output)
+    
+    corrected_ensembles_original = detransformer(corrected_ensembles)
+    
+    training_results = {
+        "Corrected Ensembles": corrected_ensembles[train_idx],
+        "Corrected Ensembles Original Space": corrected_ensembles_original[train_idx],
+        "Actuals": y[train_idx],
+        "Beta": pd.DataFrame(BETA_output, index=train_idx),
+        "TAQR results": pd.DataFrame(taqr_results, index = train_idx)
+        }
+    
+    test_results = {
+        "Corrected Ensembles": corrected_ensembles[test_idx],
+        "Corrected Ensembles Original Space": corrected_ensembles_original[test_idx],
+        "Actuals": y[test_idx],
+        "Beta": pd.DataFrame(BETA_output, index=test_idx),
+        "TAQR results": pd.DataFrame(taqr_results, index = test_idx)
+        }
+    
+    
+    if save_name:
+        model.save(f'{save_name}.keras')
+        
+        for key, val in training_results:
+            val.to_csv(f'{save_name} {key}.csv')
+        for key, val in test_results:
+            val.to_csv(f'{save_name} {key}.csv')    
 
     return (
         corrected_ensembles,
