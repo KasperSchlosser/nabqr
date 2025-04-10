@@ -1170,8 +1170,6 @@ def pipeline(
         Number of training epochs, by default 100
     timesteps_for_lstm : list, optional
         Time steps to use for LSTM input, by default [0, 1, 2, 6, 12, 24, 48]
-    **kwargs : dict
-        Additional keyword arguments
 
     Returns
     -------
@@ -1192,8 +1190,8 @@ def pipeline(
     assert taqr_init in {"In-sample", "Out-Of-Sample"}, "taqr_init must be one of In-sample, Out-of-Sample"
     
     if quantiles_taqr is None: quantiles_taqr = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
-    if quantiles_taqr is None: quantiles_taqr = np.arange(0.05,1,0.05)
-    if timesteps_lstm is None: np.array([0, 1, 2, 6, 12, 24, 48])
+    if quantiles_lstm is None: quantiles_lstm = np.arange(0.05,1,0.05)
+    if timesteps_lstm is None: timesteps_lstm = np.array([0, 1, 2, 6, 12, 24, 48])
     
     idx = X.index.intersection(y.index)
     
@@ -1307,12 +1305,6 @@ def pipeline(
         for key, val in training_results:
             val.to_csv(f'{save_name} {key}.csv')
         for key, val in test_results:
-            val.to_csv(f'{save_name} {key}.csv')    
+            val.to_csv(f'{save_name} {key}.csv')
 
-    return (
-        corrected_ensembles,
-        pd.DataFrame(np.array(taqr_results).T, index=idx_to_save),
-        actuals_output,
-        BETA_output,
-        ensembles,
-    )
+    return training_results, test_results
