@@ -1145,7 +1145,7 @@ def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
 def pipeline(
     X, y,
     epochs = 100, training_size = 0.8, validation_size = 100,
-    taqr_init = "In-sample", quantiles_taqr = None, init_limit = 5000,
+    taqr_init = "in-sample", quantiles_taqr = None, init_limit = 5000,
     quantiles_lstm = None, timesteps_lstm = None,
     save_name = None,
 ):
@@ -1187,7 +1187,7 @@ def pipeline(
     # Data preparation
     assert type(y) is pd.Series or type(y) is pd.DataFrame, "Observations y must be a Pandas Dataframe or Series"
     assert type(X) is pd.DataFrame, "Ensembles X Must Be a Pandas Dataframe "
-    assert taqr_init in {"In-sample", "Out-Of-Sample"}, "taqr_init must be one of In-sample, Out-of-Sample"
+    assert taqr_init in {"in-sample", "out-of-sample"}, "taqr_init must be one of In-sample, Out-of-Sample"
     
     if quantiles_taqr is None: quantiles_taqr = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
     if quantiles_lstm is None: quantiles_lstm = np.arange(0.05,1,0.05)
@@ -1195,9 +1195,9 @@ def pipeline(
     
     idx = X.index.intersection(y.index)
     
-    X = X[idx]
-    y = y[idx]
-    X_y = pd.concat((X.values, y.values), axis = 1)
+    X = X.loc[idx,:]
+    y = y.loc[idx,:]
+    X_y = pd.concat((X, y), axis = 1)
     
     train_size = int(training_size * len(idx))
     train_idx = idx[:train_size]
@@ -1215,7 +1215,7 @@ def pipeline(
 
     # Data standardization
     min_val = np.min(X_Ys[:train_size])
-    max_val = np.max(np.min(X_Ys[:train_size]))
+    max_val = np.max(X_Ys[:train_size])
     def transformer(vals):
         return (vals - min_val) / (max_val - min_val)
     def detransformer(vals):
@@ -1223,7 +1223,7 @@ def pipeline(
 
     X_Ys_scaled = transformer(X_Ys)
     Xs_scaled = transformer(Xs)
-
+    
     # Train LSTM model
     model = train_model_lstm(
         quantiles=quantiles_lstm,
@@ -1237,12 +1237,13 @@ def pipeline(
         n_timesteps=timesteps_lstm,
         data_name=save_name,
     )
+    
 
     # run LSTM and sanitise LSTM output
-    corrected_ensembles = model(Xs_scaled).numpy()
+    corrected_ensembles = model(tf.convert_to_tensor(Xs_scaled)).numpy()
     corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
     corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
-    corrected_ensembles = pd.DataFrame(corrected_ensembles, index = train_idx)
+    corrected_ensembles = pd.DataFrame(corrected_ensembles, index = idx)
     # maybe these should be made in two steps
     # problem would be that the out-of-sample data get some information from the in-sample data
     # not comepletely analogues to when you would completely cold start on new data
@@ -1250,13 +1251,13 @@ def pipeline(
     
     # run taqr
     match taqr_init: 
-        case "In_sample":
+        case "in-sample":
             n_init = len(train_idx)
             n_full = len(corrected_ensembles)
             n_in_X = n_init
             
             
-        case "Out-Of-Sample":
+        case "out-of-sample":
             # we need enough data to initialise TAQR
             # but we also need data to validate on
             # take 25% of data if this is more than the limit
@@ -1283,17 +1284,17 @@ def pipeline(
     corrected_ensembles_original = detransformer(corrected_ensembles)
     
     training_results = {
-        "Corrected Ensembles": corrected_ensembles[train_idx],
-        "Corrected Ensembles Original Space": corrected_ensembles_original[train_idx],
-        "Actuals": y[train_idx],
+        "Corrected Ensembles": corrected_ensembles.loc[train_idx,:],
+        "Corrected Ensembles Original Space": corrected_ensembles_original.loc[train_idx,:],
+        "Actuals": y.loc[train_idx,:],
         "Beta": pd.DataFrame(BETA_output, index=train_idx),
         "TAQR results": pd.DataFrame(taqr_results, index = train_idx)
         }
     
     test_results = {
-        "Corrected Ensembles": corrected_ensembles[test_idx],
-        "Corrected Ensembles Original Space": corrected_ensembles_original[test_idx],
-        "Actuals": y[test_idx],
+        "Corrected Ensembles": corrected_ensembles.loc[test_idx],
+        "Corrected Ensembles Original Space": corrected_ensembles_original.loc[test_idx],
+        "Actuals": y.loc[test_idx],
         "Beta": pd.DataFrame(BETA_output, index=test_idx),
         "TAQR results": pd.DataFrame(taqr_results, index = test_idx)
         }
