@@ -6,6 +6,21 @@ from matplotlib.lines import Line2D
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.cm import ScalarMappable
 
+def legend_without_duplicate_labels(ax):
+    """Create a legend without duplicate labels.
+    Primarily used for ensemble plots.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        Axes object to create legend for
+    """
+    handles, labels = ax.get_legend_handles_labels()
+    unique = [
+        (h, l) for i, (h, l) in enumerate(zip(handles, labels)) if l not in labels[:i]
+    ]
+    ax.legend(*zip(*unique))
+
 
 def visualize_results(y_hat, q_hat, ylabel):
     """Create a visualization of prediction intervals with actual values.

@@ -8,10 +8,9 @@ It implements an adaptive simplex algorithm for quantile regression problems.
 import numpy as np
 import scipy.linalg
 import time
-from scipy import linalg as la
-# from sklearn.linear_model import QuantileRegressor # TODO: Removed 13/1-25, check if it works
-from .helper_functions import *
 import pandas as pd
+# from sklearn.linear_model import QuantileRegressor # TODO: Removed 13/1-25, check if it works
+
 
 
 def opdatering_final(
@@ -226,7 +225,7 @@ def rq_simplex_alg_final(Ih, Ihc, n, K, xB, Xny, IH, P, tau):
         Algorithm parameters for the next iteration
     """
     try:
-        invXh = la.inv(Xny[Ih, :])
+        invXh = scipy.linalg.inv(Xny[Ih, :])
     except np.linalg.LinAlgError:
         print("Error in inverse matrix operation. Trying pseudo-inverse instead.")
         invXh = np.linalg.pinv(Xny[Ih, :])
@@ -486,6 +485,70 @@ def rq_simplex_final(X, IX, Iy, Iex, r, beta, n, tau, bins, n_in_bin):
     return N, BETA, GAIN[1:], Ld, Rny, Mx, Re, CON1[1:], T
 
 
+def set_n_smallest_to_zero(arr, n):
+    """Set the n smallest elements in an array to zero.
+
+    Parameters
+    ----------
+    arr : array-like
+        Input array of numbers
+    n : int
+        Number of smallest elements to set to zero
+
+    Returns
+    -------
+    numpy.ndarray
+        Modified array with n smallest elements set to zero
+    """
+    if n <= 0:
+        return arr
+
+    if n >= len(arr):
+        return [0] * len(arr)
+
+    # Find the n'th smallest element
+    nth_smallest = sorted(arr)[n - 1]
+
+    # Set elements smaller than or equal to nth_smallest to zero
+    modified_arr = [0 if x <= nth_smallest else x for x in arr]
+    modified_arr = np.array(modified_arr)
+    return modified_arr
+
+
+def set_n_closest_to_zero(arr, n):
+    """Set the n elements closest to zero in an array to zero.
+
+    Parameters
+    ----------
+    arr : array-like
+        Input array of numbers
+    n : int
+        Number of elements closest to zero to set to zero
+
+    Returns
+    -------
+    numpy.ndarray
+        Modified array with n elements closest to zero set to zero
+    """
+    if n <= 0:
+        return arr
+
+    if n >= len(arr):
+        return [0] * len(arr)
+
+    # Find the absolute values of the elements
+    abs_arr = np.abs(arr)
+
+    # Find the indices of the n elements closest to zero
+    closest_indices = np.argpartition(abs_arr, n)[:n]
+
+    # Set the elements closest to zero to zero
+    modified_arr = arr.copy()
+    modified_arr[closest_indices] = 0
+
+    return modified_arr
+
+
 def one_step_quantile_prediction(
     X_input,
     Y_input,
@@ -630,3 +693,53 @@ def run_r_script(X_filename, Y_filename, tau):
     process.stdin.close()
     process.stdout.read()
     process.terminate()
+
+
+def run_taqr(corrected_ensembles, actuals, quantiles, n_init, n_full, n_in_X):
+    """Wrapper function to run TAQR on corrected ensembles.
+
+    Parameters
+    ----------
+    corrected_ensembles : numpy.ndarray
+        Shape (n_timesteps, n_ensembles)
+    actuals : numpy.ndarray
+        Shape (n_timesteps,)
+    quantiles : list
+        Quantiles to predict
+    n_init : int
+        Number of initial timesteps for warm start
+    n_full : int
+        Total number of timesteps
+    n_in_X : int
+        Number of timesteps in design matrix
+
+    Returns
+    -------
+    list
+        TAQR results for each quantile
+    """
+    if type(actuals) == pd.Series or type(actuals) == pd.DataFrame:
+        actuals = actuals.to_numpy()
+        actuals[np.isnan(actuals)] = 0
+    else:
+        actuals[np.isnan(actuals)] = 0
+
+    taqr_results = []
+    actuals_output = []
+    BETA_output = []
+    for q in quantiles:
+        print("Running TAQR for quantile: ", q)
+        y_pred, y_actuals, BETA_q = one_step_quantile_prediction(
+            corrected_ensembles,
+            actuals,
+            n_init=n_init,
+            n_full=n_full,
+            quantile=q,
+            already_correct_size=True,
+            n_in_X=n_in_X,
+        )
+        taqr_results.append(y_pred)
+        actuals_output.append(y_actuals)
+        BETA_output.append(BETA_q)
+
+    return taqr_results, actuals_output[1], BETA_output

@@ -1,70 +1,7 @@
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Bool
 import time
-
-def set_n_smallest_to_zero(arr, n):
-    """Set the n smallest elements in an array to zero.
-
-    Parameters
-    ----------
-    arr : array-like
-        Input array of numbers
-    n : int
-        Number of smallest elements to set to zero
-
-    Returns
-    -------
-    numpy.ndarray
-        Modified array with n smallest elements set to zero
-    """
-    if n <= 0:
-        return arr
-
-    if n >= len(arr):
-        return [0] * len(arr)
-
-    # Find the n'th smallest element
-    nth_smallest = sorted(arr)[n - 1]
-
-    # Set elements smaller than or equal to nth_smallest to zero
-    modified_arr = [0 if x <= nth_smallest else x for x in arr]
-    modified_arr = np.array(modified_arr)
-    return modified_arr
-
-
-def set_n_closest_to_zero(arr, n):
-    """Set the n elements closest to zero in an array to zero.
-
-    Parameters
-    ----------
-    arr : array-like
-        Input array of numbers
-    n : int
-        Number of elements closest to zero to set to zero
-
-    Returns
-    -------
-    numpy.ndarray
-        Modified array with n elements closest to zero set to zero
-    """
-    if n <= 0:
-        return arr
-
-    if n >= len(arr):
-        return [0] * len(arr)
-
-    # Find the absolute values of the elements
-    abs_arr = np.abs(arr)
-
-    # Find the indices of the n elements closest to zero
-    closest_indices = np.argpartition(abs_arr, n)[:n]
-
-    # Set the elements closest to zero to zero
-    modified_arr = arr.copy()
-    modified_arr[closest_indices] = 0
-
-    return modified_arr
 
 
 def quantile_score(p, z, q):
@@ -92,106 +29,11 @@ def quantile_score(p, z, q):
     return np.sum(rho)
 
 
-def build_ar1_covariance(n, rho, sigma=1.0):
-    """
-    Build the AR(1) covariance matrix for an n-dimensional process.
 
-    Parameters
-    ----------
-    n : int
-        Dimension of the covariance matrix.
-    rho : float
-        AR(1) correlation parameter (the AR coefficient).
-    sigma : float, optional
-        Standard deviation of the noise (innovation), defaults to 1.0.
-
-    Returns
-    -------
-    numpy.ndarray
-        The AR(1) covariance matrix of shape (n, n), with elements sigma^2 * rho^(|i-j|).
-    """
-    indices = np.arange(n)
-    abs_diff = np.abs(np.subtract.outer(indices, indices))
-    cov_matrix = (sigma**2) * (rho**abs_diff)
-    return cov_matrix
-
-
-def simulate_correlated_ar1_process(
-    n, phi, sigma, m, corr_matrix=None, offset=None, smooth="no"
-):
-    """Simulate a correlated AR(1) process with multiple dimensions.
-
-    Parameters
-    ----------
-    n : int
-        Number of time steps to simulate
-    phi : float
-        AR(1) coefficient (persistence parameter, often denoted rho)
-    sigma : float
-        Standard deviation of the noise
-    m : int
-        Number of dimensions/variables
-    corr_matrix : numpy.ndarray, optional
-        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance
-        structure will be generated.
-    offset : numpy.ndarray, optional
-        Offset vector for each dimension. Defaults to zero vector
-    smooth : int or str, optional
-        Number of initial time steps to discard for smoothing. Defaults to "no"
-
-    Returns
-    -------
-    tuple
-        (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
-        and actuals is the median of ensembles with added noise
-    """
-    if offset is None:
-        offset = np.zeros(m)
-    elif len(offset) != m:
-        raise ValueError("Length of offset array must be equal to m")
-
-    # If no correlation matrix is provided, build the AR(1) covariance matrix
-    if corr_matrix is None:
-        # Here we assume phi is the AR(1) correlation parameter
-        corr_matrix = build_ar1_covariance(m, phi, sigma)
-    elif corr_matrix.shape != (m, m):
-        raise ValueError("Correlation matrix must be of shape (m, m)")
-
-    # cov_matrix now is already constructed (AR(1) type if corr_matrix was None)
-    cov_matrix = corr_matrix
-
-    if isinstance(smooth, int):
-        ensembles = np.zeros((n + smooth, m))
-        ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-
-        for t in range(1, n + smooth):
-            noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-            ensembles[t] = phi * ensembles[t - 1] + noise
-
-        # Extract the smoothed part of the ensembles
-        smoothed_ensembles = ensembles[smooth:]
-
-        return (
-            smoothed_ensembles + offset,
-            np.median(smoothed_ensembles + offset, axis=1)
-            + np.random.normal(0, sigma / 2, n),
-        )
-    else:
-        ensembles = np.zeros((n, m))
-        ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-
-        for t in range(1, n):
-            noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
-            ensembles[t] = phi * ensembles[t - 1] + noise
-
-        return (
-            ensembles + offset,
-            np.median(ensembles + offset, axis=1) + np.random.normal(0, sigma / 2, n),
-        )
-
-def get_parameter_bounds() -> Dict[str, Tuple[float, float]]:
-    """Define bounds for all parameters for SDE simulation.
+def get_parameter_bounds():
+    """Check if parameters a within bounds for SDE simulation.
     Used to ensure that the parameters are within a reasonable range."""
+    
     return {
         'X0': (0.0, 1.0),
         'theta': (0.2, 0.8),       # Lowered upper bound for mean level
@@ -333,6 +175,7 @@ def generate_ou_ensembles(
 
     # We have a T x n_ensembles array that’s effectively “time-shifted” back by lag steps
     return Y_corrected
+
 
 def simulate_wind_power_sde(params: Dict[str, float], T: float = 500, dt: float = 1.0) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -517,3 +360,76 @@ def simulate_wind_power_sde(params: Dict[str, float], T: float = 500, dt: float 
         n_ensembles=50
     )
     return t, X, ensembles
+
+
+def simulate_ar1(
+    n, phi, sigma, m, cov_matrix=None, offset=None, smooth="no"
+    ):
+    """Simulate a correlated AR(1) process with multiple dimensions.
+    
+    Parameters
+    ----------
+    n : int
+        Number of time steps to simulate
+    phi : float
+        AR(1) coefficient (persistence parameter, often denoted rho)
+    sigma : float
+        Standard deviation of the noise
+    m : int
+        Number of dimensions/variables
+    corr_matrix : numpy.ndarray, optional
+        Correlation (or covariance) matrix between dimensions. If None, an AR(1) covariance
+        structure will be generated.
+    offset : numpy.ndarray, optional
+        Offset vector for each dimension. Defaults to zero vector
+    smooth : int or str, optional
+        Number of initial time steps to discard for smoothing. Defaults to "no"
+        
+    Returns
+    -------
+    tuple
+        (simulated_ensembles, actuals) where simulated_ensembles is the AR(1) process
+        and actuals is the median of ensembles with added noise
+    """
+    if offset is None:
+        offset = np.zeros(m)
+    elif len(offset) != m:
+        raise ValueError("Length of offset array must be equal to m")
+        
+    # If no correlation matrix is provided, build the AR(1) covariance matrix
+    if cov_matrix is None:
+        indices = np.arange(n)
+        abs_diff = np.abs(np.subtract.outer(indices, indices))
+        cov_matrix = (sigma**2) * (phi**abs_diff)
+    elif cov_matrix.shape != (m, m):
+        raise ValueError("Covariance matrix must be of shape (m, m)")
+        
+    if isinstance(smooth, int):
+        ensembles = np.zeros((n + smooth, m))
+        ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+        
+        for t in range(1, n + smooth):
+            noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+            ensembles[t] = phi * ensembles[t - 1] + noise
+            
+        # Extract the smoothed part of the ensembles
+        smoothed_ensembles = ensembles[smooth:]
+        
+        return (
+            smoothed_ensembles + offset,
+            np.median(smoothed_ensembles + offset, axis=1)
+            + np.random.normal(0, sigma / 2, n),
+        )
+    else:
+        ensembles = np.zeros((n, m))
+        ensembles[0] = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+        
+        for t in range(1, n):
+            noise = np.random.multivariate_normal(np.zeros(m), cov_matrix)
+            ensembles[t] = phi * ensembles[t - 1] + noise
+            
+        return (
+            ensembles + offset,
+            np.median(ensembles + offset, axis=1) + np.random.normal(0, sigma / 2, n),
+        )
+
