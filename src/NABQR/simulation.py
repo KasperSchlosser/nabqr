@@ -1,33 +1,7 @@
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Tuple, Bool
+from typing import Dict, List, Tuple
 import time
-
-
-def quantile_score(p, z, q):
-    """Calculate the Quantile Score (QS) for a given probability and set of observations and quantiles.
-
-    Implementation based on Fauer et al. (2021): "Flexible and consistent quantile estimation for
-    intensity–duration–frequency curves"
-
-    Parameters
-    ----------
-    p : float
-        The probability level (between 0 and 1)
-    z : numpy.ndarray
-        The observed values
-    q : numpy.ndarray
-        The predicted quantiles
-
-    Returns
-    -------
-    float
-        The Quantile Score (QS)
-    """
-    u = z - q
-    rho = np.where(u > 0, p * u, (p - 1) * u)
-    return np.sum(rho)
-
 
 
 def get_parameter_bounds():

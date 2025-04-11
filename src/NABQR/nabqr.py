@@ -16,9 +16,9 @@ import tensorflow as tf
 import datetime as dt
 
 from .simulation import simulate_ar1, get_parameter_bounds, simulate_wind_power_sde
-from .functions_for_TAQR import run_taqr
+from .taqr import run_taqr
 from .visualization import visualize_results
-from .lstm import train_model_lstm
+from .lstm import train_model_lstm, remove_zero_columns_numpy, remove_straight_line_outliers
 from .scoring import calculate_scores
 
 
@@ -144,15 +144,14 @@ def pipeline(
         x_val=tf.convert_to_tensor(Xs_scaled[train_size:train_size + validation_size]),
         y_val=tf.convert_to_tensor(X_Ys_scaled[train_size:train_size + validation_size]),
         n_timesteps=timesteps_lstm,
-        data_name=save_name,
     )
     
 
     # run LSTM and sanitise LSTM output
     corrected_ensembles = model(tf.convert_to_tensor(Xs_scaled)).numpy()
     # i dont think these are need when running full
-    #corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
-    #corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
+    corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
+    corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
     corrected_ensembles = pd.DataFrame(corrected_ensembles, index = idx)
     # maybe these should be made in two steps
     # problem would be that the out-of-sample data get some information from the in-sample data

@@ -3,22 +3,36 @@
 A method for sequential error-corrections tailored for wind power forecast in Denmark.
 """
 
-from .nabqr import run_nabqr_pipeline
-from .visualization import visualize_results
-from .functions import (
+from .nabqr import (
+    pipeline,
+    run_nabqr_pipeline,
+)
+
+
+from .lstm import (
+    QuantileRegressionLSTM,
+    train_model_lstm,
+    quantile_loss_func,
+    remove_zero_columns_numpy,
+    remove_zero_columns,
+)
+
+
+from .scoring import (
+    calculate_scores,
+    reliability_func,
+    quantile_score,
     variogram_score_single_observation,
     variogram_score_R_multivariate,
     calculate_crps,
     calculate_qss,
-    pipeline,
 )
-from .helper_functions import (
-    set_n_smallest_to_zero,
+
+
+from .taqr import (
+    run_taqr,
     set_n_closest_to_zero,
-    quantile_score,
-    simulate_correlated_ar1_process,
-)
-from .functions_for_TAQR import (
+    set_n_smallest_to_zero,
     rq_simplex_final,
     one_step_quantile_prediction,
     opdatering_final,
@@ -27,26 +41,41 @@ from .functions_for_TAQR import (
     rq_purify_final,
 )
 
-__version__ = "0.0.17"
+
+from .simulation import (
+    simulate_ar1,
+    simulate_wind_power_sde,
+    )
+
+
+from .visualization import visualize_results
 
 __all__ = [
-    # Main pipeline
+    # Main functions
+    "pipeline",
     "run_nabqr_pipeline",
-    # Visualization
+    # Visualisation
     "visualize_results",
-    # Core functions
+    #LSTM
+    "QuantileRegressionLSTM",
+    "train_model_lstm",
+    #Scores
+    "quantile_loss_func",
+    "calculate_scores",
+    "reliability_func",
+    "quantile_score",
     "variogram_score_single_observation",
     "variogram_score_R_multivariate",
     "calculate_crps",
     "calculate_qss",
-    "pipeline",
-    # Helper functions
-    "set_n_smallest_to_zero",
+    #TAQR
+    "run_taqr",
     "set_n_closest_to_zero",
-    "quantile_score",
-    "simulate_correlated_ar1_process",
-    # TAQR functions
+    "set_n_smallest_to_zero",
     "rq_simplex_final",
     "one_step_quantile_prediction",
-    "run_taqr",
+    "opdatering_final",
+    "rq_initialiser_final",
+    "rq_simplex_alg_final",
+    "rq_purify_final",
 ]
