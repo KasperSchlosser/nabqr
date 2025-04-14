@@ -23,7 +23,7 @@ class QuantileRegressionLSTM(tf.keras.Model):
             units, input_shape=(None, n_quantiles, n_timesteps), return_sequences=False
         )
         self.dense = tf.keras.layers.Dense(n_quantiles, activation="sigmoid")
-        self.dense2 = tf.keras.layers.Dense(n_quantiles, activation="relu")
+        self.dense2 = tf.keras.layers.Dense(n_quantiles, activation="sigmoid")
         self.n_quantiles = n_quantiles
         self.n_timesteps = n_timesteps
 

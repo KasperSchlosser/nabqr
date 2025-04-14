@@ -55,9 +55,10 @@ def create_dataset_for_lstm(X, Y, time_steps):
 
 def pipeline(
     X, y,
-    epochs = 100, training_size = 0.8, validation_size = 100,
+    epochs = 100, training_size = 0.8, validation_size = 1000,
     taqr_init = "in-sample", quantiles_taqr = None, init_limit = 5000,
     quantiles_lstm = None, timesteps_lstm = None,
+    names_lstm = None, names_taqr = None,
     save_name = None
 ):
     """Main pipeline for NABQR model training and evaluation.
@@ -101,6 +102,8 @@ def pipeline(
     if quantiles_taqr is None: quantiles_taqr = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
     if quantiles_lstm is None: quantiles_lstm = np.arange(0.05,1,0.05)
     if timesteps_lstm is None: timesteps_lstm = np.array([0, 1, 2, 6, 12, 24, 48])
+    if names_lstm is None: names_lstm = quantiles_lstm
+    if names_taqr is None: names_taqr = quantiles_taqr
     
     idx = X.index.intersection(y.index)
     
@@ -150,9 +153,9 @@ def pipeline(
     # run LSTM and sanitise LSTM output
     corrected_ensembles = model(tf.convert_to_tensor(Xs_scaled)).numpy()
     # i dont think these are need when running full
-    corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
-    corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
-    corrected_ensembles = pd.DataFrame(corrected_ensembles, index = idx)
+    #corrected_ensembles = remove_zero_columns_numpy(corrected_ensembles)
+    #corrected_ensembles = remove_straight_line_outliers(corrected_ensembles)
+    corrected_ensembles = pd.DataFrame(corrected_ensembles, index = idx, columns = names_lstm)
     # maybe these should be made in two steps
     # problem would be that the out-of-sample data get some information from the in-sample data
     # not comepletely analogues to when you would completely cold start on new data
@@ -161,11 +164,10 @@ def pipeline(
     # run taqr
     match taqr_init: 
         case "in-sample":
-            n_init = len(train_idx)
+            n_init = len(train_idx) #i want all the test data
             n_full = len(corrected_ensembles)
             n_in_X = n_init
-            
-            
+        
         case "out-of-sample":
             # we need enough data to initialise TAQR
             # but we also need data to validate on
@@ -191,30 +193,29 @@ def pipeline(
     )
     
     corrected_ensembles_original = detransformer(corrected_ensembles)
-    
+
     training_results = {
-        "Corrected Ensembles": corrected_ensembles.loc[train_idx,:],
-        "Corrected Ensembles Original Space": corrected_ensembles_original.loc[train_idx,:],
+        "Corrected ensembles": corrected_ensembles.loc[train_idx,:],
+        "Corrected ensembles original space": corrected_ensembles_original.loc[train_idx,:],
         "Actuals": y.loc[train_idx,:],
-        "Beta": pd.DataFrame(BETA_output, index=train_idx),
-        "TAQR results": pd.DataFrame(taqr_results, index = train_idx)
         }
     
     test_results = {
-        "Corrected Ensembles": corrected_ensembles.loc[test_idx],
-        "Corrected Ensembles Original Space": corrected_ensembles_original.loc[test_idx],
+        "Corrected ensembles": corrected_ensembles.loc[test_idx],
+        "Corrected ensembles original space": corrected_ensembles_original.loc[test_idx],
         "Actuals": y.loc[test_idx],
-        "Beta": pd.DataFrame(BETA_output, index=test_idx),
-        "TAQR results": pd.DataFrame(taqr_results, index = test_idx)
+        "Beta": pd.concat([pd.DataFrame(ar, index = test_idx[1:]) for ar in BETA_output], axis = 1, keys = names_taqr),
+        "TAQR results": pd.DataFrame(np.vstack(taqr_results).T, index = test_idx[2:], columns = names_taqr),
+        "model":model
         }
     
     
     if save_name:
         model.save(f'{save_name}.keras')
         
-        for key, val in training_results:
+        for key, val in training_results.items():
             val.to_csv(f'{save_name} {key}.csv')
-        for key, val in test_results:
+        for key, val in test_results.items():
             val.to_csv(f'{save_name} {key}.csv')
 
     return training_results, test_results
